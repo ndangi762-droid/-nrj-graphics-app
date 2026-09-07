@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NRJ Graphics - POS & Production Management</title>
+<!-- QR Code Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- HTML2PDF Library for PDF Generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #1e293b;
+        --accent: #2563eb;
+        --accent-hover: #1d4ed8;
+        --success: #16a34a;
+        --warning: #d97706;
+        --danger: #dc2626;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #0f172a;
+        --border: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text); padding: 12px; }
+    .container { max-width: 1050px; margin: 0 auto; }
+
+    /* Header Bar */
+    .header {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .header-brand { display: flex; align-items: center; gap: 12px; }
+    .header-logo { width: 44px; height: 44px; border-radius: 8px; object-fit: contain; }
+    .header h1 { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #38bdf8; }
+    .header p { font-size: 12px; color: #94a3b8; }
+
+    /* Layout Grids */
+    .app-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 900px) { .app-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; } }
+
+    .card {
+        background: var(--card);
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        margin-bottom: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 8px;
+    }
+
+    .form-group { margin-bottom: 12px; }
+    label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px; }
+    input, select, textarea {
+        width: 100%;
+        padding: 9px 11px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        background: #f8fafc;
+        outline: none;
+        transition: border 0.2s;
+    }
+    input:focus, select:focus { border-color: var(--accent); background: #fff; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    /* Unit Toggle Buttons */
+    .toggle-group { display: flex; background: #e2e8f0; border-radius: 8px; padding: 2px; }
+    .toggle-btn {
+        flex: 1; text-align: center; padding: 6px; font-size: 12px; font-weight: 700;
+        border: none; background: transparent; cursor: pointer; border-radius: 6px; color: #475569;
+    }
+    .toggle-btn.active { background: #fff; color: var(--accent); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+    /* Item List Styling */
+    .item-card {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        position: relative;
+    }
+    .item-card h4 { font-size: 13px; color: #0f172a; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .item-card p { font-size: 11px; color: #475569; margin: 2px 0; }
+    .btn-delete {
+        background: #fee2e2; color: var(--danger); border: none; padding: 3px 8px;
+        border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .btn {
+        width: 100%; padding: 11px; border: none; border-radius: 8px;
+        font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-accent:hover { background: var(--accent-hover); }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #15803d; }
+    .btn-warning { background: var(--warning); color: white; }
+    .btn-warning:hover { background: #b45309; }
+    .btn-pdf { background: #e11d48; color: white; }
+    .btn-pdf:hover { background: #be123c; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: #334155; }
+
+    /* Summary & Totals */
+    .summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: #475569; }
+    .summary-row.total { font-size: 16px; font-weight: 800; color: #0f172a; border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 8px; }
+    .badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .badge-roll { background: #e0f2fe; color: #0369a1; }
+    .badge-pipe { background: #fef3c7; color: #b45309; }
+
+    /* Modals */
+    .modal {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-content {
+        background: white; width: 90%; max-width: 480px; padding: 20px; border-radius: 12px;
+        max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* Thermal Receipts */
+    .bill-receipt { font-family: 'Courier New', Courier, monospace; font-size: 12px; color: #000; }
+    .bill-receipt h2 { text-align: center; font-size: 18px; margin-bottom: 2px; }
+    .bill-receipt p { text-align: center; margin-bottom: 10px; font-size: 11px; }
+    .bill-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    .bill-table th, .bill-table td { text-align: left; padding: 4px 0; border-bottom: 1px dashed #ccc; font-size: 11px; }
+    .bill-table th:last-child, .bill-table td:last-child { text-align: right; }
+
+    .receipt-header-logo { text-align: center; margin-bottom: 6px; }
+    .receipt-header-logo svg { width: 42px; height: 42px; }
+
+    /* EXACT FULL A4 PAGE STYLING */
+    #pdf-wrapper {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        width: 100%;
+    }
+    #pdf-template {
+    width: 800px;
+    padding: 40px;
+    box-sizing: border-box;
+    background: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0f172a;
+    line-height: 1.5;
+    word-spacing: normal;
+    letter-spacing: normal;
+    white-space: normal;
+}
+
+#pdf-template p, #pdf-template div, #pdf-template span {
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+    .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #2563eb; padding-bottom: 15px; margin-bottom: 20px; }
+    .pdf-title { font-size: 26px; font-weight: 800; color: #0f172a; letter-spacing: 0.5px; }
+    .pdf-sub { font-size: 12px; color: #64748b; margin-top: 2px; }
+    
+    .pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; }
+    .pdf-table th { background: #f1f5f9; text-align: left; padding: 10px; font-size: 12px; font-weight: 700; border: 1px solid #cbd5e1; color: #334155; }
+    .pdf-table td { padding: 10px; font-size: 12px; border: 1px solid #cbd5e1; color: #0f172a; }
+
+    #qrcode { display: flex; justify-content: center; margin: 15px 0; }
+    #qrcode img { border: 4px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border-radius: 8px; }
+
+    @media print {
+        body * { visibility: hidden; }
+        .printable, .printable * { visibility: visible; }
+        .modal { position: absolute; left: 0; top: 0; background: white; width: 100%; height: auto; }
+        .modal-buttons { display: none; }
+    }
+</style>
+
+
+
+<style id="nrj-modern-ui">
+:root{
+  --primary:#0b1b33;
+  --secondary:#102a43;
+  --accent:#35d0b5;
+  --accent-hover:#25b89f;
+  --success:#3ddc97;
+  --warning:#f0b35b;
+  --danger:#ff6b7a;
+  --bg:#061226;
+  --card:rgba(10,31,54,.78);
+  --text:#f4fbff;
+  --border:rgba(126,190,204,.18);
+}
+html{background:#061226;}
+body{
+  min-height:100vh;
+  margin:0;
+  padding:18px;
+  color:#eefcff;
+  background:
+    radial-gradient(circle at 78% 15%,rgba(53,208,181,.20),transparent 28%),
+    radial-gradient(circle at 8% 55%,rgba(27,116,150,.20),transparent 30%),
+    linear-gradient(145deg,#061226 0%,#081a31 48%,#061126 100%);
+  position:relative;
+  overflow-x:hidden;
+}
+body:before,body:after{
+  content:"";position:fixed;pointer-events:none;z-index:-1;border-radius:50%;filter:blur(65px);
+}
+body:before{width:280px;height:280px;right:-100px;top:110px;background:rgba(53,208,181,.13);}
+body:after{width:300px;height:300px;left:-150px;bottom:-120px;background:rgba(33,114,160,.15);}
+.container{max-width:1180px;margin:0 auto;position:relative;z-index:1;}
+.header{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(8,29,52,.94),rgba(10,47,67,.78));
+  border:1px solid rgba(98,211,194,.20);
+  padding:18px 22px;border-radius:18px;margin-bottom:18px;
+  box-shadow:0 18px 50px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(16px);
+}
+.header:after{content:"";position:absolute;right:-50px;top:-80px;width:250px;height:180px;background:radial-gradient(circle,rgba(53,208,181,.18),transparent 68%);pointer-events:none;}
+.header-brand{gap:13px;position:relative;z-index:1;}
+.header-logo{
+  width:48px;height:48px;border-radius:13px!important;
+  background:linear-gradient(145deg,#1d8f82,#39d8bc)!important;
+  color:#061226!important;box-shadow:0 0 25px rgba(53,208,181,.30);
+}
+.header h1{font-size:23px;letter-spacing:1.5px;color:#eaffff;text-shadow:0 0 20px rgba(53,208,181,.12);}
+.header p{color:#8fb4c0;font-size:12px;}
+.header>div:last-child span{background:rgba(53,208,181,.13)!important;border:1px solid rgba(53,208,181,.28);color:#75f0dc!important;border-radius:999px!important;padding:7px 12px!important;}
+.app-grid{gap:18px;}
+.card{
+  background:linear-gradient(145deg,rgba(12,37,61,.88),rgba(7,25,45,.78));
+  border:1px solid var(--border);border-radius:17px;padding:18px;margin-bottom:18px;
+  box-shadow:0 14px 35px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.035);
+  backdrop-filter:blur(14px);
+}
+.card-title{
+  color:#f3ffff;font-size:15px;letter-spacing:.2px;margin-bottom:15px;
+  border-bottom:1px solid rgba(126,190,204,.14);padding-bottom:11px;
+}
+.card-title:after{content:"";display:block;width:42px;height:2px;background:linear-gradient(90deg,#35d0b5,transparent);margin-top:8px;border-radius:4px;}
+label{color:#83aab8;letter-spacing:.7px;}
+input,select,textarea{
+  color:#eafcff!important;background:rgba(3,16,31,.72)!important;
+  border:1px solid rgba(126,190,204,.18)!important;border-radius:10px!important;
+  box-shadow:inset 0 1px 8px rgba(0,0,0,.12);transition:.2s ease;
+}
+input::placeholder,textarea::placeholder{color:#5d7d8c;}
+input:focus,select:focus,textarea:focus{border-color:rgba(53,208,181,.65)!important;box-shadow:0 0 0 3px rgba(53,208,181,.10)!important;}
+select option{background:#0a1d32;color:#fff;}
+.btn{
+  border:1px solid rgba(255,255,255,.08)!important;border-radius:10px!important;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  box-shadow:0 7px 18px rgba(0,0,0,.18);
+}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.06);}
+.btn-accent{background:linear-gradient(135deg,#2bc5ad,#188d83)!important;color:#04121f!important;box-shadow:0 8px 22px rgba(43,197,173,.20)!important;}
+.btn-success{background:linear-gradient(135deg,#36d59a,#16986f)!important;}
+.btn-warning{background:linear-gradient(135deg,#e9aa54,#b97023)!important;}
+.btn-pdf{background:linear-gradient(135deg,#5578ff,#344bc2)!important;}
+.btn-outline{background:rgba(255,255,255,.035)!important;color:#d7f3f5!important;border-color:rgba(126,190,204,.24)!important;}
+.btn-delete{background:rgba(255,107,122,.10)!important;color:#ff8793!important;border-color:rgba(255,107,122,.20)!important;}
+.toggle-group{background:rgba(2,14,28,.60)!important;border:1px solid rgba(126,190,204,.14)!important;border-radius:11px!important;}
+.toggle-btn{color:#9ab9c3!important;}
+.toggle-btn.active{background:linear-gradient(135deg,#2bc5ad,#147f77)!important;color:#04121f!important;box-shadow:0 0 18px rgba(43,197,173,.18);}
+.badge{border-radius:999px!important;}
+.item-card{background:rgba(4,19,34,.55)!important;border:1px solid rgba(126,190,204,.14)!important;border-radius:13px!important;}
+.summary-row{border-color:rgba(126,190,204,.14)!important;color:#b9d4da;}
+.total{color:#63ead5!important;text-shadow:0 0 16px rgba(53,208,181,.20);}
+.bill-table,.pdf-table{border-radius:10px;overflow:hidden;}
+.bill-table th{background:#0c2944!important;color:#a9c8d1!important;border-color:rgba(126,190,204,.16)!important;}
+.bill-table td{background:rgba(5,22,39,.50)!important;color:#dff5f7!important;border-color:rgba(126,190,204,.12)!important;}
+.modal{background:rgba(2,10,20,.82)!important;backdrop-filter:blur(8px);}
+.modal-content{background:#f8fafc!important;color:#0f172a!important;border-radius:18px!important;}
+#qrcode img{box-shadow:0 0 25px rgba(53,208,181,.22)!important;}
+/* Login — same visual language as the app */
+#nrjLoginScreen{
+  background:
+    radial-gradient(circle at 70% 25%,rgba(53,208,181,.18),transparent 28%),
+    radial-gradient(circle at 20% 80%,rgba(27,116,150,.18),transparent 30%),
+    linear-gradient(145deg,#061226,#081b33 55%,#041020)!important;
+}
+#nrjLoginBox{
+  background:linear-gradient(145deg,rgba(13,39,63,.94),rgba(6,24,43,.94))!important;
+  border:1px solid rgba(126,190,204,.20)!important;
+  box-shadow:0 25px 80px rgba(0,0,0,.45),0 0 50px rgba(53,208,181,.07)!important;
+  backdrop-filter:blur(20px);color:#fff;
+}
+#nrjLoginLogo{color:#63ead5!important;letter-spacing:1.8px;text-shadow:0 0 20px rgba(53,208,181,.18);}
+#nrjLoginBox h1{color:#f3ffff!important;}
+#nrjLoginBox p{color:#86a8b5!important;}
+#nrjLoginBox input{background:rgba(2,14,28,.72)!important;color:#fff!important;border-color:rgba(126,190,204,.18)!important;}
+#nrjLoginBox input:focus{border-color:#35d0b5!important;box-shadow:0 0 0 3px rgba(53,208,181,.10);}
+#nrjLoginBtn{background:linear-gradient(135deg,#2bc5ad,#168c80)!important;color:#04121f!important;box-shadow:0 10px 25px rgba(43,197,173,.18);}
+#nrjLoginError{color:#ff7d89!important;}
+@media(max-width:700px){
+  body{padding:10px;}
+  .header{padding:15px;border-radius:15px;}
+  .header h1{font-size:19px;}
+  .header p{font-size:10px;}
+  .header>div:last-child{display:none;}
+  .card{padding:14px;border-radius:14px;}
+}
+</style>
+
+<style id="nrj-final-ui-patch">
+#live-item-preview{background:linear-gradient(135deg,rgba(13,43,67,.94),rgba(6,27,47,.92)) !important;border:1px solid rgba(53,208,181,.30) !important;color:#e9fbff !important;box-shadow:0 10px 28px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.04);line-height:1.65 !important;min-height:70px;transition:transform .25s ease,box-shadow .25s ease}
+#live-item-preview strong{color:#ffffff !important}
+#live-item-preview .badge{background:rgba(53,208,181,.18) !important;color:#75f0dc !important;border:1px solid rgba(53,208,181,.25) !important}
+#live-item-preview em{color:#9fc0ca !important}
+#live-item-preview:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(0,0,0,.28),0 0 24px rgba(53,208,181,.08)}
+.card label[style*="color:#0f172a"],.card label[style*="color: #0f172a"]{color:#dff5f7 !important}
+.header,.card{animation:nrjFadeUp .55s ease both}.btn{position:relative;overflow:hidden}
+.btn:after{content:"";position:absolute;inset:0;transform:translateX(-120%);background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transition:transform .5s ease}.btn:hover:after{transform:translateX(120%)}
+@keyframes nrjFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="header-brand">
+            <div class="header-logo" style="display:flex;align-items:center;justify-content:center;background:#2dd4bf;color:#111;font-weight:900;font-size:11px;">NRJ</div>
+            <div>
+                <h1>NRJ GRAPHICS</h1>
+                <p>Smart Auto Roll, Welding & Frame Calculator POS</p>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <span style="background: #0284c7; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">POS v5.0 Full A4 PDF Fix</span>
+        </div>
+    </div>
+
+    <div class="app-grid">
+        <!-- LEFT PANEL -->
+        <div>
+            <div class="card">
+                <div class="card-title">1. Customer & Shop Setup</div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="cust-name" placeholder="e.g. Rahul Sharma" value="Client Estimate">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="cust-phone" placeholder="10-digit mobile" value="+91 8690996080">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Shop UPI ID (GPay / PhonePe / Paytm)</label>
+                    <input type="text" id="shop-upi" placeholder="e.g. ndangi762-3@okicici or ndangi762-3@okicici" value="ndangi762-3@okicici">
+                </div>
+            </div>
+
+            <!-- Job Entry Form -->
+            <div class="card">
+                <div class="card-title">
+                    <span>2. Add Printing / Frame Job</span>
+                    <span id="unit-indicator" style="font-size:11px; color:var(--accent);">UNIT: INCHES</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Title / Description</label>
+                    <input type="text" id="job-title" placeholder="e.g. Main Shop Board / Banner">
+                </div>
+
+                <div class="form-group">
+                    <label>Input Unit Switch</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-btn active" id="btn-unit-inch" onclick="setUnit('inch')">Inches ('' )</button>
+                        <button type="button" class="toggle-btn" id="btn-unit-feet" onclick="setUnit('feet')">Feet (ft)</button>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label id="lbl-w">Width (Inches)</label>
+                        <input type="number" id="inp-w" value="24" oninput="previewCurrentItem()">
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl-h">Height (Inches)</label>
+                        <input type="number" id="inp-h" value="28" oninput="previewCurrentItem()">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="inp-qty" value="1" min="1" oninput="previewCurrentItem()">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Media / Flex Type</label>
+                        <select id="sel-media" onchange="updateDefaultRate()">
+                            <option value="12">Normal Flex (₹12/sqft)</option>
+                            <option value="18">Star Flex (₹18/sqft)</option>
+                            <option value="25">Backlit Flex (₹25/sqft)</option>
+                            <option value="35">Vinyl Print (₹35/sqft)</option>
+                            <option value="45">Eco-Solvent Vinyl (₹45/sqft)</option>
+                            <option value="50">Canvas / Fabric (₹50/sqft)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Print Rate (₹ / Chargeable Sq.Ft)</label>
+                        <input type="number" id="rate-flex" value="12" oninput="previewCurrentItem()">
+                    </div>
+                </div>
+
+                <!-- Extras & Finishing -->
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Eyelets / Kada (Pcs)</label>
+                        <input type="number" id="inp-kada" value="0" placeholder="Qty" oninput="previewCurrentItem()">
+                    </div>
+                    <div class="form-group">
+                        <label>Kada Rate (₹/Pc)</label>
+                        <input type="number" id="rate-kada" value="5" oninput="previewCurrentItem()">
+                    </div>
+                    <div class="form-group">
+                        <label>DTP / Design Fee (₹)</label>
+                        <input type="number" id="inp-design" value="0" oninput="previewCurrentItem()">
+                    </div>
+                </div>
+
+                <!-- Additional Expenses -->
+                <div class="grid-2" style="border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px;">
+                    <div class="form-group">
+                        <label>Auto / Freight Charge (₹)</label>
+                        <input type="number" id="inp-auto-exp" value="0" placeholder="Transport Cost" oninput="previewCurrentItem()">
+                    </div>
+                    <div class="form-group">
+                        <label>Other Exp (Fitting/Labour) (₹)</label>
+                        <input type="number" id="inp-other-exp" value="0" placeholder="Installation/Misc" oninput="previewCurrentItem()">
+                    </div>
+                </div>
+
+                <!-- Iron Frame & Welding Fabrication -->
+                <div style="border-top:1px dashed var(--border); padding-top:10px; margin-top:6px;">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; text-transform:none; font-size:13px; color:#0f172a;">
+                        <input type="checkbox" id="chk-frame" onchange="toggleFrameUI(this.checked)" style="width:auto;"> Add Iron Frame Fabrication & Welding
+                    </label>
+
+                    <div id="frame-options" style="display:none; margin-top:8px;">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Pipe Type & Rate</label>
+                                <select id="sel-pipe-rate" onchange="previewCurrentItem()">
+                                    <option value="35">3/4" Square Pipe (₹35/rft)</option>
+                                    <option value="45">1" Heavy Square Pipe (₹45/rft)</option>
+                                    <option value="60">1.25" Heavy Pipe (₹60/rft)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Support Spacing (Feet)</label>
+                                <select id="sel-support-gap" onchange="previewCurrentItem()">
+                                    <option value="5">Every 5 Feet Support (Standard)</option>
+                                    <option value="4">Every 4 Feet Support (Heavy)</option>
+                                    <option value="3">Every 3 Feet Support (Extra Strong)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Welding / Fab Labor (₹ / Frame Pc)</label>
+                                <input type="number" id="rate-welding" value="150" placeholder="Welding Cost" oninput="previewCurrentItem()">
+                            </div>
+                            <div class="form-group" style="display:flex; align-items:center; margin-top:16px;">
+                                <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; cursor:pointer;">
+                                    <input type="checkbox" id="chk-cross-brace" checked onchange="previewCurrentItem()" style="width:auto;"> Auto Cross (+) Welding for Big Frame
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div id="live-item-preview" style="background:#eff6ff; border:1px solid #bfdbfe; padding:10px; border-radius:8px; margin-top:10px; font-size:12px;">
+                </div>
+
+                <button class="btn btn-accent" onclick="addItemToBill()" style="margin-top:12px;">
+                    + Add This Job To Bill List
+                </button>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div>
+            <div class="card">
+                <div class="card-title">
+                    <span>3. Multi-Job Items List</span>
+                    <span id="cart-count" class="badge" style="background:#e2e8f0; color:#334155;">0 Jobs</span>
+                </div>
+
+                <div id="items-container">
+                    <p style="font-size:12px; color:#94a3b8; text-align:center; padding:15px;">No jobs added yet. Enter details on the left and click "Add Job".</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">4. Summary, Payment & Slips</div>
+
+                <div class="summary-row">
+                    <span>Total Printing Cost:</span>
+                    <span id="sum-print">₹ 0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Frame Pipe & Welding:</span>
+                    <span id="sum-frame">₹ 0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Finishing & Design Fees:</span>
+                    <span id="sum-extras">₹ 0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Auto Freight & Transport:</span>
+                    <span id="sum-auto-exp">₹ 0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Fitting, Labour & Other Exp:</span>
+                    <span id="sum-other-exp">₹ 0.00</span>
+                </div>
+
+                <div class="grid-2" style="margin:10px 0;">
+                    <div class="form-group">
+                        <label>Discount (₹)</label>
+                        <input type="number" id="inp-discount" value="0" oninput="recalculateBill()">
+                    </div>
+                    <div class="form-group">
+                        <label>Tax Option</label>
+                        <select id="sel-gst" onchange="recalculateBill()">
+                            <option value="0">No GST (Estimate)</option>
+                            <option value="18">Add 18% GST</option>
+                            <option value="12">Add 12% GST</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="summary-row total">
+                    <span>GRAND TOTAL:</span>
+                    <span id="sum-grand" style="color:var(--accent);">₹ 0.00</span>
+                </div>
+
+                <div class="grid-2" style="margin-top:10px;">
+                    <div class="form-group">
+                        <label>Advance Received (₹)</label>
+                        <input type="number" id="inp-advance" value="0" style="border-color:#86efac; background:#f0fdf4;" oninput="recalculateBill()">
+                    </div>
+                    <div class="form-group">
+                        <label>Balance Due (₹)</label>
+                        <input type="number" id="inp-balance" value="0" readonly style="border-color:#fca5a5; background:#fef2f2; font-weight:bold; color:var(--danger);">
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top:10px;">
+                    <button class="btn btn-success" onclick="shareWhatsApp()">
+                        WhatsApp Quote
+                    </button>
+                    <button class="btn btn-pdf" onclick="generatePdfQuotation()">
+                        📄 Download PDF Quote
+                    </button>
+                </div>
+
+                <div class="grid-2" style="margin-top:8px;">
+                    <button class="btn btn-warning" onclick="openUpiModal()">
+                        Show UPI QR
+                    </button>
+                    <button class="btn btn-outline" onclick="openPrintSlip()">
+                        Print Customer Slip
+                    </button>
+                </div>
+
+                <button class="btn btn-accent" onclick="openKarigarModal()" style="margin-top:8px;">
+                    Karigar Job Slip
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DYNAMIC UPI QR MODAL -->
+<div class="modal" id="modal-upi">
+    <div class="modal-content" style="text-align: center;">
+        <h3 style="color:var(--primary); margin-bottom:4px;">Scan & Pay via UPI</h3>
+        <p style="font-size:12px; color:#64748b;" id="upi-pay-desc">Pay Advance or Balance Amount</p>
+
+        <div class="toggle-group" style="margin:12px 0;">
+            <button type="button" class="toggle-btn active" id="btn-pay-adv" onclick="switchUpiType('adv')">Advance Amount</button>
+            <button type="button" class="toggle-btn" id="btn-pay-full" onclick="switchUpiType('full')">Full / Balance</button>
+        </div>
+
+        <div id="qrcode"></div>
+        <div style="font-size:20px; font-weight:800; color:var(--success); margin-bottom:4px;" id="upi-amount-txt">₹ 0.00</div>
+        <div style="font-size:12px; color:#475569;" id="upi-id-txt">UPI: ndangi762-3@okicici</div>
+
+        <div class="modal-buttons" style="margin-top:15px;">
+            <button class="btn btn-outline" onclick="closeModal('modal-upi')">Close QR</button>
+        </div>
+    </div>
+</div>
+
+<!-- PRINTABLE CUSTOMER SLIP MODAL -->
+<div class="modal" id="print-modal">
+    <div class="modal-content">
+        <div class="bill-receipt printable" id="slip-body">
+            <div class="receipt-header-logo"><div style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;background:#2dd4bf;color:#111;font-weight:900;border-radius:8px;">NRJ</div></div>
+            <h2>NRJ GRAPHICS</h2>
+            <p>Flex, Eco-Solvent & Frame Specialist<br>Ph: +91 8690996080</p>
+            <hr style="border-top:1px dashed #000;">
+            <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:11px;">
+                <span id="slip-cust-name">Cust: Rahul</span>
+                <span id="slip-date">--</span>
+            </div>
+            <table class="bill-table">
+                <thead>
+                    <tr>
+                        <th>Job</th>
+                        <th>Roll/Size</th>
+                        <th>Qty</th>
+                        <th>Amt(₹)</th>
+                    </tr>
+                </thead>
+                <tbody id="slip-items">
+                </tbody>
+            </table>
+            <div style="text-align:right; margin-top:8px;">
+                <div>Subtotal: <span id="slip-subtotal">0</span></div>
+                <div>Auto/Freight Exp: ₹<span id="slip-auto-exp">0</span></div>
+                <div>Labour/Other Exp: ₹<span id="slip-other-exp">0</span></div>
+                <div>Tax/GST: <span id="slip-tax">0</span></div>
+                <div>Discount: <span id="slip-discount">0</span></div>
+                <div style="font-weight:bold; font-size:14px; margin-top:2px;">Grand Total: ₹<span id="slip-total">0</span></div>
+                <div>Advance Paid: ₹<span id="slip-adv">0</span></div>
+                <div style="font-weight:bold; color:#000;">Balance Due: ₹<span id="slip-due">0</span></div>
+            </div>
+            <hr style="border-top:1px dashed #000; margin:8px 0;">
+            <p style="text-align:center; font-size:10px;">Thank you for your business!<br>Goods once printed cannot be returned.</p>
+        </div>
+        <div class="modal-buttons" style="margin-top:15px; display:flex; gap:8px;">
+            <button class="btn btn-accent" onclick="window.print()">Print Thermal Slip</button>
+            <button class="btn btn-outline" onclick="closeModal('print-modal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- PRINTABLE KARIGAR (JOB WORK) SLIP MODAL -->
+<div class="modal" id="karigar-modal">
+    <div class="modal-content">
+        <div class="bill-receipt printable" id="karigar-slip-body">
+            <div class="receipt-header-logo"><div style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;background:#2dd4bf;color:#111;font-weight:900;border-radius:8px;">NRJ</div></div>
+            <h2 style="text-align:center; font-size:16px; border-bottom:2px solid #000; padding-bottom:4px;">PRODUCTION / KARIGAR SLIP</h2>
+            <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:11px;">
+                <span id="k-cust-name">Client: Rahul</span>
+                <span id="k-date">--</span>
+            </div>
+            <div id="karigar-items-list">
+            </div>
+            <div style="margin-top:10px; border-top:1px dashed #000; padding-top:6px; font-size:11px;">
+                <strong>Special Instructions:</strong> Check roll waste optimization, test grommets/kada placement, and verify square pipe support alignment before welding.
+            </div>
+        </div>
+        <div class="modal-buttons" style="margin-top:15px; display:flex; gap:8px;">
+            <button class="btn btn-accent" onclick="window.print()">Print Production Order</button>
+            <button class="btn btn-outline" onclick="closeModal('karigar-modal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- OFF-SCREEN A4 PDF CONTAINER FOR CLEAN SCALING -->
+<div id="pdf-wrapper">
+    <div id="pdf-template">
+        <div class="pdf-header">
+            <div>
+                <div class="pdf-title">NRJ GRAPHICS</div>
+                <div class="pdf-sub">Flex, Eco-Solvent Printing & Iron Frame Fabrication</div>
+                <div class="pdf-sub">Mobile: +91 8690996080 | UPI: ndangi762-3@okicici</div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:18px; font-weight:bold; color:#2563eb;">JOB QUOTATION</div>
+                <div class="pdf-sub" id="pdf-date-txt">Date: --</div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:15px; font-size:13px; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #cbd5e1; display:flex; justify-content:space-between;">
+            <div><strong>Client Name:</strong> <span id="pdf-cust-name">Client Estimate</span></div>
+            <div><strong>Phone:</strong> <span id="pdf-cust-phone">+91 8690996080</span></div>
+        </div>
+
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th style="width:5%;">#</th>
+                    <th style="width:35%;">Job Title & Media</th>
+                    <th style="width:20%;">Size & Qty</th>
+                    <th style="width:25%;">Frame / Extras</th>
+                    <th style="width:15%; text-align:right;">Amount (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-items-tbody">
+            </tbody>
+        </table>
+
+        <div style="margin-top:25px; display:flex; justify-content:space-between;">
+            <div style="font-size: 11px; line-height: 1.6; color: #334155;">
+    <strong style="font-size: 12px; display: block; margin-bottom: 6px;">Terms & Conditions:</strong>
+    <ol style="margin: 0; padding-left: 16px;">
+        <li style="margin-bottom: 4px;">Quotation valid for 7 days from issue date.</li>
+        <li style="margin-bottom: 4px;">50% advance payment required to initiate printing / fabrication.</li>
+        <li style="margin-bottom: 4px;">Design approval required before production.</li>
+    </ol>
+</div>
+            <div style="width:48%; text-align:right; font-size:13px;">
+                <div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>Print Subtotal:</span> <strong id="pdf-sum-print">₹0.00</strong></div>
+                <div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>Frame Fabrication:</span> <strong id="pdf-sum-frame">₹0.00</strong></div>
+                <div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>Finishing & Design:</span> <strong id="pdf-sum-extras">₹0.00</strong></div>
+                <div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>Transport & Installation:</span> <strong id="pdf-sum-exp">₹0.00</strong></div>
+                <div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>Tax / GST:</span> <strong id="pdf-sum-tax">0%</strong></div>
+                <div style="margin-bottom:6px; display:flex; justify-content:space-between;"><span>Discount:</span> <strong id="pdf-sum-discount">₹0.00</strong></div>
+                <hr style="margin:8px 0; border:0; border-top:1px solid #cbd5e1;">
+                <div style="font-size:16px; font-weight:bold; color:#0f172a; display:flex; justify-content:space-between;"><span>Grand Total:</span> <span id="pdf-sum-grand" style="color:#2563eb;">₹0.00</span></div>
+                <div style="margin-top:6px; display:flex; justify-content:space-between; color:#16a34a;"><span>Advance Required:</span> <strong id="pdf-sum-adv">₹0.00</strong></div>
+                <div style="margin-top:4px; display:flex; justify-content:space-between; color:#dc2626;"><span>Balance Payable:</span> <strong id="pdf-sum-bal">₹0.00</strong></div>
+            </div>
+        </div>
+
+        <div style="margin-top:60px; border-top:1px solid #cbd5e1; padding-top:15px; display:flex; justify-content:space-between; font-size:12px; color:#64748b;">
+            <div>Prepared By: NRJ Graphics Billing System</div>
+            <div>Authorized Signatory (NRJ Graphics)</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let cartItems = [];
+    let currentUnit = 'inch';
+    let qrcodeInstance = null;
+
+    const STANDARD_ROLLS_INCHES = [36, 48, 60, 72, 96, 120];
+
+    function getCurrentDateTime() {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-IN');
+        const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        return `${dateStr} ${timeStr}`;
+    }
+
+    function calculateItemMetrics(widthInput, heightInput, qty, mediaRate, kadaQty, kadaRate, designFee, autoExp, otherExp, hasFrame, pipeRate, supportGap, weldingRate, autoCrossBrace) {
+        let widthInInches = currentUnit === 'feet' ? widthInput * 12 : widthInput;
+        let heightInInches = currentUnit === 'feet' ? heightInput * 12 : heightInput;
+
+        if (widthInInches <= 0 || heightInInches <= 0 || qty <= 0) {
+            return null;
+        }
+
+        const actualSqFtPerPiece = (widthInInches * heightInInches) / 144;
+        const actualSqFtTotal = actualSqFtPerPiece * qty;
+
+        let rollA = STANDARD_ROLLS_INCHES.find(r => r >= widthInInches);
+        let chgSqFtA = rollA ? (rollA * heightInInches) / 144 : Infinity;
+
+        let rollB = STANDARD_ROLLS_INCHES.find(r => r >= heightInInches);
+        let chgSqFtB = rollB ? (rollB * widthInInches) / 144 : Infinity;
+
+        let selectedRoll = 120;
+        let chargeableSqFtPerPiece = 0;
+        let bestFeedDirection = "";
+
+        if (chgSqFtA <= chgSqFtB && chgSqFtA !== Infinity) {
+            selectedRoll = rollA;
+            chargeableSqFtPerPiece = chgSqFtA;
+            bestFeedDirection = `${widthInInches}" Side on Roll (${rollA/12} Ft Roll x ${heightInInches}" Run)`;
+        } else if (chgSqFtB !== Infinity) {
+            selectedRoll = rollB;
+            chargeableSqFtPerPiece = chgSqFtB;
+            bestFeedDirection = `${heightInInches}" Side on Roll (${rollB/12} Ft Roll x ${widthInInches}" Run)`;
+        } else {
+            selectedRoll = 120;
+            const maxDim = Math.max(widthInInches, heightInInches);
+            const minDim = Math.min(widthInInches, heightInInches);
+            chargeableSqFtPerPiece = (120 * maxDim) / 144;
+            bestFeedDirection = `${minDim}" Side on Roll (10 Ft Roll x ${maxDim}" Run)`;
+        }
+
+        const chargeableSqFtTotal = chargeableSqFtPerPiece * qty;
+        const printCost = chargeableSqFtTotal * mediaRate;
+        const wasteSqFtTotal = chargeableSqFtTotal - actualSqFtTotal;
+
+        let runningFeetPerPiece = 0;
+        let supportPipesCountPerPiece = 0;
+        let hasCrossBrace = false;
+        let totalPipeFeet = 0;
+        let pipeCost = 0;
+        let totalWeldingLabor = 0;
+        let frameCost = 0;
+
+        if (hasFrame) {
+            const widthFeet = widthInInches / 12;
+            const heightFeet = heightInInches / 12;
+            const perimeterFeet = 2 * (widthFeet + heightFeet);
+
+            const longestSideFeet = Math.max(widthFeet, heightFeet);
+            const shortestSideFeet = Math.min(widthFeet, heightFeet);
+
+            if (longestSideFeet > supportGap) {
+                supportPipesCountPerPiece = Math.floor((longestSideFeet - 0.1) / supportGap);
+            }
+
+            let supportFeet = supportPipesCountPerPiece * shortestSideFeet;
+
+            if (autoCrossBrace && widthFeet >= 4 && heightFeet >= 4) {
+                hasCrossBrace = true;
+                supportFeet += (widthFeet + heightFeet);
+            }
+
+            runningFeetPerPiece = perimeterFeet + supportFeet;
+            totalPipeFeet = runningFeetPerPiece * qty;
+            pipeCost = totalPipeFeet * pipeRate;
+            totalWeldingLabor = weldingRate * qty;
+            frameCost = pipeCost + totalWeldingLabor;
+        }
+
+        const finishingCost = (kadaQty * kadaRate) + designFee;
+        const totalAutoExpense = autoExp;
+        const totalOtherExpense = otherExp;
+        const itemTotalCost = printCost + frameCost + finishingCost + totalAutoExpense + totalOtherExpense;
+
+        return {
+            widthInInches,
+            heightInInches,
+            actualSqFtTotal: actualSqFtTotal.toFixed(2),
+            chargeableSqFtTotal: chargeableSqFtTotal.toFixed(2),
+            wasteSqFtTotal: wasteSqFtTotal.toFixed(2),
+            selectedRoll,
+            rollInFeet: selectedRoll / 12,
+            bestFeedDirection,
+            printCost,
+            hasFrame,
+            hasCrossBrace,
+            supportPipesCountPerPiece,
+            totalPipeFeet: totalPipeFeet.toFixed(1),
+            pipeCost,
+            weldingRate,
+            totalWeldingLabor,
+            frameCost,
+            finishingCost,
+            totalAutoExpense,
+            totalOtherExpense,
+            itemTotalCost
+        };
+    }
+
+    function setUnit(unit) {
+        currentUnit = unit;
+        document.getElementById('btn-unit-inch').classList.toggle('active', unit === 'inch');
+        document.getElementById('btn-unit-feet').classList.toggle('active', unit === 'feet');
+        
+        document.getElementById('lbl-w').innerText = unit === 'inch' ? "Width (Inches)" : "Width (Feet)";
+        document.getElementById('lbl-h').innerText = unit === 'inch' ? "Height (Inches)" : "Height (Feet)";
+        document.getElementById('unit-indicator').innerText = `UNIT: ${unit.toUpperCase()}`;
+        
+        previewCurrentItem();
+    }
+
+    function toggleFrameUI(show) {
+        document.getElementById('frame-options').style.display = show ? 'block' : 'none';
+        previewCurrentItem();
+    }
+
+    function updateDefaultRate() {
+        const mediaSelect = document.getElementById('sel-media');
+        document.getElementById('rate-flex').value = mediaSelect.value;
+        previewCurrentItem();
+    }
+
+    function previewCurrentItem() {
+        const w = parseFloat(document.getElementById('inp-w').value) || 0;
+        const h = parseFloat(document.getElementById('inp-h').value) || 0;
+        const qty = parseInt(document.getElementById('inp-qty').value) || 1;
+        const rate = parseFloat(document.getElementById('rate-flex').value) || 0;
+        const kada = parseInt(document.getElementById('inp-kada').value) || 0;
+        const kadaRate = parseFloat(document.getElementById('rate-kada').value) || 0;
+        const design = parseFloat(document.getElementById('inp-design').value) || 0;
+        const autoExp = parseFloat(document.getElementById('inp-auto-exp').value) || 0;
+        const otherExp = parseFloat(document.getElementById('inp-other-exp').value) || 0;
+        const hasFrame = document.getElementById('chk-frame').checked;
+        const pipeRate = parseFloat(document.getElementById('sel-pipe-rate').value) || 0;
+        const supportGap = parseFloat(document.getElementById('sel-support-gap').value) || 5;
+        const weldingRate = parseFloat(document.getElementById('rate-welding').value) || 0;
+        const autoCrossBrace = document.getElementById('chk-cross-brace').checked;
+
+        const metrics = calculateItemMetrics(w, h, qty, rate, kada, kadaRate, design, autoExp, otherExp, hasFrame, pipeRate, supportGap, weldingRate, autoCrossBrace);
+
+        const previewDiv = document.getElementById('live-item-preview');
+        if (!metrics) {
+            previewDiv.innerHTML = "<em>Enter valid dimensions to view production calculation.</em>";
+            return;
+        }
+
+        let crossText = metrics.hasCrossBrace ? " + Center (+) Cross Welding Support" : "";
+
+        let frameText = metrics.hasFrame ? 
+            `<br>🔨 <strong>Frame & Welding:</strong> ${metrics.totalPipeFeet} Rft pipe (${metrics.supportPipesCountPerPiece} supports${crossText}) + Welding (₹${metrics.totalWeldingLabor.toFixed(2)}) → <strong>₹${metrics.frameCost.toFixed(2)}</strong>` : '';
+
+        let expText = (metrics.totalAutoExpense > 0 || metrics.totalOtherExpense > 0) ?
+            `<br>🚚 <strong>Transport & Fitting:</strong> Auto: ₹${metrics.totalAutoExpense.toFixed(2)} | Other: ₹${metrics.totalOtherExpense.toFixed(2)}` : '';
+
+        previewDiv.innerHTML = `
+            <strong>⚡ Smart Auto-Oriented Roll Preview:</strong><br>
+            • Actual Area: <strong>${metrics.actualSqFtTotal} Sq.Ft</strong> | Chargeable Area: <strong>${metrics.chargeableSqFtTotal} Sq.Ft</strong> (Waste: ${metrics.wasteSqFtTotal} Sq.Ft)<br>
+            • Optimal Standard Roll: <span class="badge badge-roll">${metrics.rollInFeet} Feet (${metrics.selectedRoll}") Roll</span><br>
+            • 💡 Best Print Feed Direction: <strong>${metrics.bestFeedDirection}</strong><br>
+            • Print Cost: <strong>₹${metrics.printCost.toFixed(2)}</strong>${frameText}${expText}
+            <br>💰 <strong>Estimated Item Total: ₹${metrics.itemTotalCost.toFixed(2)}</strong>
+        `;
+    }
+
+    function addItemToBill() {
+        const title = document.getElementById('job-title').value.trim() || 'Flex Print Job';
+        const w = parseFloat(document.getElementById('inp-w').value) || 0;
+        const h = parseFloat(document.getElementById('inp-h').value) || 0;
+        const qty = parseInt(document.getElementById('inp-qty').value) || 1;
+        const mediaSelect = document.getElementById('sel-media');
+        const mediaName = mediaSelect.options[mediaSelect.selectedIndex].text.split('(')[0].trim();
+        const rate = parseFloat(document.getElementById('rate-flex').value) || 0;
+        const kada = parseInt(document.getElementById('inp-kada').value) || 0;
+        const kadaRate = parseFloat(document.getElementById('rate-kada').value) || 0;
+        const design = parseFloat(document.getElementById('inp-design').value) || 0;
+        const autoExp = parseFloat(document.getElementById('inp-auto-exp').value) || 0;
+        const otherExp = parseFloat(document.getElementById('inp-other-exp').value) || 0;
+        const hasFrame = document.getElementById('chk-frame').checked;
+        const pipeRate = parseFloat(document.getElementById('sel-pipe-rate').value) || 0;
+        const supportGap = parseFloat(document.getElementById('sel-support-gap').value) || 5;
+        const weldingRate = parseFloat(document.getElementById('rate-welding').value) || 0;
+        const autoCrossBrace = document.getElementById('chk-cross-brace').checked;
+
+        const metrics = calculateItemMetrics(w, h, qty, rate, kada, kadaRate, design, autoExp, otherExp, hasFrame, pipeRate, supportGap, weldingRate, autoCrossBrace);
+
+        if (!metrics) {
+            alert('Please enter valid job measurements.');
+            return;
+        }
+
+        const item = {
+            id: Date.now(),
+            title,
+            unit: currentUnit,
+            widthInput: w,
+            heightInput: h,
+            qty,
+            mediaName,
+            rate,
+            kada,
+            kadaRate,
+            design,
+            autoExp,
+            otherExp,
+            pipeRate,
+            supportGap,
+            weldingRate,
+            autoCrossBrace,
+            ...metrics
+        };
+
+        cartItems.push(item);
+        renderCart();
+        recalculateBill();
+
+        document.getElementById('job-title').value = '';
+        document.getElementById('inp-auto-exp').value = '0';
+        document.getElementById('inp-other-exp').value = '0';
+        previewCurrentItem();
+    }
+
+    function deleteItem(id) {
+        cartItems = cartItems.filter(item => item.id !== id);
+        renderCart();
+        recalculateBill();
+    }
+
+    function renderCart() {
+        const container = document.getElementById('items-container');
+        document.getElementById('cart-count').innerText = `${cartItems.length} Jobs`;
+
+        if (cartItems.length === 0) {
+            container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:15px;">No jobs added yet. Enter details on the left and click "Add Job".</p>`;
+            return;
+        }
+
+        let html = '';
+        cartItems.forEach((item, index) => {
+            let crossText = item.hasCrossBrace ? " + Cross (+) Brace" : "";
+            html += `
+                <div class="item-card">
+                    <h4>
+                        <span>#${index + 1}. ${item.title}</span>
+                        <button class="btn-delete" onclick="deleteItem(${item.id})">Remove</button>
+                    </h4>
+                    <p><strong>Size:</strong> ${item.widthInput} x ${item.heightInput} ${item.unit} (${item.qty} Pcs) | <strong>Media:</strong> ${item.mediaName}</p>
+                    <p><strong>Roll Used:</strong> ${item.rollInFeet} Ft Roll | <strong>Charged SqFt:</strong> ${item.chargeableSqFtTotal} sqft @ ₹${item.rate}</p>
+                    <p><strong>Print Orientation:</strong> ${item.bestFeedDirection}</p>
+                    ${item.hasFrame ? `<p><span class="badge badge-pipe">Pipe & Welding</span> ${item.totalPipeFeet} Rft @ ₹${item.pipeRate}/rft (${item.supportPipesCountPerPiece} supports${crossText}) + Labor ₹${item.totalWeldingLabor.toFixed(2)}</p>` : ''}
+                    <p><strong>Extras & Expenses:</strong> Design/Kada: ₹${item.finishingCost.toFixed(2)} | Auto: ₹${item.totalAutoExpense.toFixed(2)} | Other: ₹${item.totalOtherExpense.toFixed(2)}</p>
+                    <div style="display:flex; justify-content:space-between; margin-top:4px; font-weight:bold; color:var(--primary); font-size:12px;">
+                        <span>Item Total: ₹${item.itemTotalCost.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function recalculateBill() {
+        let totalPrint = 0;
+        let totalFrame = 0;
+        let totalExtras = 0;
+        let totalAuto = 0;
+        let totalOther = 0;
+
+        cartItems.forEach(item => {
+            totalPrint += item.printCost;
+            totalFrame += item.frameCost;
+            totalExtras += item.finishingCost;
+            totalAuto += item.totalAutoExpense;
+            totalOther += item.totalOtherExpense;
+        });
+
+        const subtotal = totalPrint + totalFrame + totalExtras + totalAuto + totalOther;
+        const discount = parseFloat(document.getElementById('inp-discount').value) || 0;
+        const gstRate = parseFloat(document.getElementById('sel-gst').value) || 0;
+
+        const discountedSubtotal = Math.max(0, subtotal - discount);
+        const taxAmount = (discountedSubtotal * gstRate) / 100;
+        const grandTotal = discountedSubtotal + taxAmount;
+
+        const advance = parseFloat(document.getElementById('inp-advance').value) || 0;
+        const balance = Math.max(0, grandTotal - advance);
+
+        document.getElementById('sum-print').innerText = `₹ ${totalPrint.toFixed(2)}`;
+        document.getElementById('sum-frame').innerText = `₹ ${totalFrame.toFixed(2)}`;
+        document.getElementById('sum-extras').innerText = `₹ ${totalExtras.toFixed(2)}`;
+        document.getElementById('sum-auto-exp').innerText = `₹ ${totalAuto.toFixed(2)}`;
+        document.getElementById('sum-other-exp').innerText = `₹ ${totalOther.toFixed(2)}`;
+        document.getElementById('sum-grand').innerText = `₹ ${grandTotal.toFixed(2)}`;
+        document.getElementById('inp-balance').value = balance.toFixed(2);
+    }
+
+    /* FULL A4 FIXED EXPORT FUNCTION */
+    function generatePdfQuotation() {
+        if (cartItems.length === 0) {
+            alert('Please add at least one job to generate PDF quotation.');
+            return;
+        }
+
+        const custName = document.getElementById('cust-name').value.trim() || 'Valued Customer';
+        const custPhone = document.getElementById('cust-phone').value.trim() || 'N/A';
+
+        document.getElementById('pdf-cust-name').innerText = custName;
+        document.getElementById('pdf-cust-phone').innerText = custPhone;
+        document.getElementById('pdf-date-txt').innerText = `Date: ${getCurrentDateTime()}`;
+
+        const tbody = document.getElementById('pdf-items-tbody');
+        tbody.innerHTML = '';
+
+        cartItems.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            let crossText = item.hasCrossBrace ? " + Cross (+) Brace" : "";
+            let frameInfo = item.hasFrame ? `Frame: ${item.totalPipeFeet} Rft Pipe${crossText}` : 'No Frame';
+            let expInfo = (item.totalAutoExpense + item.totalOtherExpense) > 0 ? `<br>Exp: ₹${(item.totalAutoExpense + item.totalOtherExpense).toFixed(2)}` : '';
+            
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td><strong>${item.title}</strong><br><small style="color:#64748b;">${item.mediaName}</small></td>
+                <td>${item.widthInput}x${item.heightInput} ${item.unit} (${item.qty} Pcs)<br><small style="color:#64748b;">${item.chargeableSqFtTotal} SqFt</small></td>
+                <td>${frameInfo}${expInfo}</td>
+                <td style="font-weight:bold; text-align:right;">₹${item.itemTotalCost.toFixed(2)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        let totalPrint = 0, totalFrame = 0, totalExtras = 0, totalExp = 0;
+        cartItems.forEach(item => {
+            totalPrint += item.printCost;
+            totalFrame += item.frameCost;
+            totalExtras += item.finishingCost;
+            totalExp += (item.totalAutoExpense + item.totalOtherExpense);
+        });
+
+        document.getElementById('pdf-sum-print').innerText = `₹ ${totalPrint.toFixed(2)}`;
+        document.getElementById('pdf-sum-frame').innerText = `₹ ${totalFrame.toFixed(2)}`;
+        document.getElementById('pdf-sum-extras').innerText = `₹ ${totalExtras.toFixed(2)}`;
+        document.getElementById('pdf-sum-exp').innerText = `₹ ${totalExp.toFixed(2)}`;
+        document.getElementById('pdf-sum-tax').innerText = `${document.getElementById('sel-gst').value}%`;
+        document.getElementById('pdf-sum-discount').innerText = `₹ ${document.getElementById('inp-discount').value || '0'}`;
+        document.getElementById('pdf-sum-grand').innerText = document.getElementById('sum-grand').innerText;
+        document.getElementById('pdf-sum-adv').innerText = `₹ ${document.getElementById('inp-advance').value || '0'}`;
+        document.getElementById('pdf-sum-bal').innerText = `₹ ${document.getElementById('inp-balance').value || '0'}`;
+
+        const element = document.getElementById('pdf-template');
+
+        const opt = {
+            margin:       0,
+            filename:     `Quotation_NRJ_Graphics_${custName.replace(/\s+/g, '_')}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { 
+                scale: 2,
+                useCORS: true,
+                scrollX: 0,
+                scrollY: 0,
+                width: 800
+            },
+            jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function openUpiModal() {
+        if (cartItems.length === 0) {
+            alert('Please add at least one job to generate UPI QR payment.');
+            return;
+        }
+        document.getElementById('modal-upi').style.display = 'flex';
+        switchUpiType('adv');
+    }
+
+    function switchUpiType(type) {
+        document.getElementById('btn-pay-adv').classList.toggle('active', type === 'adv');
+        document.getElementById('btn-pay-full').classList.toggle('active', type === 'full');
+
+        const upiId = document.getElementById('shop-upi').value.trim() || 'ndangi762-3@okicici';
+        const custName = document.getElementById('cust-name').value.trim() || 'Customer';
+        const advance = parseFloat(document.getElementById('inp-advance').value) || 0;
+        const balance = parseFloat(document.getElementById('inp-balance').value) || 0;
+
+        const printText = document.getElementById('sum-grand').innerText.replace('₹', '').trim();
+        const grandTotal = parseFloat(printText) || 0;
+
+        let payAmount = 0;
+        if (type === 'adv') {
+            payAmount = advance > 0 ? advance : grandTotal;
+            document.getElementById('upi-pay-desc').innerText = "Scan to pay Advance Amount";
+        } else {
+            payAmount = balance > 0 ? balance : grandTotal;
+            document.getElementById('upi-pay-desc').innerText = "Scan to pay Full / Balance Amount";
+        }
+
+        document.getElementById('upi-amount-txt').innerText = `₹ ${payAmount.toFixed(2)}`;
+        document.getElementById('upi-id-txt').innerText = `Payee UPI ID: ${upiId}`;
+
+        const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("NRJ Graphics")}&tn=${encodeURIComponent("Printing Bill - " + custName)}&am=${payAmount.toFixed(2)}&cu=INR`;
+
+        const qrcodeContainer = document.getElementById('qrcode');
+        qrcodeContainer.innerHTML = '';
+        qrcodeInstance = new QRCode(qrcodeContainer, {
+            text: upiString,
+            width: 180,
+            height: 180,
+            colorDark : "#0f172a",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    }
+
+    function shareWhatsApp() {
+        if (cartItems.length === 0) {
+            alert('Add items to generate WhatsApp quote.');
+            return;
+        }
+
+        const phone = document.getElementById('cust-phone').value.trim();
+        const custName = document.getElementById('cust-name').value.trim() || 'Valued Customer';
+        const grandTotal = document.getElementById('sum-grand').innerText;
+        const advance = parseFloat(document.getElementById('inp-advance').value) || 0;
+        const balance = document.getElementById('inp-balance').value;
+
+        let text = `*NRJ GRAPHICS - JOB QUOTATION*\n`;
+        text += `👤 *Client:* ${custName}\n`;
+        text += `📅 *Date & Time:* ${getCurrentDateTime()}\n`;
+        text += `------------------------------------\n`;
+
+        cartItems.forEach((item, index) => {
+            text += `*${index + 1}. ${item.title}*\n`;
+            text += `• Size: ${item.widthInput}x${item.heightInput} ${item.unit} (${item.qty} Pcs)\n`;
+            text += `• Media: ${item.mediaName}\n`;
+            text += `• Feed Direction: ${item.bestFeedDirection}\n`;
+            if (item.hasFrame) {
+                let crossText = item.hasCrossBrace ? " + Cross (+) Brace" : "";
+                text += `• Frame & Welding: Square Pipe (${item.totalPipeFeet} Rft${crossText}) + Labor ₹${item.totalWeldingLabor.toFixed(2)}\n`;
+            }
+            if (item.totalAutoExpense > 0 || item.totalOtherExpense > 0) {
+                text += `• Expenses: Freight (₹${item.totalAutoExpense.toFixed(2)}), Other (₹${item.totalOtherExpense.toFixed(2)})\n`;
+            }
+            text += `• Price: ₹${item.itemTotalCost.toFixed(2)}\n\n`;
+        });
+
+        text += `------------------------------------\n`;
+        text += `💰 *Grand Total:* ${grandTotal}\n`;
+        text += `✅ *Advance Paid:* ₹${advance.toFixed(2)}\n`;
+        text += `🔴 *Balance Due:* ₹${balance}\n\n`;
+        text += `Thank you for choosing NRJ Graphics!`;
+
+        const encodedText = encodeURIComponent(text);
+        const url = phone ? `https://wa.me/91${phone}?text=${encodedText}` : `https://wa.me/?text=${encodedText}`;
+        window.open(url, '_blank');
+    }
+
+    function openPrintSlip() {
+        if (cartItems.length === 0) {
+            alert('No items to print.');
+            return;
+        }
+
+        document.getElementById('slip-cust-name').innerText = `Cust: ${document.getElementById('cust-name').value || 'Client'}`;
+        document.getElementById('slip-date').innerText = getCurrentDateTime();
+
+        const tbody = document.getElementById('slip-items');
+        tbody.innerHTML = '';
+
+        cartItems.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.title}<br><small>(${item.mediaName})</small></td>
+                <td>${item.widthInput}x${item.heightInput} ${item.unit}<br><small>${item.rollInFeet} Ft Roll</small></td>
+                <td>${item.qty}</td>
+                <td>₹${item.itemTotalCost.toFixed(2)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        const printText = document.getElementById('sum-grand').innerText.replace('₹', '').trim();
+
+        document.getElementById('slip-subtotal').innerText = document.getElementById('sum-print').innerText;
+        document.getElementById('slip-auto-exp').innerText = document.getElementById('sum-auto-exp').innerText.replace('₹', '').trim();
+        document.getElementById('slip-other-exp').innerText = document.getElementById('sum-other-exp').innerText.replace('₹', '').trim();
+        document.getElementById('slip-tax').innerText = document.getElementById('sel-gst').value + '%';
+        document.getElementById('slip-discount').innerText = '₹' + (document.getElementById('inp-discount').value || '0');
+        document.getElementById('slip-total').innerText = printText;
+        document.getElementById('slip-adv').innerText = document.getElementById('inp-advance').value || '0';
+        document.getElementById('slip-due').innerText = document.getElementById('inp-balance').value || '0';
+
+        document.getElementById('print-modal').style.display = 'flex';
+    }
+
+    function openKarigarModal() {
+        if (cartItems.length === 0) {
+            alert('No jobs present for workshop slip.');
+            return;
+        }
+
+        document.getElementById('k-cust-name').innerText = `Client: ${document.getElementById('cust-name').value || 'Client'}`;
+        document.getElementById('k-date').innerText = getCurrentDateTime();
+
+        const listDiv = document.getElementById('karigar-items-list');
+        listDiv.innerHTML = '';
+
+        cartItems.forEach((item, index) => {
+            const jobBox = document.createElement('div');
+            jobBox.style.cssText = 'border:1px solid #000; padding:6px; margin-bottom:8px; border-radius:4px;';
+            
+            let crossText = item.hasCrossBrace ? " + CENTER (+) CROSS WELDING" : "";
+            let frameDetails = item.hasFrame ? 
+                `<div style="font-weight:bold; color:#000;">🔨 FRAME & WELDING: ${item.totalPipeFeet} Rft Pipe (${item.supportPipesCountPerPiece} inner supports every ${item.supportGap}ft${crossText})</div>` : 
+                `<div>🔨 FRAME: Not Required (Banner/Print Only)</div>`;
+
+            jobBox.innerHTML = `
+                <div style="font-weight:bold; font-size:13px;">JOB #${index + 1}: ${item.title.toUpperCase()}</div>
+                <div><strong>Actual Cut Size:</strong> ${item.widthInput} ${item.unit} x ${item.heightInput} ${item.unit} (${item.qty} Pcs)</div>
+                <div><strong>Standard Roll To Mount:</strong> <mark style="background:#000; color:#fff; padding:0 4px;">${item.rollInFeet} FEET (${item.selectedRoll}") ROLL</mark></div>
+                <div><strong>Print Direction:</strong> ${item.bestFeedDirection}</div>
+                <div><strong>Media Type:</strong> ${item.mediaName}</div>
+                <div><strong>Eyelets / Kada:</strong> ${item.kada} Pcs</div>
+                ${frameDetails}
+                <div><strong>Notes:</strong> Auto Exp: ₹${item.totalAutoExpense} | Fitting/Other: ₹${item.totalOtherExpense}</div>
+            `;
+            listDiv.appendChild(jobBox);
+        });
+
+        document.getElementById('karigar-modal').style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    window.onload = function() {
+        previewCurrentItem();
+    };
+</script>
+</body>
+</html>
