@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#061226">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NRJ Graphics">
+<link rel="manifest" href="/manifest.json">
 <title>NRJ Graphics - POS & Production Management</title>
 <!-- QR Code Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -1308,5 +1313,53 @@ select option{background:#0a1d32;color:#fff;}
         previewCurrentItem();
     };
 </script>
+
+<div id="nrj-mobile-topbar">
+  <div class="nrj-mobile-brand"><div class="nrj-mobile-logo">NRJ</div><div><strong>NRJ GRAPHICS</strong><small>Billing & Production</small></div></div>
+  <button class="nrj-mobile-action" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">⌂</button>
+</div>
+<nav id="nrj-bottom-nav">
+  <button class="nrj-nav-btn active" data-target="nrj-top"><span>⌂</span><small>Home</small></button>
+  <button class="nrj-nav-btn" data-target="nrj-bill"><span>＋</span><small>New Bill</small></button>
+  <button class="nrj-nav-btn" data-target="nrj-items"><span>▣</span><small>Jobs</small></button>
+  <button class="nrj-nav-btn" data-target="nrj-pay"><span>₹</span><small>Payment</small></button>
+</nav>
+<style id="nrj-phonepe-ui">
+#nrj-mobile-topbar,#nrj-bottom-nav{display:none}
+@media(max-width:700px){
+ body{padding:0 0 calc(82px + env(safe-area-inset-bottom))!important;background:#061226!important}
+ .container{width:100%!important;max-width:none!important;padding:0 12px 18px!important}
+ .header{display:none!important}
+ .app-grid{display:block!important}
+ .card{margin:10px 0!important;padding:15px!important;border-radius:18px!important}
+ .grid-2,.grid-3{grid-template-columns:1fr!important;gap:8px!important}
+ input,select,textarea{min-height:48px!important;font-size:16px!important;border-radius:13px!important}
+ .btn{min-height:50px!important;font-size:15px!important;border-radius:13px!important}
+ .toggle-group{min-height:48px!important}
+ .toggle-btn{min-height:40px!important}
+ #nrj-mobile-topbar{display:flex;position:sticky;top:0;z-index:900;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:rgba(4,18,34,.96);backdrop-filter:blur(18px);border-bottom:1px solid rgba(126,190,204,.14)}
+ .nrj-mobile-brand{display:flex;align-items:center;gap:10px;color:#efffff}
+ .nrj-mobile-brand strong{display:block;font-size:15px;letter-spacing:1px}.nrj-mobile-brand small{display:block;color:#83aab8;font-size:10px;margin-top:2px}
+ .nrj-mobile-logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#2bc5ad,#168c80);color:#04121f;font-weight:900;font-size:11px}
+ .nrj-mobile-action{width:42px;height:42px;border-radius:13px;border:1px solid rgba(126,190,204,.18);background:rgba(255,255,255,.04);color:#dffaf6;font-size:21px}
+ #nrj-bottom-nav{display:flex;position:fixed;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:1100;height:64px;padding:5px;border:1px solid rgba(126,190,204,.18);border-radius:20px;background:rgba(5,20,36,.96);backdrop-filter:blur(22px);box-shadow:0 16px 40px rgba(0,0,0,.42)}
+ .nrj-nav-btn{flex:1;border:0;background:transparent;color:#7899a7;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:700}
+ .nrj-nav-btn span{font-size:19px;line-height:20px}.nrj-nav-btn small{font-size:9px}
+ .nrj-nav-btn.active{background:linear-gradient(145deg,rgba(53,208,181,.22),rgba(22,140,128,.14));color:#72f1dc}
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+ const cards=document.querySelectorAll('.app-grid .card');
+ if(cards.length>=3){cards[0].id='nrj-top'; cards[1].id='nrj-bill'; cards[2].id='nrj-items';}
+ const rightCards=document.querySelectorAll('.app-grid>div:nth-child(2) .card');
+ if(rightCards.length>=2) rightCards[1].id='nrj-pay';
+ document.querySelectorAll('.nrj-nav-btn').forEach(btn=>btn.onclick=()=>{
+   document.querySelectorAll('.nrj-nav-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+   const el=document.getElementById(btn.dataset.target); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+ });
+});
+</script>
+
 </body>
 </html>
