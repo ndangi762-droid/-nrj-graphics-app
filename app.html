@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#061226">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="NRJ Graphics">
+<meta name="apple-mobile-web-app-title" content="PRINTUP">
 <link rel="manifest" href="/manifest.json">
-<title>NRJ Graphics - POS & Production Management</title>
+<title>PRINTUP - POS & Production Management</title>
 <!-- QR Code Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <!-- HTML2PDF Library for PDF Generation -->
@@ -341,16 +341,320 @@ select option{background:#0a1d32;color:#fff;}
 .btn:after{content:"";position:absolute;inset:0;transform:translateX(-120%);background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transition:transform .5s ease}.btn:hover:after{transform:translateX(120%)}
 @keyframes nrjFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
+
+<style id="nrj-soft-ui-v5">
+:root{
+  --nrj-bg:#f5f8fc;
+  --nrj-surface:rgba(255,255,255,.94);
+  --nrj-surface-2:#f8fbff;
+  --nrj-text:#172033;
+  --nrj-muted:#718096;
+  --nrj-line:#e7edf5;
+  --nrj-blue:#3b82f6;
+  --nrj-teal:#14b8a6;
+  --nrj-shadow:0 10px 30px rgba(35,55,85,.07);
+  --nrj-shadow-soft:0 4px 16px rgba(35,55,85,.055);
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(59,130,246,.07),transparent 28%),
+    radial-gradient(circle at 92% 8%,rgba(20,184,166,.06),transparent 25%),
+    var(--nrj-bg)!important;
+  color:var(--nrj-text)!important;
+}
+.container{max-width:1080px!important}
+.header{
+  background:linear-gradient(135deg,#ffffff 0%,#f8fbff 62%,#eefaf8 100%)!important;
+  color:var(--nrj-text)!important;
+  border:1px solid rgba(219,228,240,.9)!important;
+  border-radius:24px!important;
+  padding:18px 20px!important;
+  box-shadow:var(--nrj-shadow)!important;
+}
+.header h1{color:#2563eb!important}
+.header p{color:#7a8799!important}
+.card{
+  background:var(--nrj-surface)!important;
+  border:1px solid var(--nrj-line)!important;
+  border-radius:22px!important;
+  box-shadow:var(--nrj-shadow-soft)!important;
+  padding:18px!important;
+  backdrop-filter:blur(14px);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+.card:hover{transform:translateY(-1px);box-shadow:var(--nrj-shadow)}
+.card-title{
+  color:var(--nrj-text)!important;
+  border-bottom:1px solid var(--nrj-line)!important;
+  padding-bottom:12px!important;
+}
+label{color:#77849a!important}
+input,select,textarea{
+  background:#f8fafd!important;
+  border:1px solid #e2e8f0!important;
+  color:#182235!important;
+  border-radius:13px!important;
+  transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+input:focus,select:focus,textarea:focus{
+  background:#fff!important;
+  border-color:rgba(59,130,246,.55)!important;
+  box-shadow:0 0 0 4px rgba(59,130,246,.08)!important;
+}
+.toggle-group{background:#eef3f8!important;border-radius:13px!important;padding:4px!important}
+.toggle-btn{border-radius:10px!important;color:#64748b!important}
+.toggle-btn.active{
+  background:#fff!important;color:#2563eb!important;
+  box-shadow:0 3px 10px rgba(30,64,175,.09)!important;
+}
+.item-card{
+  background:#f8fbff!important;
+  border:1px solid #e3eaf3!important;
+  border-radius:16px!important;
+}
+.btn{border-radius:14px!important;min-height:46px;box-shadow:0 5px 14px rgba(35,55,85,.08)}
+.btn-accent{background:linear-gradient(135deg,#4f8df7,#3578e5)!important}
+.btn-success{background:linear-gradient(135deg,#20b99f,#13a98f)!important}
+.btn-warning{background:linear-gradient(135deg,#f3a94a,#e79a32)!important}
+#nrj-mobile-topbar{
+  background:rgba(255,255,255,.88)!important;
+  border-bottom:1px solid rgba(220,228,238,.9)!important;
+  box-shadow:0 8px 24px rgba(35,55,85,.06)!important;
+}
+.nrj-mobile-brand{color:#172033!important}
+.nrj-mobile-brand small{color:#7b8798!important}
+.nrj-mobile-logo{
+  background:linear-gradient(145deg,#4f8df7,#20b99f)!important;
+  color:#fff!important;
+  box-shadow:0 8px 18px rgba(59,130,246,.18)!important;
+}
+.nrj-mobile-action{
+  background:#f5f8fc!important;color:#263247!important;
+  border:1px solid #e4eaf2!important;
+}
+#nrj-bottom-nav{
+  background:rgba(255,255,255,.92)!important;
+  border:1px solid rgba(221,228,238,.95)!important;
+  box-shadow:0 16px 42px rgba(35,55,85,.14)!important;
+}
+.nrj-nav-btn{color:#8793a5!important}
+.nrj-nav-btn.active{
+  background:linear-gradient(145deg,rgba(79,141,247,.12),rgba(32,185,159,.10))!important;
+  color:#2563eb!important;
+}
+@media(max-width:700px){
+  body{background:linear-gradient(180deg,#f7faff 0%,#f4f8fc 100%)!important}
+  .container{padding:0 12px 22px!important}
+  .card{
+    border-radius:20px!important;
+    margin:10px 0!important;
+    padding:16px!important;
+  }
+  .card-title{font-size:14px!important}
+  .form-group{margin-bottom:10px!important}
+  input,select,textarea{min-height:50px!important}
+  .btn{min-height:50px!important}
+}
+</style>
+
+
+<style id="nrj-compact-soft-v6">
+/* Compact + soft PRINTUP UI */
+.card{
+  border-radius:16px!important;
+  padding:14px!important;
+  margin:8px 0!important;
+  box-shadow:0 5px 18px rgba(35,55,85,.055)!important;
+}
+.card-title{
+  font-size:13px!important;
+  padding-bottom:9px!important;
+  margin-bottom:10px!important;
+}
+.form-group{margin-bottom:8px!important}
+label{font-size:10.5px!important;margin-bottom:4px!important}
+input,select,textarea{
+  min-height:43px!important;
+  height:43px!important;
+  padding:9px 11px!important;
+  font-size:14px!important;
+  border-radius:11px!important;
+}
+.btn{
+  min-height:43px!important;
+  padding:9px 13px!important;
+  border-radius:11px!important;
+  font-size:13px!important;
+}
+.item-card{border-radius:13px!important;padding:10px!important}
+@media(max-width:700px){
+  .container{padding-left:10px!important;padding-right:10px!important}
+  .card{padding:12px!important;margin:7px 0!important;border-radius:16px!important}
+  .card-title{font-size:12.5px!important;margin-bottom:8px!important}
+  input,select,textarea{min-height:44px!important;height:44px!important;font-size:15px!important}
+  .btn{min-height:44px!important;font-size:14px!important}
+  .form-group{margin-bottom:7px!important}
+  .grid-2,.grid-3{gap:7px!important}
+}
+</style>
+
+
+<style id="nrj-premium-pages-v7">
+#nrj-dashboard{display:none!important}
+.nrj-page{display:none;min-height:calc(100vh - 118px);padding:10px 2px 95px}
+.nrj-page.active{display:block;animation:nrjFade .22s ease}
+.nrj-page-head{display:flex;align-items:center;gap:10px;padding:5px 2px 13px}
+.nrj-page-head .back{width:38px;height:38px;border:1px solid #e3eaf2;background:#fff;border-radius:13px;font-size:18px}
+.nrj-page-head h2{font-size:19px;margin:0;color:#172033}
+.nrj-page-head p{font-size:9px;color:#8a96a7;margin:3px 0 0}
+.nrj-menu-card{
+ display:flex;align-items:center;gap:12px;width:100%;border:1px solid #e4ebf3;
+ background:rgba(255,255,255,.96);border-radius:16px;padding:13px 14px;margin:7px 0;
+ box-shadow:0 5px 16px rgba(35,55,85,.05);text-align:left;
+}
+.nrj-menu-card .ico{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#eef5ff;font-size:20px}
+.nrj-menu-card b{display:block;font-size:12px;color:#253146}
+.nrj-menu-card small{display:block;font-size:9px;color:#8a95a6;margin-top:3px}
+.nrj-menu-card em{margin-left:auto;font-style:normal;color:#9aa5b4;font-size:20px}
+.nrj-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:7px 0 12px}
+.nrj-stat{background:#fff;border:1px solid #e4ebf3;border-radius:15px;padding:12px}
+.nrj-stat span{font-size:9px;color:#8a95a6}.nrj-stat b{display:block;font-size:17px;margin-top:4px;color:#263247}
+.nrj-search{width:100%;background:#fff!important;margin-bottom:10px}
+.nrj-history-item{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e4ebf3;border-radius:15px;padding:11px;margin:7px 0}
+.nrj-history-item .avatar{width:38px;height:38px;border-radius:12px;background:#eef5ff;display:grid;place-items:center;font-weight:800;color:#4b83e8}
+.nrj-history-item b{font-size:11px;color:#263247}.nrj-history-item small{display:block;font-size:8.5px;color:#8b96a6;margin-top:3px}.nrj-history-item strong{margin-left:auto;font-size:11px;color:#2f79dd}
+.nrj-primary{
+ width:100%;border:0;border-radius:13px;padding:12px;background:linear-gradient(135deg,#4f8df7,#3578e5);
+ color:#fff;font-weight:800;font-size:13px;margin-top:7px;box-shadow:0 8px 18px rgba(59,130,246,.16)
+}
+.nrj-secondary{width:100%;border:1px solid #e2e9f1;border-radius:13px;padding:11px;background:#fff;color:#344258;font-weight:700;margin-top:7px}
+.nrj-bottom-tabs{
+ position:fixed;left:10px;right:10px;bottom:10px;z-index:2500;display:grid;grid-template-columns:repeat(4,1fr);
+ background:rgba(255,255,255,.95);border:1px solid #e0e7ef;border-radius:19px;padding:5px;
+ box-shadow:0 14px 38px rgba(35,55,85,.14);backdrop-filter:blur(16px)
+}
+.nrj-tab{border:0;background:transparent;border-radius:14px;padding:7px 2px;color:#8792a3;font-size:8.5px;font-weight:700}
+.nrj-tab i{display:block;font-style:normal;font-size:18px;margin-bottom:2px}.nrj-tab.active{background:#eef5ff;color:#3578e5}
+.nrj-top-mini{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.nrj-pill{font-size:8px;padding:6px 9px;border-radius:999px;background:#eef8f6;color:#15937f;font-weight:800}
+@keyframes nrjFade{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(min-width:701px){.nrj-page{max-width:850px;margin:auto}.nrj-bottom-tabs{max-width:620px;margin:auto}}
+</style>
+
+
+<style id="nrj-generation-login-v8">
+:root{--lg-bg:#f4f8ff;--lg-text:#142033;--lg-muted:#77859a;--lg-blue:#397ff2;--lg-teal:#19b59f}
+.nrj-login-v8{
+ position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;
+ overflow:hidden;background:
+ radial-gradient(circle at 15% 15%,rgba(57,127,242,.16),transparent 28%),
+ radial-gradient(circle at 88% 80%,rgba(25,181,159,.13),transparent 30%),
+ linear-gradient(145deg,#f8fbff,#eef5fb);
+ font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.nrj-login-v8:before,.nrj-login-v8:after{
+ content:"";position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none
+}
+.nrj-login-v8:before{width:330px;height:330px;left:-120px;top:-90px;background:rgba(77,143,245,.08);animation:nrjFloat 8s ease-in-out infinite}
+.nrj-login-v8:after{width:280px;height:280px;right:-90px;bottom:-80px;background:rgba(30,191,165,.08);animation:nrjFloat2 10s ease-in-out infinite}
+.nrj-login-orb{position:absolute;width:7px;height:7px;border-radius:50%;background:#5c92ee;opacity:.28;animation:nrjParticle 5s ease-in-out infinite}
+.nrj-login-orb.o1{left:17%;top:27%}.nrj-login-orb.o2{left:79%;top:22%;animation-delay:1.4s}.nrj-login-orb.o3{left:73%;top:72%;animation-delay:2.2s}.nrj-login-orb.o4{left:24%;top:78%;animation-delay:3s}
+.nrj-login-shell{
+ position:relative;z-index:2;width:min(420px,calc(100% - 28px));padding:28px 24px 22px;
+ background:rgba(255,255,255,.84);border:1px solid rgba(255,255,255,.9);
+ border-radius:28px;box-shadow:0 25px 70px rgba(32,55,85,.13);backdrop-filter:blur(22px);
+ animation:nrjLoginIn .65s cubic-bezier(.2,.8,.2,1);
+}
+.nrj-login-brand{text-align:center}
+.nrj-login-logo{
+ width:68px;height:68px;margin:0 auto 14px;border-radius:20px;display:grid;place-items:center;
+ background:linear-gradient(145deg,#4b89f5,#20b9a4);color:white;font-size:26px;font-weight:900;
+ box-shadow:0 13px 28px rgba(57,127,242,.2);animation:nrjLogoPulse 3.2s ease-in-out infinite
+}
+.nrj-login-brand h1{margin:0;color:var(--lg-text);font-size:24px;letter-spacing:-.5px}
+.nrj-login-brand p{margin:5px 0 22px;color:var(--lg-muted);font-size:11px}
+.nrj-login-v8 label{display:block!important;color:#718097!important;font-size:10px!important;font-weight:700;margin:0 0 6px!important}
+.nrj-login-v8 input{
+ width:100%!important;box-sizing:border-box!important;height:48px!important;margin:0 0 13px!important;
+ border:1px solid #e0e7f0!important;background:#f8fafd!important;border-radius:14px!important;
+ color:#172237!important;padding:0 13px!important;font-size:14px!important;outline:none;
+ transition:.2s ease!important
+}
+.nrj-login-v8 input:focus{background:#fff!important;border-color:rgba(57,127,242,.55)!important;box-shadow:0 0 0 4px rgba(57,127,242,.08)!important;transform:translateY(-1px)}
+.nrj-login-btn{
+ width:100%;height:49px;border:0;border-radius:14px;color:#fff;font-weight:800;font-size:13px;cursor:pointer;
+ background:linear-gradient(135deg,#4b8cf6,#3677df);box-shadow:0 11px 24px rgba(57,127,242,.2);
+ transition:.18s ease;position:relative;overflow:hidden
+}
+.nrj-login-btn:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.28),transparent 70%);transform:translateX(-110%);animation:nrjShine 3.6s infinite}
+.nrj-login-btn:active{transform:scale(.985)}
+.nrj-login-foot{text-align:center;margin-top:17px;color:#98a3b3;font-size:9px}
+.nrj-login-foot b{color:#5d82c8}
+@keyframes nrjLoginIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes nrjLogoPulse{0%,100%{transform:translateY(0);box-shadow:0 13px 28px rgba(57,127,242,.2)}50%{transform:translateY(-4px);box-shadow:0 17px 34px rgba(57,127,242,.24)}}
+@keyframes nrjFloat{50%{transform:translate(45px,30px)}}@keyframes nrjFloat2{50%{transform:translate(-35px,-28px)}}
+@keyframes nrjParticle{50%{transform:translateY(-15px);opacity:.55}}@keyframes nrjShine{0%,55%{transform:translateX(-110%)}75%{transform:translateX(110%)}100%{transform:translateX(110%)}}
+@media(max-width:480px){.nrj-login-shell{padding:24px 19px 19px;border-radius:24px}.nrj-login-logo{width:60px;height:60px}.nrj-login-brand h1{font-size:22px}}
+</style>
+
+
+<style id="nrj-final-v9">
+/* ===== PRINTUP PREMIUM FINAL ===== */
+body{background:#f5f8fc!important;color:#172033!important}
+.nrj-final-app{display:block}
+.nrj-screen{display:none;min-height:calc(100vh - 95px);padding:10px 2px 92px;animation:nrjScreenIn .22s ease}
+.nrj-screen.active{display:block}
+.nrj-screen-head{display:flex;align-items:center;gap:10px;padding:5px 2px 13px}
+.nrj-back{width:38px;height:38px;border:1px solid #e2e9f1;background:#fff;border-radius:12px;font-size:20px;color:#536176}
+.nrj-screen-head h2{font-size:19px;margin:0;color:#172033}.nrj-screen-head p{font-size:9px;color:#8a96a7;margin:3px 0 0}
+.nrj-welcome{display:flex;align-items:center;justify-content:space-between;padding:7px 3px 12px}
+.nrj-eyebrow{font-size:9px;letter-spacing:1.8px;font-weight:800;color:#4383e9}
+.nrj-welcome h2{font-size:20px;line-height:1.2;margin:3px 0}.nrj-welcome p{font-size:9px;color:#8995a6;margin:0}
+.nrj-profile{width:42px;height:42px;border:1px solid #e1e8f0;background:#fff;border-radius:14px;box-shadow:0 5px 16px rgba(35,55,85,.07);font-size:18px}
+.nrj-business{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#eef5ff,#effbf9);border:1px solid #dce8f3;border-radius:17px;padding:14px 15px;margin-bottom:11px}
+.nrj-business span,.nrj-business small{display:block;font-size:9px;color:#7d899a}.nrj-business strong{display:block;font-size:25px;color:#286edb;margin:2px 0}.nrj-mini{text-align:right;border-left:1px solid #d8e4ef;padding-left:18px}.nrj-mini b{display:block;font-size:15px;color:#dc7c3b;margin-top:4px}
+.nrj-headline{display:flex;justify-content:space-between;align-items:center;padding:5px 2px 7px}.nrj-headline b{font-size:12px;color:#263247}.nrj-headline button{border:0;background:none;color:#4a82e8;font-size:9px;font-weight:800}
+.nrj-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}.nrj-quick button{border:1px solid #e3eaf2;background:#fff;border-radius:14px;padding:9px 3px;min-height:68px;box-shadow:0 4px 13px rgba(35,55,85,.045);cursor:pointer}.nrj-quick i{display:block;font-style:normal;font-size:20px;margin-bottom:5px}.nrj-quick span{font-size:9px;font-weight:700;color:#566378}
+.nrj-service-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}.nrj-service-row button{border:1px solid #e3eaf2;background:#fff;border-radius:13px;padding:10px 2px;font-size:9px;font-weight:800;color:#566378}
+.nrj-list-card{display:flex;align-items:center;gap:11px;width:100%;border:1px solid #e3eaf2;background:#fff;border-radius:15px;padding:11px 12px;margin:7px 0;box-shadow:0 4px 13px rgba(35,55,85,.04);text-align:left}.nrj-icon{width:40px;height:40px;border-radius:12px;background:#eef5ff;display:grid;place-items:center;font-size:19px}.nrj-list-card b{display:block;font-size:11px;color:#27344a}.nrj-list-card small{display:block;font-size:8.5px;color:#8b96a6;margin-top:3px}.nrj-arrow{margin-left:auto;color:#a0a9b6;font-size:19px}
+.nrj-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.nrj-stat{background:#fff;border:1px solid #e3eaf2;border-radius:14px;padding:11px}.nrj-stat span{font-size:9px;color:#8792a2}.nrj-stat b{display:block;font-size:17px;margin-top:4px;color:#27344a}
+.nrj-search{width:100%!important;height:44px!important;box-sizing:border-box!important;margin-bottom:8px!important;background:#fff!important}
+.nrj-history{display:grid;gap:7px}.nrj-history-item{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #e3eaf2;border-radius:14px;padding:10px}.nrj-avatar{width:38px;height:38px;border-radius:11px;background:#eef5ff;display:grid;place-items:center;font-weight:800;color:#4280e8}.nrj-history-item b{font-size:10.5px;color:#27344a}.nrj-history-item small{display:block;font-size:8px;color:#8c97a6;margin-top:3px}.nrj-history-item strong{margin-left:auto;font-size:11px;color:#3179df}
+.nrj-primary{width:100%;height:45px;border:0;border-radius:12px;background:linear-gradient(135deg,#4d8df5,#3678e1);color:#fff;font-weight:800;font-size:12px;box-shadow:0 9px 20px rgba(59,130,246,.16);margin-top:8px}.nrj-secondary{width:100%;height:44px;border:1px solid #e1e8f0;background:#fff;border-radius:12px;color:#425169;font-weight:800;margin-top:8px}
+.nrj-guide{background:#fff;border:1px solid #e3eaf2;border-radius:14px;padding:11px;margin:7px 0}.nrj-guide b{font-size:10.5px;color:#2a3548}.nrj-guide p{font-size:9px;color:#7f8b9c;line-height:1.45;margin:4px 0 0}
+.nrj-empty{background:#fff;border:1px dashed #dce5ef;border-radius:13px;padding:14px;text-align:center;color:#98a3b2;font-size:9px}
+.nrj-bottom{position:fixed;left:10px;right:10px;bottom:10px;z-index:4000;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.95);border:1px solid #e0e7ef;border-radius:18px;padding:5px;box-shadow:0 14px 38px rgba(35,55,85,.14);backdrop-filter:blur(16px)}.nrj-tab{border:0;background:transparent;border-radius:13px;padding:7px 2px;color:#8993a2;font-size:8px;font-weight:800}.nrj-tab i{display:block;font-style:normal;font-size:18px;margin-bottom:2px}.nrj-tab.active{background:#eef5ff;color:#3479e5}
+.nrj-form-section{background:#fff;border:1px solid #e3eaf2;border-radius:15px;margin:7px 0;overflow:hidden}.nrj-form-section>button{width:100%;border:0;background:#fff;padding:13px;text-align:left;display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:800;color:#29364b}.nrj-form-body{display:none;padding:0 12px 12px}.nrj-form-section.open .nrj-form-body{display:block}.nrj-form-section.open .nrj-form-chevron{transform:rotate(90deg)}
+@keyframes nrjScreenIn{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.app-grid{display:none!important}.container{padding:0 10px 20px!important}.nrj-screen{padding-top:5px}.nrj-quick button{min-height:64px}}
+</style>
+
+
+<style>
+.printup-app-icon{width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,#111827,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;box-shadow:0 12px 30px rgba(37,99,235,.25);margin:6px auto 14px}.nrj-about{text-align:center;padding:8px 2px}.nrj-about h3{font-size:24px;margin:0 0 6px}.nrj-about>p{color:#64748b;line-height:1.55}.nrj-about .nrj-guide{text-align:left}
+</style>
+
+<style id="printup-logo-final">
+.printup-brandmark{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.printup-brandmark img{width:30px;height:30px;border-radius:8px;object-fit:cover;display:block}
+.printup-brandmark .printup-word{font-family:Arial,Helvetica,sans-serif;font-weight:900;letter-spacing:1.4px;font-size:12px;line-height:1}
+.header-brand .printup-brandmark img{width:34px;height:34px;border-radius:9px}
+.nrj-mobile-logo{font-size:0!important;width:34px!important;height:34px!important;background:transparent!important;border-radius:9px!important;overflow:hidden!important}
+.nrj-mobile-logo:after{content:'';display:block;width:34px;height:34px;background:url('printup_icon_64.png') center/cover no-repeat}
+.nrj-login-logo{font-size:0!important;background:url('printup_icon_192.png') center/cover no-repeat!important;border-radius:16px!important}
+.printup-app-icon{background:url('printup_icon_192.png') center/cover no-repeat!important;color:transparent!important}
+</style>
+
 </head>
 <body>
 
 <div class="container">
     <div class="header">
         <div class="header-brand">
-            <div class="header-logo" style="display:flex;align-items:center;justify-content:center;background:#2dd4bf;color:#111;font-weight:900;font-size:11px;">NRJ</div>
+            <div class="printup-brandmark"><img src="printup_icon_64.png" alt="PRINTUP logo"><span class="printup-word">PRINTUP</span></div>
             <div>
-                <h1>NRJ GRAPHICS</h1>
-                <p>Smart Auto Roll, Welding & Frame Calculator POS</p>
+                <p style="margin:0;font-weight:700;">Graphics • Print • Production</p>
             </div>
         </div>
         <div style="text-align: right;">
@@ -358,7 +662,162 @@ select option{background:#0a1d32;color:#fff;}
         </div>
     </div>
 
-    <div class="app-grid">
+    
+<!-- PRINTUP SOFT BUSINESS HOME v6 -->
+<section id="nrj-dashboard" class="nrj-dash">
+  <div class="nrj-welcome">
+    <div>
+      <div class="nrj-eyebrow">PRINTUP</div>
+      <h2>Hi, <span id="nrj-profile-name">realnrj</span> 👋</h2>
+      <p>Billing & production at a glance</p>
+    </div>
+    <button class="nrj-profile-btn" onclick="nrjOpenMore('profile')">👤</button>
+  </div>
+
+  <div class="nrj-business-card">
+    <div>
+      <span>Current Business</span>
+      <strong id="nrj-dash-total">₹0</strong>
+      <small>Current bill total</small>
+    </div>
+    <div class="nrj-business-mini">
+      <span>Pending</span>
+      <b id="nrj-dash-pending">₹0</b>
+    </div>
+  </div>
+
+  <div class="nrj-section-head"><b>⚡ Quick Actions</b></div>
+  <div class="nrj-quick-grid">
+    <button onclick="nrjGo('nrj-bill')"><i>🧾</i><span>New Bill</span></button>
+    <button onclick="nrjGo('nrj-pay')"><i>💳</i><span>Payment</span></button>
+    <button onclick="nrjDoWhatsApp()"><i>📱</i><span>WhatsApp</span></button>
+    <button onclick="nrjDoPDF()"><i>📄</i><span>PDF</span></button>
+  </div>
+
+  <div class="nrj-section-head"><b>🛠️ Services</b><button onclick="nrjOpenMore('services')">More →</button></div>
+  <div class="nrj-service-row">
+    <button onclick="nrjService('Flex')">Flex</button>
+    <button onclick="nrjService('Vinyl')">Vinyl</button>
+    <button onclick="nrjService('Boards')">Boards</button>
+    <button onclick="nrjOpenMore('services')">More +</button>
+  </div>
+
+  <div class="nrj-two-cards">
+    <button onclick="nrjOpenMore('business')"><span>📊</span><b>Business</b><small>Sale • Bills • Pending</small></button>
+    <button onclick="nrjOpenMore('customers')"><span>👥</span><b>Customers</b><small>Customer 360°</small></button>
+  </div>
+
+  <div class="nrj-section-head"><b>🧾 Recent Work</b><button onclick="nrjGo('nrj-items')">View Bills →</button></div>
+  <div id="nrj-recent-list" class="nrj-recent-list">
+    <div class="nrj-empty">No recent bills yet</div>
+  </div>
+
+  <div class="nrj-review-strip" onclick="nrjOpenMore('reviews')">
+    <div><span>⭐</span><b>Customer Reviews</b><small>Build trust with real feedback</small></div>
+    <strong id="nrj-review-score">New ⭐</strong>
+  </div>
+
+  <div class="nrj-help-strip" onclick="nrjOpenMore('help')">
+    <span>💬</span><div><b>Need Help?</b><small>WhatsApp • Call • Quick Guides</small></div><em>›</em>
+  </div>
+</section>
+
+<div id="nrj-more-sheet" class="nrj-sheet-backdrop" onclick="nrjCloseMore(event)">
+  <div class="nrj-sheet" onclick="event.stopPropagation()">
+    <div class="nrj-sheet-handle"></div>
+    <div class="nrj-sheet-head"><b id="nrj-sheet-title">More</b><button onclick="nrjCloseMore()">✕</button></div>
+    <div id="nrj-sheet-content"></div>
+  </div>
+</div>
+
+
+
+<div id="nrj-final-app">
+<section id="nrj-screen-home" class="nrj-screen active">
+  <div class="nrj-welcome"><div><div class="nrj-eyebrow">PRINTUP</div><h2>Hi, realnrj 👋</h2><p>Billing & production workspace</p></div><button class="nrj-profile" onclick="nrjFinalPage('profile')">👤</button></div>
+  <div class="nrj-business"><div><span>Today's Business</span><strong id="nf-sale">₹0</strong><small>Current bill activity</small></div><div class="nrj-mini"><span>Pending</span><b id="nf-pending">₹0</b></div></div>
+  <div class="nrj-headline"><b>⚡ Quick Actions</b></div>
+  <div class="nrj-quick">
+    <button onclick="nrjFinalPage('bill')"><i>🧾</i><span>New Bill</span></button>
+    <button onclick="nrjFinalPage('payment')"><i>💳</i><span>Payment</span></button>
+    <button onclick="nrjFinalPage('history')"><i>📋</i><span>History</span></button>
+    <button onclick="nrjFinalPage('customers')"><i>👥</i><span>Customers</span></button>
+  </div>
+  <div class="nrj-headline"><b>🛠️ Services</b><button onclick="nrjFinalPage('services')">More →</button></div>
+  <div class="nrj-service-row"><button onclick="nrjFinalPage('services')">Flex</button><button onclick="nrjFinalPage('services')">Vinyl</button><button onclick="nrjFinalPage('services')">Boards</button><button onclick="nrjFinalPage('services')">More +</button></div>
+  <div class="nrj-headline"><b>🧾 Recent Bills</b><button onclick="nrjFinalPage('history')">View All →</button></div>
+  <div id="nf-recent"></div>
+  <button class="nrj-list-card" onclick="nrjFinalPage('reviews')"><span class="nrj-icon">⭐</span><span><b>Customer Reviews</b><small>Real feedback from your customers</small></span><span class="nrj-arrow">›</span></button>
+  <button class="nrj-list-card" onclick="nrjFinalPage('help')"><span class="nrj-icon">💬</span><span><b>Help & Support</b><small>Call • WhatsApp • Quick Guides</small></span><span class="nrj-arrow">›</span></button>
+</section>
+
+<section id="nrj-screen-bill" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>New Bill</h2><p>Create quotation / bill</p></div></div>
+  <div id="nf-bill-workspace"></div>
+</section>
+
+<section id="nrj-screen-payment" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Payments</h2><p>Received & outstanding</p></div></div>
+  <div class="nrj-stat-grid"><div class="nrj-stat"><span>Received</span><b id="nf-received">₹0</b></div><div class="nrj-stat"><span>Pending</span><b id="nf-payment-pending">₹0</b></div></div>
+  <button class="nrj-list-card" onclick="nrjFinalPage('bill')"><span class="nrj-icon">💳</span><span><b>Current Bill Payment</b><small>Open bill and update advance / balance</small></span><span class="nrj-arrow">›</span></button>
+  <div class="nrj-headline" style="margin-top:10px"><b>Payment History</b></div><div id="nf-pay-history"><div class="nrj-empty">No payment history yet</div></div>
+</section>
+
+<section id="nrj-screen-history" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Bill History</h2><p>Private • date & month wise</p></div></div>
+  <input class="nrj-search" placeholder="🔍 Search customer..." oninput="nrjFinalRenderHistory(this.value)">
+  <div id="nf-history"></div>
+</section>
+
+<section id="nrj-screen-customers" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Customers</h2><p>Customer 360°</p></div></div>
+  <input class="nrj-search" placeholder="🔍 Search customer..." oninput="nrjFinalRenderCustomers(this.value)">
+  <div id="nf-customers"></div>
+</section>
+
+<section id="nrj-screen-services" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Services</h2><p>19 services • clean categories</p></div></div>
+  <button class="nrj-list-card" onclick="nrjService('Flex')"><span class="nrj-icon">🖨️</span><span><b>Flex</b><small>Star • Normal HS • Black Back • Backlit</small></span><span class="nrj-arrow">›</span></button>
+  <button class="nrj-list-card" onclick="nrjService('Vinyl')"><span class="nrj-icon">🎨</span><span><b>Vinyl</b><small>Vinyl • Sticker • Wall • Glass • Floor</small></span><span class="nrj-arrow">›</span></button>
+  <button class="nrj-list-card" onclick="nrjService('Boards')"><span class="nrj-icon">▣</span><span><b>Boards & Panels</b><small>Sunboard • ACP • Foam Board</small></span><span class="nrj-arrow">›</span></button>
+  <button class="nrj-list-card" onclick="nrjFinalPage('bill')"><span class="nrj-icon">✨</span><span><b>Others</b><small>Reflective • Transparent • Outdoor • Indoor</small></span><span class="nrj-arrow">›</span></button>
+</section>
+
+<section id="nrj-screen-reviews" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Customer Reviews</h2><p>Private review section</p></div></div>
+  <div class="nrj-business"><div><span>Average Rating</span><strong id="nf-rating">New ⭐</strong><small id="nf-rating-count">No reviews yet</small></div></div>
+  <input id="nf-review-name" placeholder="Customer name">
+  <input id="nf-review-phone" placeholder="Mobile number" style="margin-top:7px">
+  <select id="nf-review-rating" style="margin-top:7px"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option></select>
+  <textarea id="nf-review-text" placeholder="How was your experience?" style="width:100%;height:78px;margin-top:7px"></textarea>
+  <button class="nrj-primary" onclick="nrjFinalSaveReview()">Submit Review</button>
+  <div id="nf-reviews" style="margin-top:8px"></div>
+</section>
+
+<section id="nrj-screen-help" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Help & Support</h2><p>Quick help when you need it</p></div></div>
+  <button class="nrj-list-card" onclick="location.href='tel:+918690996080'"><span class="nrj-icon">📞</span><span><b>Call Support</b><small>+91 8690996080</small></span><span class="nrj-arrow">›</span></button>
+  <button class="nrj-list-card" onclick="window.open('https://wa.me/918690996080','_blank')"><span class="nrj-icon">💬</span><span><b>WhatsApp Support</b><small>Chat with PRINTUP</small></span><span class="nrj-arrow">›</span></button>
+  <div class="nrj-guide"><b>❓ Create a Bill</b><p>New Bill → Customer → Job → Payment → WhatsApp / PDF.</p></div>
+  <div class="nrj-more-grid"><div class="nrj-more-card" onclick="location.href='mailto:ndangi762@gmail.com'"><b>📧 Email</b><small>ndangi762@gmail.com</small></div></div><div class="nrj-guide"><b>❓ Payment Help</b><p>Open Payments to view received and outstanding amounts.</p></div>
+</section>
+
+<section id="nrj-screen-profile" class="nrj-screen">
+  <div class="nrj-screen-head"><button class="nrj-back" onclick="nrjFinalPage('home')">‹</button><div><h2>Profile</h2><p>PRINTUP account</p></div></div>
+  <div class="nrj-list-card"><span class="nrj-icon">👤</span><span><b>realnrj</b><small>Logged-in username</small></span></div>
+  <div class="nrj-list-card"><span class="nrj-icon">🔐</span><span><b>Security</b><small>Secure server-side login</small></span></div>
+  <button class="nrj-secondary" onclick="location.href='/logout'">🚪 Logout</button>
+</section>
+
+<div class="nrj-bottom">
+ <button class="nrj-tab active" data-page="home" onclick="nrjFinalPage('home')"><i>⌂</i>Home</button>
+ <button class="nrj-tab" data-page="bill" onclick="nrjFinalPage('bill')"><i>＋</i>New Bill</button>
+ <button class="nrj-tab" data-page="history" onclick="nrjFinalPage('history')"><i>▤</i>History</button>
+ <button class="nrj-tab" data-page="payment" onclick="nrjFinalPage('payment')"><i>₹</i>Payment</button>
+</div>
+</div>
+
+<div class="app-grid">
         <!-- LEFT PANEL -->
         <div>
             <div class="card">
@@ -629,8 +1088,8 @@ select option{background:#0a1d32;color:#fff;}
 <div class="modal" id="print-modal">
     <div class="modal-content">
         <div class="bill-receipt printable" id="slip-body">
-            <div class="receipt-header-logo"><div style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;background:#2dd4bf;color:#111;font-weight:900;border-radius:8px;">NRJ</div></div>
-            <h2>NRJ GRAPHICS</h2>
+            <div class="receipt-header-logo"><img src="printup_icon_64.png" alt="PRINTUP" style="width:42px;height:42px;border-radius:9px;object-fit:cover;"></div>
+            <h2>PRINTUP</h2>
             <p>Flex, Eco-Solvent & Frame Specialist<br>Ph: +91 8690996080</p>
             <hr style="border-top:1px dashed #000;">
             <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:11px;">
@@ -673,7 +1132,7 @@ select option{background:#0a1d32;color:#fff;}
 <div class="modal" id="karigar-modal">
     <div class="modal-content">
         <div class="bill-receipt printable" id="karigar-slip-body">
-            <div class="receipt-header-logo"><div style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;background:#2dd4bf;color:#111;font-weight:900;border-radius:8px;">NRJ</div></div>
+            <div class="receipt-header-logo"><img src="printup_icon_64.png" alt="PRINTUP" style="width:42px;height:42px;border-radius:9px;object-fit:cover;"></div>
             <h2 style="text-align:center; font-size:16px; border-bottom:2px solid #000; padding-bottom:4px;">PRODUCTION / KARIGAR SLIP</h2>
             <div style="display:flex; justify-content:space-between; margin:8px 0; font-size:11px;">
                 <span id="k-cust-name">Client: Rahul</span>
@@ -697,7 +1156,7 @@ select option{background:#0a1d32;color:#fff;}
     <div id="pdf-template">
         <div class="pdf-header">
             <div>
-                <div class="pdf-title">NRJ GRAPHICS</div>
+                <div class="pdf-title">PRINTUP</div>
                 <div class="pdf-sub">Flex, Eco-Solvent Printing & Iron Frame Fabrication</div>
                 <div class="pdf-sub">Mobile: +91 8690996080 | UPI: ndangi762-3@okicici</div>
             </div>
@@ -750,8 +1209,8 @@ select option{background:#0a1d32;color:#fff;}
         </div>
 
         <div style="margin-top:60px; border-top:1px solid #cbd5e1; padding-top:15px; display:flex; justify-content:space-between; font-size:12px; color:#64748b;">
-            <div>Prepared By: NRJ Graphics Billing System</div>
-            <div>Authorized Signatory (NRJ Graphics)</div>
+            <div>Prepared By: PRINTUP Billing System</div>
+            <div>Authorized Signatory (PRINTUP)</div>
         </div>
     </div>
 </div>
@@ -1126,7 +1585,7 @@ select option{background:#0a1d32;color:#fff;}
 
         const opt = {
             margin:       0,
-            filename:     `Quotation_NRJ_Graphics_${custName.replace(/\s+/g, '_')}.pdf`,
+            filename:     `Quotation_PRINTUP_Graphics_${custName.replace(/\s+/g, '_')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { 
                 scale: 2,
@@ -1174,7 +1633,7 @@ select option{background:#0a1d32;color:#fff;}
         document.getElementById('upi-amount-txt').innerText = `₹ ${payAmount.toFixed(2)}`;
         document.getElementById('upi-id-txt').innerText = `Payee UPI ID: ${upiId}`;
 
-        const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("NRJ Graphics")}&tn=${encodeURIComponent("Printing Bill - " + custName)}&am=${payAmount.toFixed(2)}&cu=INR`;
+        const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("PRINTUP")}&tn=${encodeURIComponent("Printing Bill - " + custName)}&am=${payAmount.toFixed(2)}&cu=INR`;
 
         const qrcodeContainer = document.getElementById('qrcode');
         qrcodeContainer.innerHTML = '';
@@ -1200,7 +1659,7 @@ select option{background:#0a1d32;color:#fff;}
         const advance = parseFloat(document.getElementById('inp-advance').value) || 0;
         const balance = document.getElementById('inp-balance').value;
 
-        let text = `*NRJ GRAPHICS - JOB QUOTATION*\n`;
+        let text = `*PRINTUP - JOB QUOTATION*\n`;
         text += `👤 *Client:* ${custName}\n`;
         text += `📅 *Date & Time:* ${getCurrentDateTime()}\n`;
         text += `------------------------------------\n`;
@@ -1224,7 +1683,7 @@ select option{background:#0a1d32;color:#fff;}
         text += `💰 *Grand Total:* ${grandTotal}\n`;
         text += `✅ *Advance Paid:* ₹${advance.toFixed(2)}\n`;
         text += `🔴 *Balance Due:* ₹${balance}\n\n`;
-        text += `Thank you for choosing NRJ Graphics!`;
+        text += `Thank you for choosing PRINTUP!`;
 
         const encodedText = encodeURIComponent(text);
         const url = phone ? `https://wa.me/91${phone}?text=${encodedText}` : `https://wa.me/?text=${encodedText}`;
@@ -1315,7 +1774,7 @@ select option{background:#0a1d32;color:#fff;}
 </script>
 
 <div id="nrj-mobile-topbar">
-  <div class="nrj-mobile-brand"><div class="nrj-mobile-logo">NRJ</div><div><strong>NRJ GRAPHICS</strong><small>Billing & Production</small></div></div>
+  <div class="nrj-mobile-brand"><div class="nrj-mobile-logo" aria-label="PRINTUP logo"></div><div><strong class="printup-word">PRINTUP</strong><small>Billing & Production</small></div></div>
   <button class="nrj-mobile-action" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">⌂</button>
 </div>
 <nav id="nrj-bottom-nav">
@@ -1359,6 +1818,411 @@ document.addEventListener('DOMContentLoaded',()=>{
    const el=document.getElementById(btn.dataset.target); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
  });
 });
+</script>
+
+
+<script id="nrj-soft-ui-interaction">
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".card").forEach(function(card){
+    card.addEventListener("pointerdown", function(){
+      card.style.transform = "scale(.997)";
+    }, {passive:true});
+    card.addEventListener("pointerup", function(){
+      card.style.transform = "";
+    }, {passive:true});
+    card.addEventListener("pointercancel", function(){
+      card.style.transform = "";
+    }, {passive:true});
+  });
+});
+</script>
+
+
+<style id="nrj-v6-dashboard-style">
+.nrj-dash{margin:10px 0 12px}
+.nrj-welcome{display:flex;align-items:center;justify-content:space-between;padding:8px 3px 12px}
+.nrj-eyebrow{font-size:9px;letter-spacing:1.8px;font-weight:800;color:#5f8eea}
+.nrj-welcome h2{font-size:20px;line-height:1.2;margin:3px 0;color:#182235}
+.nrj-welcome p{font-size:10px;color:#8a96a8;margin:0}
+.nrj-profile-btn{width:42px;height:42px;border:1px solid #e4eaf2;background:#fff;border-radius:14px;box-shadow:0 5px 15px rgba(35,55,85,.07);font-size:18px}
+.nrj-business-card{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#eef5ff,#effbf9);border:1px solid #dce8f4;border-radius:17px;padding:14px 15px;margin-bottom:11px}
+.nrj-business-card span,.nrj-business-card small{display:block;font-size:9px;color:#7b8798}
+.nrj-business-card strong{display:block;font-size:25px;color:#1e63d6;margin:2px 0}
+.nrj-business-mini{text-align:right;padding-left:20px;border-left:1px solid #d9e4ef}
+.nrj-business-mini b{display:block;font-size:15px;color:#e07a35;margin-top:4px}
+.nrj-section-head{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 7px}
+.nrj-section-head b{font-size:12px;color:#263247}
+.nrj-section-head button{border:0;background:none;color:#4b83e8;font-size:10px;font-weight:700}
+.nrj-quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:11px}
+.nrj-quick-grid button,.nrj-service-row button,.nrj-two-cards button{border:1px solid #e5ebf3;background:#fff;border-radius:14px;box-shadow:0 4px 12px rgba(35,55,85,.045);transition:.18s;cursor:pointer}
+.nrj-quick-grid button{padding:9px 4px;min-height:69px}
+.nrj-quick-grid button:active,.nrj-service-row button:active,.nrj-two-cards button:active{transform:scale(.97)}
+.nrj-quick-grid i{display:block;font-style:normal;font-size:20px;margin-bottom:5px}
+.nrj-quick-grid span{display:block;font-size:9.5px;font-weight:700;color:#556276}
+.nrj-service-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:11px}
+.nrj-service-row button{padding:10px 3px;font-size:10px;font-weight:700;color:#536176;min-height:42px}
+.nrj-two-cards{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+.nrj-two-cards button{padding:10px 11px;text-align:left}
+.nrj-two-cards span{font-size:18px;float:left;margin-right:8px}
+.nrj-two-cards b{display:block;font-size:11px;color:#27344a}
+.nrj-two-cards small{display:block;font-size:8.5px;color:#8994a5;margin-top:3px}
+.nrj-recent-list{display:grid;gap:6px;margin-bottom:10px}
+.nrj-recent-item{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e6ecf3;border-radius:13px;padding:9px 11px}
+.nrj-recent-item b{display:block;font-size:10.5px;color:#2a3548}
+.nrj-recent-item small{display:block;font-size:8.5px;color:#8b96a6;margin-top:2px}
+.nrj-recent-item strong{font-size:11px;color:#2e78df}
+.nrj-empty{text-align:center;background:#fff;border:1px dashed #dfe7f0;border-radius:13px;padding:12px;color:#98a2b1;font-size:9px}
+.nrj-review-strip,.nrj-help-strip{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e5ebf3;border-radius:14px;padding:10px 11px;margin-top:7px;cursor:pointer;box-shadow:0 4px 12px rgba(35,55,85,.035)}
+.nrj-review-strip>div{display:grid;grid-template-columns:25px 1fr;column-gap:7px;align-items:center}
+.nrj-review-strip span{grid-row:span 2;font-size:20px}
+.nrj-review-strip b,.nrj-help-strip b{font-size:10.5px;color:#2b374b}
+.nrj-review-strip small,.nrj-help-strip small{font-size:8.5px;color:#8b96a6}
+.nrj-review-strip strong{font-size:10px;color:#e09a28}
+.nrj-help-strip{justify-content:flex-start;gap:10px}
+.nrj-help-strip span{font-size:20px}.nrj-help-strip div{flex:1}.nrj-help-strip em{font-style:normal;font-size:19px;color:#9aa5b4}
+.nrj-sheet-backdrop{display:none;position:fixed;inset:0;z-index:3000;background:rgba(20,32,50,.24);backdrop-filter:blur(4px);align-items:flex-end}
+.nrj-sheet-backdrop.show{display:flex}
+.nrj-sheet{width:100%;max-height:82vh;overflow:auto;background:#f8fbff;border-radius:22px 22px 0 0;padding:8px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -20px 60px rgba(20,35,55,.18);animation:nrjUp .22s ease}
+.nrj-sheet-handle{width:38px;height:4px;border-radius:4px;background:#d6dee9;margin:3px auto 11px}
+.nrj-sheet-head{display:flex;justify-content:space-between;align-items:center;padding:2px 2px 12px}
+.nrj-sheet-head b{font-size:15px;color:#202b3d}.nrj-sheet-head button{border:0;background:#edf2f7;width:30px;height:30px;border-radius:10px;color:#69768a}
+.nrj-more-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nrj-more-card{border:1px solid #e3eaf2;background:#fff;border-radius:14px;padding:12px;text-align:left;cursor:pointer}
+.nrj-more-card b{display:block;font-size:11px;color:#263247}.nrj-more-card small{display:block;color:#8b96a6;font-size:8.5px;margin-top:3px}
+.nrj-sheet-form input,.nrj-sheet-form textarea{width:100%;margin:5px 0 8px}
+.nrj-sheet-form textarea{height:75px!important;resize:none}
+.nrj-sheet-btn{width:100%;border:0;border-radius:11px;padding:11px;background:#4b83e8;color:#fff;font-weight:700}
+.nrj-guide{background:#fff;border:1px solid #e5ebf3;border-radius:13px;padding:11px;margin-bottom:7px}
+.nrj-guide b{font-size:10.5px}.nrj-guide p{font-size:9px;color:#7c8899;margin-top:4px;line-height:1.45}
+@keyframes nrjUp{from{transform:translateY(22px);opacity:.5}to{transform:translateY(0);opacity:1}}
+@media(max-width:700px){
+ .nrj-dash{margin-top:5px}
+ .nrj-quick-grid button{min-height:64px}
+}
+</style>
+
+<script id="nrj-v6-dashboard-script">
+(function(){
+  function money(n){return '₹'+(Number(n)||0).toLocaleString('en-IN',{maximumFractionDigits:0});}
+  window.nrjGo=function(id){
+    var el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+  window.nrjOpenMore=function(type){
+    var bd=document.getElementById('nrj-more-sheet'), title=document.getElementById('nrj-sheet-title'), box=document.getElementById('nrj-sheet-content');
+    var data={
+      profile:['Profile', '<div class="nrj-more-grid"><div class="nrj-more-card"><b>👤 Username</b><small>realnrj</small></div><div class="nrj-more-card"><b>🔐 Security</b><small>Secure login enabled</small></div><div class="nrj-more-card" onclick="location.href=\'/logout\'"><b>🚪 Logout</b><small>Sign out of PRINTUP</small></div><div class="nrj-more-card"><b>🏪 Business</b><small>PRINTUP</small></div></div>'],
+      services:['Services','<div class="nrj-more-grid"><div class="nrj-more-card" onclick="nrjService(\'Flex\')"><b>Flex</b><small>Star • Normal HS • Black Back • Backlit</small></div><div class="nrj-more-card" onclick="nrjService(\'Vinyl\')"><b>Vinyl</b><small>Vinyl • Stickers • Wall • Glass • Floor</small></div><div class="nrj-more-card" onclick="nrjService(\'Boards\')"><b>Boards & Panels</b><small>Sunboard • ACP • Foam Board</small></div><div class="nrj-more-card"><b>Others</b><small>Reflective • Transparent • Outdoor • Indoor</small></div></div>'],
+      business:['Business Dashboard','<div class="nrj-business-card"><div><span>Current Bill</span><strong id="nrj-sheet-total">₹0</strong><small>Live calculation</small></div><div class="nrj-business-mini"><span>Pending</span><b id="nrj-sheet-pending">₹0</b></div></div><div class="nrj-guide"><b>📈 This view</b><p>Current bill, received advance and balance are shown live. Historical sales can be connected to a database later.</p></div>'],
+      customers:['Customer 360°','<div class="nrj-guide"><b>👥 '+((document.getElementById("cust-name")||{}).value||"Current Customer")+'</b><p>📞 '+((document.getElementById("cust-phone")||{}).value||"No mobile")+'<br>🧾 Current jobs: '+((window.cartItems||[]).length||0)+'<br>💰 Current business: '+money(parseFloat((document.getElementById("sum-grand")||{}).innerText?.replace(/[^\d.]/g,""))||0)+'</p></div><div class="nrj-guide"><b>🧾 Bill History</b><p>Recent saved quotes appear on the Home screen after WhatsApp/PDF actions.</p></div>'],
+      about:['About PRINTUP','<div class="nrj-about"><div class="printup-app-icon">P</div><h3>PRINTUP</h3><p>Modern business management app for Graphics, Printing & Production businesses.</p><div class="nrj-guide"><b>What you can manage</b><p>🧾 Bills & Quotations • 👥 Customers • 💰 Payments • 🖨️ Jobs & Production • 📦 Services & Rates • 📊 Business Records • ⭐ Reviews • 📱 WhatsApp & PDF Bills</p></div><div class="nrj-guide"><b>Our Purpose</b><p>Make everyday printing-business work faster, simpler and more organized — from creating a bill to tracking customer payments and managing production jobs.</p></div><div class="nrj-guide"><b>Version</b><p>PRINTUP v1.0</p></div></div>'],help:['Help & Support','<div class="nrj-more-grid"><div class="nrj-more-card" onclick="location.href=\'tel:+918690996080\'"><b>📞 Call</b><small>+91 8690996080</small></div><div class="nrj-more-card" onclick="window.open(\'https://wa.me/918690996080\',\'_blank\')"><b>💬 WhatsApp</b><small>Chat with PRINTUP</small></div></div><div class="nrj-guide"><b>❓ How to create bill</b><p>Customer → Add Job → Add to Bill → Payment/WhatsApp/PDF.</p></div><div class="nrj-more-grid"><div class="nrj-more-card" onclick="location.href='mailto:ndangi762@gmail.com'"><b>📧 Email</b><small>ndangi762@gmail.com</small></div></div><div class="nrj-guide"><b>❓ Payment Help</b><p>Open Payment from the bottom menu, then choose advance or full payment.</p></div>'],
+      reviews:['Customer Reviews','<div id="nrj-review-form" class="nrj-sheet-form"><label>Name</label><input id="nrj-review-name" placeholder="Customer name"><label>Mobile</label><input id="nrj-review-phone" placeholder="Mobile number"><label>Rating</label><select id="nrj-review-rating"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option></select><label>Review</label><textarea id="nrj-review-text" placeholder="How was your experience?"></textarea><button class="nrj-sheet-btn" onclick="nrjSaveReview()">Submit Review</button></div><div id="nrj-review-list"></div>']
+    };
+    var d=data[type]||['More','<div class="nrj-more-grid"><div class="nrj-more-card" onclick="nrjOpenMore(\'services\')"><b>🛠️ Services</b><small>19 services</small></div><div class="nrj-more-card" onclick="nrjOpenMore(\'reviews\')"><b>⭐ Reviews</b><small>Customer feedback</small></div><div class="nrj-more-card" onclick="nrjOpenMore(\'help\')"><b>💬 Help</b><small>Support</small></div><div class="nrj-more-card" onclick="nrjOpenMore(\'profile\')"><b>👤 Profile</b><small>realnrj</small></div></div>'];
+    title.textContent=d[0]; box.innerHTML=d[1]; bd.classList.add('show');
+    nrjRefreshStats();
+    if(type==='reviews') nrjRenderReviews();
+  };
+  window.nrjCloseMore=function(e){if(!e || e.target===document.getElementById('nrj-more-sheet')) document.getElementById('nrj-more-sheet').classList.remove('show');};
+  window.nrjService=function(cat){
+    /* Service shortcuts must never open a blank/black page. Open the real bill workspace directly. */
+    try{
+      if(typeof nrjFinalPage==='function') { nrjFinalPage('bill'); }
+      var sel=document.getElementById('sel-media');
+      var rate=document.getElementById('rate-flex');
+      if(!sel) return;
+      var wanted=(cat||'').toLowerCase();
+      var idx=0;
+      if(wanted.includes('flex')) idx=0;
+      else if(wanted.includes('vinyl')) idx=3;
+      else if(wanted.includes('board')) idx=0;
+      if(sel.options && sel.options[idx]){
+        sel.selectedIndex=idx;
+        if(typeof updateDefaultRate==='function') updateDefaultRate();
+        else if(rate) rate.value=sel.value;
+        if(typeof previewCurrentItem==='function') previewCurrentItem();
+      }
+      var target=document.getElementById('sel-media');
+      if(target) setTimeout(function(){try{target.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}},120);
+    }catch(e){
+      console.error('PRINTUP service navigation error:',e);
+      if(typeof nrjFinalPage==='function') nrjFinalPage('services');
+    }
+  };
+  window.nrjRefreshStats=function(){
+    var grandEl=document.getElementById('sum-grand'), balEl=document.getElementById('inp-balance');
+    var grand=grandEl?parseFloat(grandEl.innerText.replace(/[^\d.]/g,''))||0:0;
+    var pending=balEl?parseFloat(balEl.value)||0:0;
+    ['nrj-dash-total','nrj-sheet-total'].forEach(function(id){var x=document.getElementById(id);if(x)x.textContent=money(grand);});
+    ['nrj-dash-pending','nrj-sheet-pending'].forEach(function(id){var x=document.getElementById(id);if(x)x.textContent=money(pending);});
+  };
+  window.nrjDoWhatsApp=function(){if(typeof shareWhatsApp==='function')shareWhatsApp();setTimeout(nrjSaveRecent,150);};
+  window.nrjDoPDF=function(){if(typeof generatePdfQuotation==='function')generatePdfQuotation();setTimeout(nrjSaveRecent,150);};
+  window.nrjSaveRecent=function(){
+    try{
+      var name=(document.getElementById('cust-name')||{}).value||'Customer';
+      var total=parseFloat((document.getElementById('sum-grand')||{}).innerText?.replace(/[^\d.]/g,''))||0;
+      if(!total && name==='Customer')return;
+      var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]');
+      arr.unshift({name:name,total:total,date:new Date().toLocaleDateString('en-IN')});
+      localStorage.setItem('nrj_recent_bills',JSON.stringify(arr.slice(0,8)));
+      nrjRenderRecent();
+    }catch(e){}
+  };
+  window.nrjRenderRecent=function(){
+    var box=document.getElementById('nrj-recent-list');if(!box)return;
+    try{
+      var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]');
+      if(!arr.length){box.innerHTML='<div class="nrj-empty">No recent bills yet</div>';return;}
+      box.innerHTML=arr.slice(0,4).map(function(x){return '<div class="nrj-recent-item"><div><b>'+String(x.name).replace(/[<>]/g,'')+'</b><small>'+x.date+'</small></div><strong>'+money(x.total)+'</strong></div>';}).join('');
+    }catch(e){}
+  };
+  window.nrjSaveReview=function(){
+    var name=(document.getElementById('nrj-review-name')||{}).value.trim();
+    var phone=(document.getElementById('nrj-review-phone')||{}).value.trim();
+    var rating=parseInt((document.getElementById('nrj-review-rating')||{}).value)||5;
+    var review=(document.getElementById('nrj-review-text')||{}).value.trim();
+    if(!name||!review){alert('Please enter name and review.');return;}
+    var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');
+    arr.unshift({name:name,phone:phone,rating:rating,review:review,date:new Date().toLocaleDateString('en-IN')});
+    localStorage.setItem('nrj_reviews',JSON.stringify(arr.slice(0,30)));
+    alert('Review saved on this device. Backend sync can be connected later.');
+    nrjRenderReviews();
+    nrjUpdateReviewScore();
+  };
+  window.nrjRenderReviews=function(){
+    var box=document.getElementById('nrj-review-list');if(!box)return;
+    var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');
+    box.innerHTML=arr.length?arr.slice(0,6).map(function(x){return '<div class="nrj-guide"><b>'+('⭐'.repeat(x.rating))+' '+String(x.name).replace(/[<>]/g,'')+'</b><p>'+String(x.review).replace(/[<>]/g,'')+'</p></div>';}).join(''):'<div class="nrj-empty">No reviews yet</div>';
+  };
+  window.nrjUpdateReviewScore=function(){
+    var el=document.getElementById('nrj-review-score');if(!el)return;
+    var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');
+    if(!arr.length){el.textContent='New ⭐';return;}
+    var avg=arr.reduce(function(a,x){return a+x.rating},0)/arr.length;
+    el.textContent=avg.toFixed(1)+' ⭐';
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    nrjRenderRecent();nrjUpdateReviewScore();
+    setInterval(nrjRefreshStats,700);
+  });
+})();
+</script>
+
+
+<style id="nrj-v6-mobile-nav">
+@media(max-width:700px){
+  body{background:linear-gradient(180deg,#f7faff 0%,#f3f7fb 100%)!important}
+  #nrj-dashboard{display:block}
+  .app-grid{display:block!important}
+  /* Existing calculator remains available, but visually secondary and compact. */
+  .app-grid>.card,.app-grid .card{scroll-margin-top:72px}
+  .app-grid{padding-top:2px}
+}
+@media(min-width:701px){
+  #nrj-dashboard{max-width:1080px;margin-left:auto;margin-right:auto}
+  .nrj-quick-grid{max-width:620px}
+}
+</style>
+
+
+<script id="nrj-premium-pages-v7-js">
+(function(){
+  function getText(id){var e=document.getElementById(id);return e?e.innerText:''}
+  function num(s){return parseFloat(String(s||'').replace(/[^\d.]/g,''))||0}
+  function money(n){return '₹'+(Number(n)||0).toLocaleString('en-IN',{maximumFractionDigits:0});}
+
+  window.nrjPage=function(page){
+    document.querySelectorAll('.nrj-page').forEach(function(x){x.classList.remove('active')});
+    var p=document.getElementById('nrj-page-'+page); if(!p)p=document.getElementById('nrj-page-home');
+    p.classList.add('active');
+    document.querySelectorAll('.nrj-tab').forEach(function(x){x.classList.toggle('active',x.dataset.page===page)});
+    window.scrollTo({top:0,behavior:'smooth'});
+    nrjRefreshPremium();
+    if(page==='history')nrjRenderHistory('');
+    if(page==='customers')nrjRenderCustomers('');
+    if(page==='reviews')nrjRenderPremiumReviews();
+  };
+
+  function nrjRefreshPremium(){
+    var total=num(getText('sum-grand')), bal=num((document.getElementById('inp-balance')||{}).value);
+    var adv=Math.max(0,total-bal);
+    ['pv-sale'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=money(total)});
+    ['pv-pending','pv-payment-pending'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=money(bal)});
+    var r=document.getElementById('pv-received');if(r)r.textContent=money(adv);
+    var c=document.getElementById('nrj-bill-container');
+    var old=document.querySelector('#nrj-page-bill .app-grid-clone');
+    if(c && !c.dataset.ready){
+      var grid=document.querySelector('.app-grid');
+      if(grid){c.innerHTML='';Array.from(grid.children).forEach(function(child){var clone=child.cloneNode(true);clone.classList.add('app-grid-clone');c.appendChild(clone)});c.dataset.ready='1';}
+    }
+  }
+
+  window.nrjRenderHistory=function(q){
+    var box=document.getElementById('pv-history');if(!box)return;
+    var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]');
+    q=(q||'').toLowerCase();
+    arr=arr.filter(function(x){return String(x.name).toLowerCase().includes(q)});
+    box.innerHTML=arr.length?arr.map(function(x,i){return '<div class="nrj-history-item" onclick="nrjPage(\'bill\')"><div class="avatar">'+String(x.name||'C').charAt(0).toUpperCase()+'</div><div><b>'+String(x.name).replace(/[<>]/g,'')+'</b><small>'+x.date+' • Bill #PRINTUP-'+(1025-i)+'</small></div><strong>'+money(x.total)+'</strong></div>'}).join(''):'<div class="nrj-empty">No bills found</div>';
+  };
+  window.nrjRenderCustomers=function(q){
+    var box=document.getElementById('pv-customers');if(!box)return;
+    var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]'), seen={};q=(q||'').toLowerCase();
+    arr.forEach(function(x){var k=x.name;if(!seen[k])seen[k]={name:k,total:0,count:0};seen[k].total+=Number(x.total)||0;seen[k].count++});
+    var vals=Object.values(seen).filter(function(x){return x.name.toLowerCase().includes(q)});
+    box.innerHTML=vals.length?vals.map(function(x){return '<div class="nrj-history-item"><div class="avatar">'+String(x.name||'C').charAt(0).toUpperCase()+'</div><div><b>'+String(x.name).replace(/[<>]/g,'')+'</b><small>🧾 Bills: '+x.count+' • 💰 Business: '+money(x.total)+'</small></div><strong>›</strong></div>'}).join(''):'<div class="nrj-empty">No customers yet</div>';
+  };
+  window.nrjRenderPremiumReviews=function(){
+    var box=document.getElementById('pv-reviews');if(!box)return;
+    var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');
+    var avg=arr.length?arr.reduce(function(a,x){return a+x.rating},0)/arr.length:0;
+    document.getElementById('pv-rating').textContent=arr.length?avg.toFixed(1)+' ⭐':'New ⭐';
+    document.getElementById('pv-rating-count').textContent=arr.length?arr.length+' customer review(s)':'No reviews yet';
+    box.innerHTML=arr.length?arr.slice(0,10).map(function(x){return '<div class="nrj-guide"><b>'+('⭐'.repeat(x.rating))+' '+String(x.name).replace(/[<>]/g,'')+'</b><p>'+String(x.review).replace(/[<>]/g,'')+'</p></div>'}).join(''):'<div class="nrj-empty">No reviews yet</div>';
+  };
+  window.nrjSavePremiumReview=function(){
+    var name=document.getElementById('pv-review-name').value.trim(),phone=document.getElementById('pv-review-phone').value.trim(),rating=+document.getElementById('pv-review-rating').value,review=document.getElementById('pv-review-text').value.trim();
+    if(!name||!review){alert('Name and review are required.');return}
+    var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');arr.unshift({name:name,phone:phone,rating:rating,review:review,date:new Date().toLocaleDateString('en-IN')});localStorage.setItem('nrj_reviews',JSON.stringify(arr.slice(0,50)));
+    document.getElementById('pv-review-text').value='';nrjRenderPremiumReviews();
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    /* The real billing form stays in the app; New Bill opens it as its own workspace. */
+    var grid=document.querySelector('.app-grid');
+    if(grid){
+      grid.style.display='none';
+      var holder=document.getElementById('nrj-bill-container');
+      if(holder){holder.innerHTML='';Array.from(grid.children).forEach(function(child){var clone=child.cloneNode(true);holder.appendChild(clone)})}
+    }
+    nrjRefreshPremium();
+    setInterval(nrjRefreshPremium,1000);
+  });
+})();
+</script>
+
+
+<script id="nrj-generation-login-v8-script">
+document.addEventListener("DOMContentLoaded",function(){
+  if(location.pathname!="/login") return;
+  var form=document.querySelector('form[action="/login"], form');
+  if(!form) return;
+  var oldInputs=Array.from(form.querySelectorAll("input"));
+  var user=oldInputs.find(function(x){return (x.name||"").toLowerCase().includes("user")});
+  var pass=oldInputs.find(function(x){return (x.name||"").toLowerCase().includes("pass")});
+  if(!user||!pass) return;
+  var wrap=document.createElement("div");
+  wrap.className="nrj-login-v8";
+  wrap.innerHTML=
+    '<span class="nrj-login-orb o1"></span><span class="nrj-login-orb o2"></span><span class="nrj-login-orb o3"></span><span class="nrj-login-orb o4"></span>'+
+    '<div class="nrj-login-shell">'+
+      '<div class="nrj-login-brand">'+
+        '<div class="nrj-login-logo" aria-label="PRINTUP logo"></div>'+
+        '<h1>Welcome back</h1>'+
+        '<p>PRINTUP • Billing & Production</p>'+
+      '</div>'+
+      '<div class="nrj-login-form"></div>'+
+      '<div class="nrj-login-foot">Secure business workspace • <b>PRINTUP</b></div>'+
+    '</div>';
+  var f=wrap.querySelector(".nrj-login-form");
+  f.appendChild(form);
+  var labels=Array.from(f.querySelectorAll("label"));
+  if(labels[0])labels[0].textContent="USERNAME";
+  if(labels[1])labels[1].textContent="PASSWORD";
+  var btn=f.querySelector('button,input[type="submit"]');
+  if(btn){btn.className="nrj-login-btn"; if(btn.tagName==="INPUT")btn.value="Sign In →"; else btn.textContent="Sign In →";}
+  document.body.innerHTML="";
+  document.body.appendChild(wrap);
+});
+</script>
+
+
+<script id="nrj-final-v9-js">
+(function(){
+ function money(n){return '₹'+(Number(n)||0).toLocaleString('en-IN',{maximumFractionDigits:0})}
+ function num(s){return parseFloat(String(s||'').replace(/[^\d.]/g,''))||0}
+ function text(id){var e=document.getElementById(id);return e?e.innerText:''}
+ window.nrjFinalPage=function(page){
+   document.querySelectorAll('.nrj-screen').forEach(function(e){e.classList.remove('active')});
+   var e=document.getElementById('nrj-screen-'+page);if(!e)e=document.getElementById('nrj-screen-home');e.classList.add('active');
+   document.querySelectorAll('.nrj-tab').forEach(function(t){t.classList.toggle('active',t.dataset.page===page)});
+   window.scrollTo({top:0,behavior:'smooth'});
+   nrjFinalRefresh();
+   if(page==='history')nrjFinalRenderHistory('');
+   if(page==='customers')nrjFinalRenderCustomers('');
+   if(page==='reviews')nrjFinalRenderReviews();
+ };
+ window.nrjFinalRefresh=function(){
+   var total=num(text('sum-grand')), bal=num((document.getElementById('inp-balance')||{}).value), received=Math.max(0,total-bal);
+   var a=document.getElementById('nf-sale');if(a)a.textContent=money(total);
+   var b=document.getElementById('nf-pending');if(b)b.textContent=money(bal);
+   var c=document.getElementById('nf-received');if(c)c.textContent=money(received);
+   var d=document.getElementById('nf-payment-pending');if(d)d.textContent=money(bal);
+ };
+ window.nrjFinalRenderHistory=function(q){
+   var box=document.getElementById('nf-history');if(!box)return;
+   var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]');q=(q||'').toLowerCase();
+   arr=arr.filter(function(x){return String(x.name).toLowerCase().includes(q)});
+   if(!arr.length){box.innerHTML='<div class="nrj-empty">No bills found</div>';return}
+   var groups={};arr.forEach(function(x){var d=new Date(x.iso||x.date||Date.now()),key=d.toLocaleString('en-IN',{month:'long',year:'numeric'});(groups[key]||(groups[key]=[])).push(x)});
+   box.innerHTML=Object.keys(groups).map(function(month){return '<div class="nrj-headline"><b>📅 '+month+'</b></div>'+groups[month].map(function(x,i){return '<div class="nrj-history-item"><div class="nrj-avatar">'+String(x.name||'C').charAt(0).toUpperCase()+'</div><div><b>'+String(x.name).replace(/[<>]/g,'')+'</b><small>'+x.date+' • Bill #PRINTUP-'+(1025-i)+'</small></div><strong>'+money(x.total)+'</strong></div>'}).join('')}).join('');
+ };
+ window.nrjFinalRenderCustomers=function(q){
+   var box=document.getElementById('nf-customers');if(!box)return;
+   var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]'),map={};q=(q||'').toLowerCase();
+   arr.forEach(function(x){var k=x.name||'Customer';if(!map[k])map[k]={name:k,total:0,count:0};map[k].total+=Number(x.total)||0;map[k].count++});
+   var vals=Object.values(map).filter(function(x){return x.name.toLowerCase().includes(q)});
+   box.innerHTML=vals.length?vals.map(function(x){return '<div class="nrj-history-item" onclick="nrjFinalPage(\'history\')"><div class="nrj-avatar">'+x.name.charAt(0).toUpperCase()+'</div><div><b>'+String(x.name).replace(/[<>]/g,'')+'</b><small>🧾 '+x.count+' bills • 💰 '+money(x.total)+'</small></div><strong>›</strong></div>'}).join(''):'<div class="nrj-empty">No customers yet</div>';
+ };
+ window.nrjFinalRenderReviews=function(){
+   var box=document.getElementById('nf-reviews');if(!box)return;var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');
+   var avg=arr.length?arr.reduce(function(a,x){return a+x.rating},0)/arr.length:0;
+   document.getElementById('nf-rating').textContent=arr.length?avg.toFixed(1)+' ⭐':'New ⭐';
+   document.getElementById('nf-rating-count').textContent=arr.length?arr.length+' review(s)':'No reviews yet';
+   box.innerHTML=arr.length?arr.slice(0,10).map(function(x){return '<div class="nrj-guide"><b>'+('⭐'.repeat(x.rating))+' '+String(x.name).replace(/[<>]/g,'')+'</b><p>'+String(x.review).replace(/[<>]/g,'')+'</p></div>'}).join(''):'<div class="nrj-empty">No reviews yet</div>';
+ };
+ window.nrjFinalSaveReview=function(){
+   var n=document.getElementById('nf-review-name').value.trim(),p=document.getElementById('nf-review-phone').value.trim(),r=+document.getElementById('nf-review-rating').value,v=document.getElementById('nf-review-text').value.trim();
+   if(!n||!v){alert('Name and review are required.');return}
+   var arr=JSON.parse(localStorage.getItem('nrj_reviews')||'[]');arr.unshift({name:n,phone:p,rating:r,review:v,date:new Date().toLocaleDateString('en-IN')});localStorage.setItem('nrj_reviews',JSON.stringify(arr.slice(0,50)));document.getElementById('nf-review-text').value='';nrjFinalRenderReviews();
+ };
+ document.addEventListener('DOMContentLoaded',function(){
+   var grid=document.querySelector('.app-grid'), holder=document.getElementById('nf-bill-workspace');
+   if(grid&&holder){holder.appendChild(grid);grid.style.display='block';}
+   nrjFinalRefresh();
+   setInterval(nrjFinalRefresh,1000);
+   try{
+    var arr=JSON.parse(localStorage.getItem('nrj_recent_bills')||'[]');
+    var box=document.getElementById('nf-recent');
+    if(box)box.innerHTML=arr.slice(0,3).map(function(x){return '<div class="nrj-history-item"><div class="nrj-avatar">'+String(x.name||'C').charAt(0).toUpperCase()+'</div><div><b>'+String(x.name).replace(/[<>]/g,'')+'</b><small>'+x.date+'</small></div><strong>'+money(x.total)+'</strong></div>'}).join('')||'<div class="nrj-empty">No recent bills yet</div>';
+   }catch(e){}
+ });
+})();
+</script>
+
+
+<style id="printup-final-visibility-fix">
+/* PRINTUP FINAL VISIBILITY FIX */
+html,body{min-height:100%;}
+body{background:#f5f8fc!important;color:#172033!important;}
+#nrj-final-app{display:block!important;visibility:visible!important;opacity:1!important;}
+.nrj-screen{visibility:visible;}
+.nrj-screen.active{display:block!important;visibility:visible!important;opacity:1!important;}
+/* Keep the legacy calculator hidden until New Bill is selected. */
+#nrj-final-app .app-grid{display:none;}
+#nrj-screen-bill .app-grid{display:block!important;}
+.printup-brandmark img,.nrj-mobile-logo,.nrj-login-logo{object-fit:cover;}
+</style>
+<script id="printup-final-visibility-fix-js">
+(function(){
+  function boot(){
+    var home=document.getElementById('nrj-screen-home');
+    var app=document.getElementById('nrj-final-app');
+    if(app){app.style.display='block';app.style.visibility='visible';app.style.opacity='1';}
+    if(home){home.classList.add('active');home.style.display='block';}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
 </script>
 
 </body>
