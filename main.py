@@ -39,14 +39,15 @@ def _auth(request: Request) -> bool:
 
 def _with_ui(html: str) -> str:
     tags = [
-        '<link rel="stylesheet" href="/printup-ui.css?v=5">',
-        '<script src="/printup-dashboard.js?v=5" defer></script>',
-        '<script src="/printup-mobile-fix.js?v=4" defer></script>',
-        '<script src="/printup-bill-branding.js?v=2" defer></script>',
-        '<script src="/printup-newbill-ui.js?v=1" defer></script>'
+        '<link rel="stylesheet" href="/printup-ui.css?v=6">',
+        '<script src="/printup-dashboard.js?v=6" defer></script>',
+        '<script src="/printup-mobile-fix.js?v=5" defer></script>',
+        '<script src="/printup-bill-branding.js?v=3" defer></script>',
+        '<script src="/printup-newbill-ui.js?v=2" defer></script>',
+        '<script src="/printup-paytm-ui.js?v=1" defer></script>'
     ]
     for tag in tags:
-        if tag.split('?')[0].split('"')[0] not in html and "</head>" in html:
+        if "</head>" in html and tag.split('?')[0].split('"')[0] not in html:
             html = html.replace("</head>", tag + "\n</head>", 1)
     return html
 
@@ -86,6 +87,8 @@ async def mobile_fix_js(): return HTMLResponse((BASE_DIR / "printup-mobile-fix.j
 async def bill_branding_js(): return HTMLResponse((BASE_DIR / "printup-bill-branding.js").read_text(encoding="utf-8"), media_type="application/javascript")
 @app.get("/printup-newbill-ui.js")
 async def newbill_ui_js(): return HTMLResponse((BASE_DIR / "printup-newbill-ui.js").read_text(encoding="utf-8"), media_type="application/javascript")
+@app.get("/printup-paytm-ui.js")
+async def paytm_ui_js(): return HTMLResponse((BASE_DIR / "printup-paytm-ui.js").read_text(encoding="utf-8"), media_type="application/javascript")
 
 @app.get("/services", response_class=HTMLResponse)
 async def services(request: Request):
