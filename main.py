@@ -48,6 +48,13 @@ def _authenticated(request: Request) -> bool:
         return False
 
 
+def _with_ui(html: str) -> str:
+    marker = '<link rel="stylesheet" href="/printup-ui.css?v=1">'
+    if marker not in html:
+        html = html.replace("</head>", marker + "</head>", 1)
+    return html
+
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     if not _authenticated(request):
@@ -55,7 +62,15 @@ async def home(request: Request):
     path = Path(APP_FILE)
     if not path.exists():
         return HTMLResponse("PRINTUP app file missing", status_code=500)
-    return HTMLResponse(path.read_text(encoding="utf-8"))
+    return HTMLResponse(_with_ui(path.read_text(encoding="utf-8")))
+
+
+@app.get("/printup-ui.css")
+async def printup_ui_css():
+    path = Path("printup-ui.css")
+    if not path.exists():
+        return HTMLResponse("/* UI stylesheet missing */", status_code=404, media_type="text/css")
+    return HTMLResponse(path.read_text(encoding="utf-8"), media_type="text/css")
 
 
 @app.get("/login", response_class=HTMLResponse)
@@ -93,4 +108,4 @@ async def services(request: Request):
     path = Path("services.html")
     if not path.exists():
         return HTMLResponse("services.html missing", status_code=404)
-    return HTMLResponse(path.read_text(encoding="utf-8"))
+    return HTMLResponse(_with_ui(path.read_text(encoding="utf-8")))
