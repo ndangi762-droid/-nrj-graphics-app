@@ -12,10 +12,9 @@ def _password_ok(password: str) -> bool:
     try:
         algo, iterations, salt_b64, digest_b64 = stored.split("$")
         if algo != "pbkdf2_sha256": return False
-        iterations = int(iterations)
         salt = base64.urlsafe_b64decode(salt_b64.encode())
         expected = base64.urlsafe_b64decode(digest_b64.encode())
-        actual = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, iterations)
+        actual = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, int(iterations))
         return hmac.compare_digest(actual, expected)
     except Exception:
         return False
@@ -30,31 +29,25 @@ def _auth(request: Request) -> bool:
     cookie = request.cookies.get("printup_session")
     if not cookie: return False
     try:
-        raw = base64.urlsafe_b64decode(cookie.encode()).decode()
-        username, ts, sig = raw.rsplit(":", 2)
-        if username != os.getenv("NRJ_USERNAME", "admin"): return False
-        if time.time() - int(ts) > 12 * 3600: return False
-        secret = os.getenv("NRJ_SESSION_SECRET", "")
+        username, ts, sig = base64.urlsafe_b64decode(cookie.encode()).decode().rsplit(":", 2)
+        if username != os.getenv("NRJ_USERNAME", "admin") or time.time() - int(ts) > 43200: return False
         payload = f"{username}:{ts}"
-        expected = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()
+        expected = hmac.new(os.getenv("NRJ_SESSION_SECRET", "").encode(), payload.encode(), hashlib.sha256).hexdigest()
         return hmac.compare_digest(sig, expected)
     except Exception:
         return False
 
 def _with_ui(html: str) -> str:
-    tag = '<link rel="stylesheet" href="/printup-ui.css?v=4">'
-    dashboard = '<script src="/printup-dashboard.js?v=4" defer></script>'
-    mobile_fix = '<script src="/printup-mobile-fix.js?v=3" defer></script>'
-    bill_branding = '<script src="/printup-bill-branding.js?v=1" defer></script>'
-    if "printup-ui.css" not in html and "</head>" in html:
-        html = html.replace("</head>", tag + "\n" + dashboard + "\n" + mobile_fix + "\n" + bill_branding + "\n</head>", 1)
-    else:
-        if "printup-dashboard.js" not in html and "</head>" in html:
-            html = html.replace("</head>", dashboard + "\n</head>", 1)
-        if "printup-mobile-fix.js" not in html and "</head>" in html:
-            html = html.replace("</head>", mobile_fix + "\n</head>", 1)
-        if "printup-bill-branding.js" not in html and "</head>" in html:
-            html = html.replace("</head>", bill_branding + "\n</head>", 1)
+    tags = [
+        '<link rel="stylesheet" href="/printup-ui.css?v=5">',
+        '<script src="/printup-dashboard.js?v=5" defer></script>',
+        '<script src="/printup-mobile-fix.js?v=4" defer></script>',
+        '<script src="/printup-bill-branding.js?v=2" defer></script>',
+        '<script src="/printup-newbill-ui.js?v=1" defer></script>'
+    ]
+    for tag in tags:
+        if tag.split('?')[0].split('"')[0] not in html and "</head>" in html:
+            html = html.replace("</head>", tag + "\n</head>", 1)
     return html
 
 @app.get("/", response_class=HTMLResponse)
@@ -64,7 +57,7 @@ async def home(request: Request):
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page():
-    return HTMLResponse("""<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>PRINTUP Login</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f5f7;display:grid;place-items:center;min-height:100vh}.box{width:min(380px,calc(100% - 32px));background:#fff;padding:28px;border-radius:20px;box-shadow:0 16px 50px #0001}h1{margin:0 0 6px;color:#17191c}p{color:#666;margin-top:0}label{display:block;margin:16px 0 7px;font-weight:700}input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #ddd;border-radius:10px}button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:10px;background:#17191c;color:#fff;font-weight:800}</style></head><body><form class='box' method='post'><h1>PRINTUP</h1><p>Secure Billing & Business Management</p><label>Username</label><input name='username' autocomplete='username' required><label>Password</label><input type='password' name='password' autocomplete='current-password' required><button>Login</button></form></body></html>""")
+    return HTMLResponse("""<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>PRINTUP Login</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#f8fafc,#eef1f5);display:grid;place-items:center;min-height:100vh}.box{width:min(380px,calc(100% - 32px));background:#fff;padding:28px;border-radius:22px;box-shadow:0 16px 50px #0001}h1{margin:0 0 6px}p{color:#667085;margin-top:0}label{display:block;margin:16px 0 7px;font-weight:700}input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #ddd;border-radius:12px}button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:12px;background:#111827;color:#fff;font-weight:800}</style></head><body><form class='box' method='post'><h1>PRINTUP</h1><p>Secure Billing & Business Management</p><label>Username</label><input name='username' autocomplete='username' required><label>Password</label><input type='password' name='password' autocomplete='current-password' required><button>Login</button></form></body></html>""")
 
 @app.post("/login")
 async def login(username: str = Form(...), password: str = Form(...)):
@@ -84,20 +77,15 @@ async def logout():
 async def health(): return "ok"
 
 @app.get("/printup-ui.css")
-async def ui_css():
-    return HTMLResponse((BASE_DIR / "printup-ui.css").read_text(encoding="utf-8"), media_type="text/css")
-
+async def ui_css(): return HTMLResponse((BASE_DIR / "printup-ui.css").read_text(encoding="utf-8"), media_type="text/css")
 @app.get("/printup-dashboard.js")
-async def dashboard_js():
-    return HTMLResponse((BASE_DIR / "printup-dashboard.js").read_text(encoding="utf-8"), media_type="application/javascript")
-
+async def dashboard_js(): return HTMLResponse((BASE_DIR / "printup-dashboard.js").read_text(encoding="utf-8"), media_type="application/javascript")
 @app.get("/printup-mobile-fix.js")
-async def mobile_fix_js():
-    return HTMLResponse((BASE_DIR / "printup-mobile-fix.js").read_text(encoding="utf-8"), media_type="application/javascript")
-
+async def mobile_fix_js(): return HTMLResponse((BASE_DIR / "printup-mobile-fix.js").read_text(encoding="utf-8"), media_type="application/javascript")
 @app.get("/printup-bill-branding.js")
-async def bill_branding_js():
-    return HTMLResponse((BASE_DIR / "printup-bill-branding.js").read_text(encoding="utf-8"), media_type="application/javascript")
+async def bill_branding_js(): return HTMLResponse((BASE_DIR / "printup-bill-branding.js").read_text(encoding="utf-8"), media_type="application/javascript")
+@app.get("/printup-newbill-ui.js")
+async def newbill_ui_js(): return HTMLResponse((BASE_DIR / "printup-newbill-ui.js").read_text(encoding="utf-8"), media_type="application/javascript")
 
 @app.get("/services", response_class=HTMLResponse)
 async def services(request: Request):
