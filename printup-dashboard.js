@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{const app=document.querySelector('.container');if(!app)return;const header=document.querySelector('.header');if(header){header.classList.add('printup-app-header');}document.body.classList.add('printup-dashboard-ready');});
