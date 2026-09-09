@@ -1,111 +1,114 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
+from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-import os, hmac, hashlib, base64, time
+import os, time, hmac, hashlib, base64
 
 app = FastAPI(title="PRINTUP Secure Billing")
 APP_FILE = "app.html"
-SESSION_COOKIE = "printup_session"
-SESSION_TTL = 12 * 60 * 60
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 def _password_ok(password: str) -> bool:
     stored = os.getenv("NRJ_PASSWORD_HASH", "")
-    if not stored:
-        return False
     try:
-        algorithm, iterations, salt_b64, hash_b64 = stored.split("$", 3)
-        if algorithm != "pbkdf2_sha256":
+        algo, iterations, salt_b64, digest_b64 = stored.split("$")
+        if algo != "pbkdf2_sha256":
             return False
-        expected = base64.b64decode(hash_b64)
-        salt = base64.b64decode(salt_b64)
-        derived = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, int(iterations))
-        return hmac.compare_digest(derived, expected)
+        iterations = int(iterations)
+        salt = base64.urlsafe_b64decode(salt_b64.encode())
+        expected = base64.urlsafe_b64decode(digest_b64.encode())
+        actual = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, iterations)
+        return hmac.compare_digest(actual, expected)
     except Exception:
         return False
 
 
-def _session_token(username: str, expires: int) -> str:
+def _token(username: str) -> str:
     secret = os.getenv("NRJ_SESSION_SECRET", "")
-    payload = f"{username}|{expires}"
+    payload = f"{username}:{int(time.time())}"
     sig = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()
-    return f"{payload}|{sig}"
+    return base64.urlsafe_b64encode(f"{payload}:{sig}".encode()).decode()
 
 
-def _authenticated(request: Request) -> bool:
-    token = request.cookies.get(SESSION_COOKIE, "")
-    secret = os.getenv("NRJ_SESSION_SECRET", "")
-    if not token or not secret:
+def _auth(request: Request) -> bool:
+    cookie = request.cookies.get("printup_session")
+    if not cookie:
         return False
     try:
-        username, expires_s, sig = token.rsplit("|", 2)
-        expires = int(expires_s)
-        if expires < int(time.time()):
+        raw = base64.urlsafe_b64decode(cookie.encode()).decode()
+        username, ts, sig = raw.rsplit(":", 2)
+        if username != os.getenv("NRJ_USERNAME", "admin"):
             return False
-        expected = hmac.new(secret.encode(), f"{username}|{expires}".encode(), hashlib.sha256).hexdigest()
-        return hmac.compare_digest(sig, expected) and hmac.compare_digest(username, os.getenv("NRJ_USERNAME", ""))
+        if time.time() - int(ts) > 12 * 3600:
+            return False
+        secret = os.getenv("NRJ_SESSION_SECRET", "")
+        payload = f"{username}:{ts}"
+        expected = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()
+        return hmac.compare_digest(sig, expected)
     except Exception:
         return False
 
 
 def _with_ui(html: str) -> str:
-    marker = '<link rel="stylesheet" href="/printup-ui.css?v=1">'
-    if marker not in html:
-        html = html.replace("</head>", marker + "</head>", 1)
+    tag = '<link rel="stylesheet" href="/printup-ui.css?v=1">'
+    script = '<script src="/printup-dashboard.js?v=1" defer></script>'
+    if "printup-ui.css" not in html and "</head>" in html:
+        html = html.replace("</head>", tag + "\n" + script + "\n</head>", 1)
+    elif "printup-dashboard.js" not in html and "</head>" in html:
+        html = html.replace("</head>", script + "\n</head>", 1)
     return html
 
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    if not _authenticated(request):
+    if not _auth(request):
         return RedirectResponse("/login", status_code=303)
-    path = Path(APP_FILE)
-    if not path.exists():
-        return HTMLResponse("PRINTUP app file missing", status_code=500)
-    return HTMLResponse(_with_ui(path.read_text(encoding="utf-8")))
-
-
-@app.get("/printup-ui.css")
-async def printup_ui_css():
-    path = Path("printup-ui.css")
-    if not path.exists():
-        return HTMLResponse("/* UI stylesheet missing */", status_code=404, media_type="text/css")
-    return HTMLResponse(path.read_text(encoding="utf-8"), media_type="text/css")
+    return HTMLResponse(_with_ui((BASE_DIR / APP_FILE).read_text(encoding="utf-8")))
 
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page():
-    return HTMLResponse('''<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>PRINTUP Login</title><style>body{margin:0;background:#101114;color:#fff;font-family:Arial,sans-serif;display:grid;place-items:center;min-height:100vh}.box{width:min(380px,88vw);padding:28px;border-radius:22px;background:#191b20;box-shadow:0 20px 60px #0008}h1{margin:0 0 8px}p{color:#aaa}input,button{box-sizing:border-box;width:100%;padding:14px;margin-top:10px;border-radius:12px;border:1px solid #333;background:#111318;color:#fff}button{background:#ffd21a;color:#111;font-weight:800;border:0;cursor:pointer}</style></head><body><form class="box" method="post"><h1>PRINTUP</h1><p>Secure business login</p><input name="username" placeholder="Username" autocomplete="username" required><input name="password" type="password" placeholder="Password" autocomplete="current-password" required><button>LOGIN</button></form></body></html>''')
+    return HTMLResponse("""<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>PRINTUP Login</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f5f7;display:grid;place-items:center;min-height:100vh}.box{width:min(380px,calc(100% - 32px));background:#fff;padding:28px;border-radius:20px;box-shadow:0 16px 50px #0001}h1{margin:0 0 6px;color:#17191c}p{color:#666;margin-top:0}label{display:block;margin:16px 0 7px;font-weight:700}input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #ddd;border-radius:10px}button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:10px;background:#17191c;color:#fff;font-weight:800}</style></head><body><form class='box' method='post'><h1>PRINTUP</h1><p>Secure Billing & Business Management</p><label>Username</label><input name='username' autocomplete='username' required><label>Password</label><input type='password' name='password' autocomplete='current-password' required><button>Login</button></form></body></html>""")
 
 
 @app.post("/login")
 async def login(username: str = Form(...), password: str = Form(...)):
-    configured_user = os.getenv("NRJ_USERNAME", "")
-    if configured_user and hmac.compare_digest(username, configured_user) and _password_ok(password):
-        expires = int(time.time()) + SESSION_TTL
+    if username == os.getenv("NRJ_USERNAME", "admin") and _password_ok(password):
         response = RedirectResponse("/", status_code=303)
-        response.set_cookie(SESSION_COOKIE, _session_token(username, expires), max_age=SESSION_TTL, httponly=True, secure=True, samesite="lax", path="/")
+        response.set_cookie("printup_session", _token(username), max_age=43200, httponly=True, secure=True, samesite="lax", path="/")
         return response
-    return HTMLResponse("Invalid login. <a href='/login'>Try again</a>", status_code=401)
+    return HTMLResponse("<h3>Invalid login</h3><p><a href='/login'>Try again</a></p>", status_code=401)
 
 
 @app.get("/logout")
 async def logout():
     response = RedirectResponse("/login", status_code=303)
-    response.delete_cookie(SESSION_COOKIE, path="/")
+    response.delete_cookie("printup_session", path="/")
     return response
 
 
-@app.get("/health")
+@app.get("/health", response_class=PlainTextResponse)
 async def health():
-    return JSONResponse({"status": "ok", "app": "PRINTUP"})
+    return "ok"
+
+
+@app.get("/printup-ui.css")
+async def ui_css():
+    return HTMLResponse((BASE_DIR / "printup-ui.css").read_text(encoding="utf-8"), media_type="text/css")
+
+
+@app.get("/printup-dashboard.js")
+async def dashboard_js():
+    return HTMLResponse((BASE_DIR / "printup-dashboard.js").read_text(encoding="utf-8"), media_type="application/javascript")
 
 
 @app.get("/services", response_class=HTMLResponse)
 async def services(request: Request):
-    if not _authenticated(request):
+    if not _auth(request):
         return RedirectResponse("/login", status_code=303)
-    path = Path("services.html")
-    if not path.exists():
-        return HTMLResponse("services.html missing", status_code=404)
-    return HTMLResponse(_with_ui(path.read_text(encoding="utf-8")))
+    p = BASE_DIR / "services.html"
+    if not p.exists():
+        return HTMLResponse("<h2>Services</h2><p>Services page is not installed yet.</p>")
+    return HTMLResponse(_with_ui(p.read_text(encoding="utf-8")))
