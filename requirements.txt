@@ -1,3 +1,4 @@
 fastapi
 uvicorn[standard]
 python-multipart
+webauthn>=3.0.0,<4
