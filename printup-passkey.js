@@ -42,6 +42,29 @@
   });
   const supported = () => !!(window.PublicKeyCredential && navigator.credentials && window.isSecureContext);
 
+  function applyBrandLogo() {
+    const logoUrl = 'https://raw.githubusercontent.com/ndangi762-droid/-nrj-graphics-app/main/nrj_graphics_icon.svg';
+    document.querySelectorAll('.pu-brand-mark').forEach(el => {
+      el.style.backgroundImage = `url("${logoUrl}")`;
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = 'center';
+      el.style.backgroundRepeat = 'no-repeat';
+      el.style.fontSize = '0';
+      el.textContent = '';
+    });
+  }
+
+  function showSetupCard() {
+    if ($('passkeySetupCard')) return;
+    const card = document.createElement('div');
+    card.id = 'passkeySetupCard';
+    card.style.cssText = 'position:fixed;left:16px;right:16px;bottom:90px;z-index:9999;background:#fff;border:1px solid #dbe5f2;border-radius:20px;padding:18px;box-shadow:0 18px 50px #102a5630;font-family:Inter,system-ui,sans-serif';
+    card.innerHTML = '<strong style="font-size:17px;color:#102a56">Enable Face ID 🔐</strong><div style="margin:7px 0 13px;color:#667085;font-size:13px">Use Face ID on this iPhone for faster secure PRINTUP login.</div><button id="homeFaceSetup" style="border:0;border-radius:13px;background:#1468e8;color:#fff;padding:12px 16px;font-weight:800;width:100%">Set Up Face ID</button><button id="closeFaceSetup" style="border:0;background:transparent;color:#718096;padding:10px;width:100%;font-weight:700">Later</button>';
+    document.body.appendChild(card);
+    $('homeFaceSetup').onclick = setupFaceID;
+    $('closeFaceSetup').onclick = () => card.remove();
+  }
+
   async function setupFaceID() {
     if (!supported()) return msg('Face ID requires Safari/HTTPS on this iPhone.');
     try {
@@ -85,6 +108,7 @@
   }
 
   async function init() {
+    applyBrandLogo();
     const loginBtn = $('faceLoginBtn');
     const setupBtn = $('faceSetupBtn');
     if (loginBtn || setupBtn) {
@@ -100,16 +124,16 @@
       return;
     }
 
-    if (new URLSearchParams(location.search).get('passkey_setup') === '1') {
-      setTimeout(() => {
-        const card = document.createElement('div');
-        card.id = 'passkeySetupCard';
-        card.style.cssText = 'position:fixed;left:16px;right:16px;bottom:90px;z-index:9999;background:#fff;border:1px solid #dbe5f2;border-radius:20px;padding:18px;box-shadow:0 18px 50px #102a5630;font-family:Inter,system-ui,sans-serif';
-        card.innerHTML = '<strong style="font-size:17px;color:#102a56">Enable Face ID 🔐</strong><div style="margin:7px 0 13px;color:#667085;font-size:13px">Use Face ID on this iPhone for faster secure PRINTUP login.</div><button id="homeFaceSetup" style="border:0;border-radius:13px;background:#1468e8;color:#fff;padding:12px 16px;font-weight:800;width:100%">Set Up Face ID</button>';
-        document.body.appendChild(card);
-        $('homeFaceSetup').onclick = setupFaceID;
-      }, 700);
-    }
+    if (!supported()) return;
+    try {
+      const r = await fetch('/passkey/status');
+      const s = await r.json();
+      if (!s.registered) {
+        if (new URLSearchParams(location.search).get('passkey_setup') === '1') setTimeout(showSetupCard, 500);
+        else setTimeout(showSetupCard, 1200);
+      }
+    } catch (_) {}
   }
+
   document.addEventListener('DOMContentLoaded', init);
 })();
