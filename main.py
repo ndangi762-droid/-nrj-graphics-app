@@ -42,9 +42,9 @@ def _auth(request: Request) -> bool:
         return False
 
 def _with_ui(html: str) -> str:
-    tag = '<link rel="stylesheet" href="/printup-ui.css?v=2">'
-    dashboard = '<script src="/printup-dashboard.js?v=2" defer></script>'
-    mobile_fix = '<script src="/printup-mobile-fix.js?v=1" defer></script>'
+    tag = '<link rel="stylesheet" href="/printup-ui.css?v=3">'
+    dashboard = '<script src="/printup-dashboard.js?v=3" defer></script>'
+    mobile_fix = '<script src="/printup-mobile-fix.js?v=2" defer></script>'
     if "printup-ui.css" not in html and "</head>" in html:
         html = html.replace("</head>", tag + "\n" + dashboard + "\n" + mobile_fix + "\n</head>", 1)
     else:
