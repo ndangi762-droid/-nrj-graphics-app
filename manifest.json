@@ -1,0 +1,13 @@
+{
+  "name": "PRINTUP",
+  "short_name": "PRINTUP",
+  "description": "PRINTUP by NRJ Production",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7fc",
+  "theme_color": "#1468e8",
+  "icons": [
+    {"src":"/nrj_graphics_icon.svg?v=2","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},
+    {"src":"/nrj_graphics_icon.svg?v=2","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
