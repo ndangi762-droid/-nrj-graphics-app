@@ -1,0 +1,82 @@
+:root{
+  --pu-bg:#f4f6f8;
+  --pu-surface:#ffffff;
+  --pu-ink:#111827;
+  --pu-muted:#6b7280;
+  --pu-line:#e5e7eb;
+  --pu-brand:#f5c400;
+  --pu-brand-2:#ffd83d;
+  --pu-dark:#111318;
+  --pu-green:#16a34a;
+  --pu-red:#dc2626;
+  --pu-radius:18px;
+}
+html{background:var(--pu-bg)!important;scroll-behavior:smooth}
+body{
+  background:linear-gradient(180deg,#f8fafc 0%,#f3f4f6 100%)!important;
+  color:var(--pu-ink)!important;
+  padding:14px!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+.container{max-width:1180px!important}
+.header{
+  background:linear-gradient(135deg,#111318 0%,#24262c 100%)!important;
+  border:1px solid #2f3239!important;
+  border-radius:22px!important;
+  padding:16px 20px!important;
+  margin-bottom:18px!important;
+  box-shadow:0 14px 35px rgba(17,19,24,.16)!important;
+}
+.header:after{display:none!important}
+.header-brand{gap:12px!important}
+.header-logo{width:50px!important;height:50px!important;border-radius:14px!important;box-shadow:0 7px 20px rgba(0,0,0,.28)!important}
+.header h1{color:#fff!important;font-size:23px!important;letter-spacing:1.2px!important}
+.header p{color:#aeb4bf!important}
+.card{
+  background:rgba(255,255,255,.96)!important;
+  color:var(--pu-ink)!important;
+  border:1px solid var(--pu-line)!important;
+  border-radius:var(--pu-radius)!important;
+  padding:20px!important;
+  box-shadow:0 8px 25px rgba(15,23,42,.055)!important;
+}
+.card:hover{box-shadow:0 12px 30px rgba(15,23,42,.08)!important}
+.card-title{color:#111827!important;border-bottom:1px solid #eef0f2!important;padding-bottom:12px!important;font-size:16px!important}
+.card-title:after{content:"";display:block;width:34px;height:3px;background:var(--pu-brand);margin-top:8px;border-radius:99px}
+label{color:#667085!important;font-size:10px!important;letter-spacing:.8px!important}
+input,select,textarea{
+  background:#f9fafb!important;color:#111827!important;border:1px solid #dfe3e8!important;
+  border-radius:12px!important;padding:11px 12px!important;min-height:42px!important;
+  transition:border-color .18s,box-shadow .18s,background .18s!important;
+}
+input:focus,select:focus,textarea:focus{border-color:#c9a400!important;background:#fff!important;box-shadow:0 0 0 3px rgba(245,196,0,.16)!important}
+.toggle-group{background:#eef0f2!important;border-radius:11px!important;padding:3px!important}
+.toggle-btn{border-radius:9px!important;padding:8px!important;color:#667085!important}
+.toggle-btn.active{color:#111827!important;background:#fff!important;box-shadow:0 2px 7px rgba(0,0,0,.08)!important}
+.item-card{background:#f8fafc!important;border:1px solid #e7e9ed!important;border-radius:13px!important;padding:12px 13px!important}
+.item-card h4{color:#111827!important}
+.item-card p{color:#667085!important}
+.btn{border-radius:12px!important;min-height:44px!important;box-shadow:none!important;transition:transform .12s,box-shadow .12s,filter .12s!important}
+.btn:hover{transform:translateY(-1px)!important;box-shadow:0 7px 18px rgba(15,23,42,.10)!important}
+.btn:active{transform:translateY(0)!important}
+.btn-accent{background:linear-gradient(135deg,#f5c400,#ffd83d)!important;color:#111!important}
+.btn-success{background:#16a34a!important}
+.btn-warning{background:#d97706!important}
+.btn-pdf{background:#dc2626!important}
+.btn-outline{background:#fff!important;border:1px solid #dfe3e8!important;color:#344054!important}
+.summary-row{color:#667085!important}
+.summary-row.total{color:#111827!important}
+.badge{border-radius:999px!important;padding:4px 8px!important}
+.modal{background:rgba(17,19,24,.48)!important;backdrop-filter:blur(4px)!important}
+.modal-content{border-radius:20px!important;border:1px solid #e5e7eb!important;box-shadow:0 25px 70px rgba(0,0,0,.20)!important}
+@media(max-width:899px){
+ body{padding:10px!important}
+ .header{border-radius:18px!important;padding:14px!important}
+ .header h1{font-size:20px!important}
+ .card{padding:15px!important;border-radius:16px!important}
+ .grid-2,.grid-3{gap:8px!important}
+}
+@media(max-width:560px){
+ .grid-2,.grid-3{grid-template-columns:1fr!important}
+ .header{position:sticky;top:8px;z-index:50}
+}
