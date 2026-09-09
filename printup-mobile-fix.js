@@ -1,36 +1,41 @@
 (() => {
   'use strict';
 
-  function cleanupLegacyMobileNav() {
+  function hideLegacyNav() {
     const shell = document.getElementById('printup-shell');
-    const ownBottom = document.querySelectorAll('.printup-bottom');
-    const ownFab = document.querySelectorAll('.printup-fab');
+    document.querySelectorAll('.printup-bottom').forEach((el,i)=>{if(i>0)el.remove();});
+    document.querySelectorAll('.printup-fab').forEach((el,i)=>{if(i>0)el.remove();});
+    if (!shell) return;
 
-    // Keep exactly one PRINTUP navigation bar and one FAB.
-    ownBottom.forEach((el, i) => { if (i > 0) el.remove(); });
-    ownFab.forEach((el, i) => { if (i > 0) el.remove(); });
-
-    // Hide legacy/fallback fixed navigation that can remain outside the new app shell.
-    const labels = ['Home', 'New Bill', 'History', 'Payment'];
-    document.querySelectorAll('body *').forEach((el) => {
-      if (!el || el === shell || el.closest('#printup-shell') || el.classList.contains('printup-bottom') || el.classList.contains('printup-fab')) return;
-      const cs = getComputedStyle(el);
-      if (cs.position !== 'fixed' && cs.position !== 'sticky') return;
-      const text = (el.innerText || '').replace(/\s+/g, ' ').trim();
-      const hits = labels.filter(label => text.includes(label)).length;
-      if (hits >= 3) {
-        el.setAttribute('data-printup-legacy-nav', '1');
-        el.style.setProperty('display', 'none', 'important');
-      }
+    // The original app already has a mobile navigation (Home / New Bill / Jobs / Payment).
+    // PRINTUP's injected navigation is the working navigation, so keep only that one.
+    const wanted = ['Home','New Bill','Jobs','Payment'];
+    const candidates = Array.from(document.querySelectorAll('body *')).filter(el => {
+      if (!el || el.closest('#printup-shell') || el.classList.contains('printup-bottom') || el.classList.contains('printup-fab')) return false;
+      const text=(el.innerText||'').replace(/\s+/g,' ').trim();
+      if (!text) return false;
+      const hits=wanted.filter(x=>text.includes(x)).length;
+      if(hits<3) return false;
+      const r=el.getBoundingClientRect();
+      return r.width >= Math.min(window.innerWidth*.7, 320) && r.height >= 45 && r.height <= 260;
     });
+
+    // Hide the smallest matching legacy navigation container(s), never body/html.
+    candidates.sort((a,b)=>a.getBoundingClientRect().height-b.getBoundingClientRect().height);
+    const target=candidates.find(el=>el.parentElement && !el.parentElement.matches('body,html')) || candidates[0];
+    if(target){
+      target.setAttribute('data-printup-legacy-nav','1');
+      target.style.setProperty('display','none','important');
+    }
   }
 
-  function boot() {
-    cleanupLegacyMobileNav();
-    setTimeout(cleanupLegacyMobileNav, 250);
-    setTimeout(cleanupLegacyMobileNav, 900);
+  function boot(){
+    hideLegacyNav();
+    setTimeout(hideLegacyNav,250);
+    setTimeout(hideLegacyNav,900);
+    setTimeout(hideLegacyNav,1800);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
   else boot();
 })();
