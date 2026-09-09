@@ -39,16 +39,18 @@ def _auth(request: Request) -> bool:
 
 def _with_ui(html: str) -> str:
     tags = [
-        '<link rel="stylesheet" href="/printup-ui.css?v=7">',
-        '<link rel="stylesheet" href="/printup-uxpilot.css?v=1">',
-        '<script src="/printup-dashboard.js?v=7" defer></script>',
-        '<script src="/printup-mobile-fix.js?v=6" defer></script>',
-        '<script src="/printup-bill-branding.js?v=4" defer></script>',
-        '<script src="/printup-newbill-ui.js?v=3" defer></script>',
-        '<script src="/printup-paytm-ui.js?v=2" defer></script>'
+        '<link rel="stylesheet" href="/printup-ui.css?v=8">',
+        '<link rel="stylesheet" href="/printup-uxpilot.css?v=2">',
+        '<script src="/printup-dashboard.js?v=8" defer></script>',
+        '<script src="/printup-mobile-fix.js?v=7" defer></script>',
+        '<script src="/printup-bill-branding.js?v=5" defer></script>',
+        '<script src="/printup-newbill-ui.js?v=4" defer></script>',
+        '<script src="/printup-paytm-ui.js?v=3" defer></script>',
+        '<link rel="stylesheet" href="/printup-uxpilot-final.css?v=1">'
     ]
     for tag in tags:
-        if "</head>" in html and tag.split('?')[0].split('"')[0] not in html:
+        marker = tag.split('"')[1].split('?')[0]
+        if marker not in html:
             html = html.replace("</head>", tag + "\n</head>", 1)
     return html
 
@@ -82,6 +84,8 @@ async def health(): return "ok"
 async def ui_css(): return HTMLResponse((BASE_DIR / "printup-ui.css").read_text(encoding="utf-8"), media_type="text/css")
 @app.get("/printup-uxpilot.css")
 async def uxpilot_css(): return HTMLResponse((BASE_DIR / "printup-uxpilot.css").read_text(encoding="utf-8"), media_type="text/css")
+@app.get("/printup-uxpilot-final.css")
+async def uxpilot_final_css(): return HTMLResponse((BASE_DIR / "printup-uxpilot-final.css").read_text(encoding="utf-8"), media_type="text/css")
 @app.get("/printup-dashboard.js")
 async def dashboard_js(): return HTMLResponse((BASE_DIR / "printup-dashboard.js").read_text(encoding="utf-8"), media_type="application/javascript")
 @app.get("/printup-mobile-fix.js")
