@@ -39,12 +39,13 @@ def _auth(request: Request) -> bool:
 
 def _with_ui(html: str) -> str:
     tags = [
-        '<link rel="stylesheet" href="/printup-ui.css?v=6">',
-        '<script src="/printup-dashboard.js?v=6" defer></script>',
-        '<script src="/printup-mobile-fix.js?v=5" defer></script>',
-        '<script src="/printup-bill-branding.js?v=3" defer></script>',
-        '<script src="/printup-newbill-ui.js?v=2" defer></script>',
-        '<script src="/printup-paytm-ui.js?v=1" defer></script>'
+        '<link rel="stylesheet" href="/printup-ui.css?v=7">',
+        '<link rel="stylesheet" href="/printup-uxpilot.css?v=1">',
+        '<script src="/printup-dashboard.js?v=7" defer></script>',
+        '<script src="/printup-mobile-fix.js?v=6" defer></script>',
+        '<script src="/printup-bill-branding.js?v=4" defer></script>',
+        '<script src="/printup-newbill-ui.js?v=3" defer></script>',
+        '<script src="/printup-paytm-ui.js?v=2" defer></script>'
     ]
     for tag in tags:
         if "</head>" in html and tag.split('?')[0].split('"')[0] not in html:
@@ -79,6 +80,8 @@ async def health(): return "ok"
 
 @app.get("/printup-ui.css")
 async def ui_css(): return HTMLResponse((BASE_DIR / "printup-ui.css").read_text(encoding="utf-8"), media_type="text/css")
+@app.get("/printup-uxpilot.css")
+async def uxpilot_css(): return HTMLResponse((BASE_DIR / "printup-uxpilot.css").read_text(encoding="utf-8"), media_type="text/css")
 @app.get("/printup-dashboard.js")
 async def dashboard_js(): return HTMLResponse((BASE_DIR / "printup-dashboard.js").read_text(encoding="utf-8"), media_type="application/javascript")
 @app.get("/printup-mobile-fix.js")
