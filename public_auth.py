@@ -1,19 +1,14 @@
 import json, os, urllib.error, urllib.request
 
-def _config():
-    url = os.getenv('SUPABASE_URL', '').rstrip('/')
-    key = os.getenv('SUPABASE_ANON_KEY', '')
-    if not url or not key:
-        raise RuntimeError('Public authentication is not configured')
-    return url, key
+SUPABASE_URL = os.getenv('SUPABASE_URL', 'https://bjdxaknxhllhbtpckrza.supabase.co').rstrip('/')
+SUPABASE_PUBLISHABLE_KEY = os.getenv('SUPABASE_PUBLISHABLE_KEY', 'sb_publishable_ndgujsCl7qR_H_6Kvkk7Qw_deT4FYZk')
 
 def _request(path, method='POST', payload=None, access_token=None):
-    url, anon_key = _config()
     body = None if payload is None else json.dumps(payload).encode()
-    headers = {'apikey': anon_key, 'Content-Type': 'application/json'}
+    headers = {'apikey': SUPABASE_PUBLISHABLE_KEY, 'Content-Type': 'application/json'}
     if access_token:
         headers['Authorization'] = f'Bearer {access_token}'
-    req = urllib.request.Request(url + path, data=body, headers=headers, method=method)
+    req = urllib.request.Request(SUPABASE_URL + path, data=body, headers=headers, method=method)
     try:
         with urllib.request.urlopen(req, timeout=12) as res:
             raw = res.read().decode()
@@ -37,3 +32,6 @@ def get_user(access_token: str):
 
 def provision_shop(access_token: str, shop: dict):
     return _request('/rest/v1/rpc/provision_shop_for_current_user', payload=shop, access_token=access_token)
+
+def get_current_user_shop(access_token: str):
+    return _request('/rest/v1/rpc/get_current_user_shop', access_token=access_token)
