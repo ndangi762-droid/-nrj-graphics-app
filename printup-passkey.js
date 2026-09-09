@@ -16,9 +16,7 @@
     return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
   };
   const registrationJSON = (cred) => ({
-    id: cred.id,
-    rawId: bufToB64(cred.rawId),
-    type: cred.type,
+    id: cred.id, rawId: bufToB64(cred.rawId), type: cred.type,
     authenticatorAttachment: cred.authenticatorAttachment || 'platform',
     response: {
       clientDataJSON: bufToB64(cred.response.clientDataJSON),
@@ -28,9 +26,7 @@
     clientExtensionResults: cred.getClientExtensionResults ? cred.getClientExtensionResults() : {}
   });
   const authenticationJSON = (cred) => ({
-    id: cred.id,
-    rawId: bufToB64(cred.rawId),
-    type: cred.type,
+    id: cred.id, rawId: bufToB64(cred.rawId), type: cred.type,
     authenticatorAttachment: cred.authenticatorAttachment || 'platform',
     response: {
       clientDataJSON: bufToB64(cred.response.clientDataJSON),
@@ -41,17 +37,46 @@
     clientExtensionResults: cred.getClientExtensionResults ? cred.getClientExtensionResults() : {}
   });
   const supported = () => !!(window.PublicKeyCredential && navigator.credentials && window.isSecureContext);
+  const iconUrl = '/nrj_graphics_icon.svg?v=2';
 
   function applyBrandLogo() {
-    const logoUrl = 'https://raw.githubusercontent.com/ndangi762-droid/-nrj-graphics-app/main/nrj_graphics_icon.svg';
     document.querySelectorAll('.pu-brand-mark').forEach(el => {
-      el.style.backgroundImage = `url("${logoUrl}")`;
+      el.style.backgroundImage = `url("${iconUrl}")`;
       el.style.backgroundSize = 'cover';
       el.style.backgroundPosition = 'center';
       el.style.backgroundRepeat = 'no-repeat';
       el.style.fontSize = '0';
       el.textContent = '';
     });
+  }
+
+  function applyLoginBrand() {
+    if (!$('faceLoginBtn') && !$('faceSetupBtn')) return;
+    if (!document.querySelector('#printupLoginIcon')) {
+      const box = document.querySelector('.box');
+      const title = box && box.querySelector('h1');
+      if (box && title) {
+        const img = document.createElement('img');
+        img.id = 'printupLoginIcon';
+        img.src = iconUrl;
+        img.alt = 'PRINTUP by NRJ Production';
+        img.style.cssText = 'display:block;width:118px;height:118px;object-fit:cover;border-radius:27px;margin:0 auto 18px;box-shadow:0 16px 32px rgba(20,104,232,.22)';
+        box.insertBefore(img, title);
+        title.style.textAlign = 'center';
+        title.style.fontSize = '28px';
+        title.style.letterSpacing = '1px';
+        const sub = box.querySelector('p');
+        if (sub) sub.style.textAlign = 'center';
+      }
+    }
+    if (!document.querySelector('link[data-printup-icon]')) {
+      const link = document.createElement('link');
+      link.rel = 'apple-touch-icon'; link.href = iconUrl; link.setAttribute('data-printup-icon','1');
+      document.head.appendChild(link);
+      const fav = document.createElement('link');
+      fav.rel = 'icon'; fav.href = iconUrl; fav.setAttribute('data-printup-icon','1');
+      document.head.appendChild(fav);
+    }
   }
 
   function showSetupCard() {
@@ -109,6 +134,7 @@
 
   async function init() {
     applyBrandLogo();
+    applyLoginBrand();
     const loginBtn = $('faceLoginBtn');
     const setupBtn = $('faceSetupBtn');
     if (loginBtn || setupBtn) {
@@ -123,7 +149,6 @@
       } catch (_) {}
       return;
     }
-
     if (!supported()) return;
     try {
       const r = await fetch('/passkey/status');
@@ -134,6 +159,5 @@
       }
     } catch (_) {}
   }
-
   document.addEventListener('DOMContentLoaded', init);
 })();
