@@ -7,6 +7,8 @@ billing/UI implementation.
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 
+from starlette.responses import Response
+
 _LEGACY_PATH = Path(__file__).resolve().parent.parent / "main.py"
 _SPEC = spec_from_file_location("printup_legacy_main", _LEGACY_PATH)
 if _SPEC is None or _SPEC.loader is None:
@@ -19,8 +21,6 @@ app = _LEGACY.app
 from public_core import router as public_core_router  # noqa: E402
 
 app.include_router(public_core_router)
-
-from starlette.responses import Response  # noqa: E402
 
 
 @app.middleware("http")
@@ -36,8 +36,11 @@ async def inject_public_data_bridge(request, call_next):
 
     marker = b"/api/public/printup-public-data.js"
     if marker not in body and b"</head>" in body:
-        tag = b'<script src="/api/public/printup-public-data.js?v=1" defer></script>'
-        body = body.replace(b"</head>", tag + b"\n</head>", 1)
+        tags = (
+            b'<link rel="stylesheet" href="/printup-public-data.css?v=1">\n'
+            b'<script src="/api/public/printup-public-data.js?v=2" defer></script>'
+        )
+        body = body.replace(b"</head>", tags + b"\n</head>", 1)
 
     headers = dict(response.headers)
     headers.pop("content-length", None)
