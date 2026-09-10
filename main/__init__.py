@@ -9,7 +9,8 @@ from pathlib import Path
 
 from fastapi.responses import Response
 
-_LEGACY_PATH = Path(__file__).resolve().parent.parent / "main.py"
+_BASE = Path(__file__).resolve().parent.parent
+_LEGACY_PATH = _BASE / "main.py"
 _SPEC = spec_from_file_location("printup_legacy_main", _LEGACY_PATH)
 if _SPEC is None or _SPEC.loader is None:
     raise RuntimeError("PRINTUP legacy application could not be loaded")
@@ -25,7 +26,12 @@ app.include_router(public_core_router)
 
 @app.get("/printup-public-data.css")
 async def public_data_css():
-    return Response(content=(Path(__file__).resolve().parent.parent / "printup-public-data.css").read_text(encoding="utf-8"), media_type="text/css")
+    return Response(content=(_BASE / "printup-public-data.css").read_text(encoding="utf-8"), media_type="text/css")
+
+
+@app.get("/printup-history-actions.js")
+async def history_actions_js():
+    return Response(content=(_BASE / "printup-history-actions.js").read_text(encoding="utf-8"), media_type="application/javascript")
 
 
 @app.middleware("http")
