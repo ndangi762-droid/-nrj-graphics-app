@@ -13,7 +13,7 @@ declare
   code text;
 begin
   loop
-    code := 'PRINTUP-' || upper(substr(encode(gen_random_bytes(4), 'hex'), 1, 5));
+    code := 'PRINTUP-' || upper(substr(encode(extensions.gen_random_bytes(4), 'hex'), 1, 5));
     exit when not exists (select 1 from public.shops where shop_code = code);
   end loop;
   return code;
