@@ -7,7 +7,7 @@ billing/UI implementation.
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 
-from starlette.responses import Response
+from fastapi.responses import Response
 
 _LEGACY_PATH = Path(__file__).resolve().parent.parent / "main.py"
 _SPEC = spec_from_file_location("printup_legacy_main", _LEGACY_PATH)
@@ -21,6 +21,11 @@ app = _LEGACY.app
 from public_core import router as public_core_router  # noqa: E402
 
 app.include_router(public_core_router)
+
+
+@app.get("/printup-public-data.css")
+async def public_data_css():
+    return Response(content=(Path(__file__).resolve().parent.parent / "printup-public-data.css").read_text(encoding="utf-8"), media_type="text/css")
 
 
 @app.middleware("http")
