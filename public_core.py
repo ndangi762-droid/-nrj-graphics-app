@@ -1,6 +1,7 @@
 from pathlib import Path
 from urllib.parse import urlencode
 from datetime import datetime, timezone
+import math
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, Response
@@ -40,6 +41,14 @@ def _result(status, data, fallback="Database request failed."):
     return {"ok": True, "data": data}
 
 
+def _number(value, default=0.0):
+    try:
+        number = float(value or 0)
+        return number if math.isfinite(number) else default
+    except (TypeError, ValueError):
+        return default
+
+
 @router.get("/printup-public-data.js")
 async def public_data_js():
     content = (BASE_DIR / "printup-public-data.js").read_text(encoding="utf-8")
@@ -55,6 +64,28 @@ async def shop_info(body: dict):
     params = {"select": "*", "id": f"eq.{shop_id}", "limit": "1"}
     status, data = _request(f"/rest/v1/shops?{urlencode(params)}", method="GET", access_token=token)
     return _result(status, data, "Unable to load shop profile.")
+
+
+@router.post("/shop/update")
+async def shop_update(body: dict):
+    auth, error = _auth(body)
+    if error:
+        return error
+    token, shop_id, _ = auth
+    allowed = {
+        "shop_name", "owner_name", "mobile", "email", "address", "city", "state",
+        "pin_code", "business_type", "gstin", "pan", "logo_url", "invoice_prefix"
+    }
+    payload = {key: str(body.get(key, "")).strip() for key in allowed if key in body}
+    if "shop_name" in payload and not payload["shop_name"]:
+        return JSONResponse({"ok": False, "error": "Shop name is required."}, status_code=400)
+    if "invoice_prefix" in payload and not payload["invoice_prefix"]:
+        payload["invoice_prefix"] = "INV"
+    if not payload:
+        return JSONResponse({"ok": False, "error": "No shop details were provided."}, status_code=400)
+    path = f"/rest/v1/shops?id=eq.{shop_id}"
+    status, data = _request(path, method="PATCH", payload=payload, access_token=token)
+    return _result(status, data, "Unable to update shop profile.")
 
 
 @router.post("/customers/list")
@@ -107,15 +138,13 @@ async def jobs_create(body: dict):
     title = str(body.get("title", "")).strip()
     if not title:
         return JSONResponse({"ok": False, "error": "Job title is required."}, status_code=400)
-    try:
-        total = max(0.0, float(body.get("total", 0) or 0))
-        advance = max(0.0, float(body.get("advance", 0) or 0))
-        if advance > total:
-            advance = total
-    except (TypeError, ValueError):
-        return JSONResponse({"ok": False, "error": "Enter valid amounts."}, status_code=400)
+    total = max(0.0, _number(body.get("total")))
+    advance = max(0.0, _number(body.get("advance")))
+    expenses = max(0.0, _number(body.get("expenses")))
+    if advance > total:
+        advance = total
     now = datetime.now(timezone.utc)
-    stamp = now.strftime("%Y%m%d%H%M%S")
+    stamp = now.strftime("%Y%m%d%H%M%S%f")
     job_number = str(body.get("job_number", "")).strip() or f"JOB-{stamp}"
     payload = {
         "shop_id": shop_id,
@@ -127,7 +156,7 @@ async def jobs_create(body: dict):
         "total": total,
         "advance": advance,
         "balance": max(0.0, total - advance),
-        "expenses": max(0.0, float(body.get("expenses", 0) or 0)),
+        "expenses": expenses,
         "notes": str(body.get("notes", "")).strip(),
         "bill_type": str(body.get("bill_type", "bill")).strip() or "bill",
     }
@@ -167,14 +196,24 @@ async def payments_create(body: dict):
     if error:
         return error
     token, shop_id, _ = auth
-    try:
-        amount = float(body.get("amount", 0) or 0)
-    except (TypeError, ValueError):
-        amount = 0
+    amount = _number(body.get("amount"))
     if amount <= 0:
         return JSONResponse({"ok": False, "error": "Payment amount must be greater than zero."}, status_code=400)
     job_id = str(body.get("job_id", "")).strip() or None
     customer_id = str(body.get("customer_id", "")).strip() or None
+
+    if job_id:
+        job_path = f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}&select=id,total,advance,balance,customer_id"
+        job_status, jobs = _request(job_path, method="GET", access_token=token)
+        if job_status >= 400 or not isinstance(jobs, list) or not jobs:
+            return JSONResponse({"ok": False, "error": "Bill / job not found."}, status_code=404)
+        job = jobs[0]
+        balance = max(0.0, _number(job.get("balance")))
+        if amount > balance:
+            return JSONResponse({"ok": False, "error": f"Payment cannot exceed the current due of ₹{balance:,.2f}."}, status_code=400)
+        if not customer_id and job.get("customer_id"):
+            customer_id = job.get("customer_id")
+
     payload = {
         "shop_id": shop_id,
         "job_id": job_id,
@@ -192,11 +231,16 @@ async def payments_create(body: dict):
         job_status, jobs = _request(job_path, method="GET", access_token=token)
         if job_status < 400 and isinstance(jobs, list) and jobs:
             job = jobs[0]
-            old_advance = float(job.get("advance") or 0)
-            total = float(job.get("total") or 0)
+            old_advance = max(0.0, _number(job.get("advance")))
+            total = max(0.0, _number(job.get("total")))
             new_advance = min(total, old_advance + amount)
             new_balance = max(0.0, total - new_advance)
-            _request(f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}", method="PATCH", payload={"advance": new_advance, "balance": new_balance}, access_token=token)
+            _request(
+                f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}",
+                method="PATCH",
+                payload={"advance": new_advance, "balance": new_balance},
+                access_token=token,
+            )
     return {"ok": True, "data": data}
 
 
@@ -220,10 +264,7 @@ async def services_create(body: dict):
     category = str(body.get("category", "General")).strip() or "General"
     if not name:
         return JSONResponse({"ok": False, "error": "Service name is required."}, status_code=400)
-    try:
-        rate = float(body.get("rate", 0) or 0)
-    except (TypeError, ValueError):
-        rate = 0
-    payload = {"shop_id": shop_id, "name": name, "category": category, "rate": max(0.0, rate), "active": True}
+    rate = max(0.0, _number(body.get("rate")))
+    payload = {"shop_id": shop_id, "name": name, "category": category, "rate": rate, "active": True}
     status, data = _request("/rest/v1/services", method="POST", payload=payload, access_token=token)
     return _result(status, data, "Unable to create service.")
