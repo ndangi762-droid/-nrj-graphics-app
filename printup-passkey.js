@@ -13,7 +13,7 @@
     const bytes = new Uint8Array(buf);
     let bin = '';
     bytes.forEach(b => bin += String.fromCharCode(b));
-    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+    return btoa(bin).replace(/\+/g, '-').replace(/_/g, '_').replace(/=+$/g, '');
   };
   const registrationJSON = (cred) => ({
     id: cred.id, rawId: bufToB64(cred.rawId), type: cred.type,
@@ -79,6 +79,88 @@
     }
   }
 
+  function installPublicOtpLogin() {
+    if (location.pathname !== '/login' || document.querySelector('#publicOtpLogin')) return;
+    const box = document.querySelector('.box');
+    if (!box) return;
+
+    const card = document.createElement('div');
+    card.id = 'publicOtpLogin';
+    card.style.cssText = 'margin-top:20px;padding-top:18px;border-top:1px solid #e7ebf2;font-family:Inter,system-ui,sans-serif';
+    card.innerHTML = `
+      <div style="font-weight:800;color:#102a56;font-size:15px;margin-bottom:5px">Public account login</div>
+      <div style="font-size:12px;color:#667085;margin-bottom:10px">Login with the mobile number used for your PRINTUP shop.</div>
+      <input id="publicLoginMobile" inputmode="tel" autocomplete="tel" placeholder="98765 43210" style="width:100%;box-sizing:border-box;padding:13px;border:1px solid #d7deea;border-radius:12px;font-size:15px">
+      <button id="publicLoginSend" type="button" style="width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;background:#1468e8;color:#fff;font-weight:800">Send Login OTP</button>
+      <div id="publicLoginOtpWrap" style="display:none;margin-top:10px">
+        <input id="publicLoginOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit OTP" style="width:100%;box-sizing:border-box;padding:13px;border:1px solid #d7deea;border-radius:12px;font-size:18px;text-align:center;letter-spacing:6px;font-weight:800">
+        <button id="publicLoginVerify" type="button" style="width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;background:#0f172a;color:#fff;font-weight:800">Verify & Login</button>
+        <button id="publicLoginResend" type="button" style="width:100%;margin-top:8px;padding:10px;border:0;background:transparent;color:#1468e8;font-weight:800">Resend OTP</button>
+      </div>
+      <div id="publicLoginMsg" style="min-height:18px;margin-top:8px;font-size:12px;text-align:center;color:#667085"></div>`;
+    box.appendChild(card);
+
+    const clean = (v) => (v || '').replace(/\D/g, '');
+    const normalize = (v) => {
+      const x = clean(v);
+      if (x.length === 10 && '6789'.includes(x[0])) return '+91' + x;
+      if (x.length === 12 && x.startsWith('91') && '6789'.includes(x[2])) return '+' + x;
+      return null;
+    };
+    const setMsg = (text, good=false) => {
+      const el = $('publicLoginMsg');
+      if (el) { el.textContent = text; el.style.color = good ? '#059669' : '#667085'; }
+    };
+    let mobile = '';
+
+    const post = async (url, data) => {
+      const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || j.message || 'Request failed');
+      return j;
+    };
+
+    const send = async () => {
+      mobile = normalize($('publicLoginMobile').value);
+      if (!mobile) { setMsg('Enter a valid Indian mobile number.'); return; }
+      try {
+        $('publicLoginSend').disabled = true;
+        await post('/public/otp/send', { mobile });
+        $('publicLoginOtpWrap').style.display = 'block';
+        setMsg('OTP sent. Check your SMS.', true);
+        $('publicLoginOtp').focus();
+      } catch (e) {
+        setMsg(e.message || 'Unable to send OTP.');
+      } finally {
+        $('publicLoginSend').disabled = false;
+      }
+    };
+
+    const verify = async () => {
+      const otp = $('publicLoginOtp').value.trim();
+      if (!/^\d{6}$/.test(otp)) { setMsg('Enter the 6-digit OTP.'); return; }
+      try {
+        $('publicLoginVerify').disabled = true;
+        const verified = await post('/public/otp/verify', { mobile, otp });
+        if (!verified.access_token) throw new Error('Authentication session was not returned.');
+        const session = await post('/public/session', { access_token: verified.access_token });
+        if (!session.ok) throw new Error(session.error || 'Unable to create PRINTUP session.');
+        setMsg('Login successful. Opening PRINTUP…', true);
+        location.href = '/';
+      } catch (e) {
+        setMsg(e.message || 'OTP login failed.');
+      } finally {
+        $('publicLoginVerify').disabled = false;
+      }
+    };
+
+    $('publicLoginSend').onclick = send;
+    $('publicLoginVerify').onclick = verify;
+    $('publicLoginResend').onclick = send;
+    $('publicLoginMobile').addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+    $('publicLoginOtp').addEventListener('keydown', e => { if (e.key === 'Enter') verify(); });
+  }
+
   function showSetupCard() {
     if ($('passkeySetupCard')) return;
     const card = document.createElement('div');
@@ -128,13 +210,14 @@
       window.location.href = '/';
     } catch (e) {
       if (e && e.name === 'NotAllowedError') msg('Face ID was cancelled or timed out.');
-      else msg(e.message || 'Face ID login failed.');
+      else msg(e.message || 'Face ID login failed');
     }
   }
 
   async function init() {
     applyBrandLogo();
     applyLoginBrand();
+    installPublicOtpLogin();
     const loginBtn = $('faceLoginBtn');
     const setupBtn = $('faceSetupBtn');
     if (loginBtn || setupBtn) {
