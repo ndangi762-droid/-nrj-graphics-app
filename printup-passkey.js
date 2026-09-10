@@ -13,7 +13,7 @@
     const bytes = new Uint8Array(buf);
     let bin = '';
     bytes.forEach(b => bin += String.fromCharCode(b));
-    return btoa(bin).replace(/\+/g, '-').replace(/_/g, '_').replace(/=+$/g, '');
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
   };
   const registrationJSON = (cred) => ({
     id: cred.id, rawId: bufToB64(cred.rawId), type: cred.type,
@@ -210,7 +210,7 @@
       window.location.href = '/';
     } catch (e) {
       if (e && e.name === 'NotAllowedError') msg('Face ID was cancelled or timed out.');
-      else msg(e.message || 'Face ID login failed');
+      else msg(e.message || 'Face ID login failed.');
     }
   }
 
