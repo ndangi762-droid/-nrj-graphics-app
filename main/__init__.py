@@ -43,7 +43,8 @@ async def inject_public_data_bridge(request, call_next):
     if marker not in body and b"</head>" in body:
         tags = (
             b'<link rel="stylesheet" href="/printup-public-data.css?v=1">\n'
-            b'<script src="/api/public/printup-public-data.js?v=2" defer></script>'
+            b'<script src="/api/public/printup-public-data.js?v=2" defer></script>\n'
+            b'<script src="/printup-history-actions.js?v=1" defer></script>'
         )
         body = body.replace(b"</head>", tags + b"\n</head>", 1)
 
