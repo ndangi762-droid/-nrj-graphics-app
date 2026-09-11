@@ -1,4 +1,8 @@
-"""PRINTUP production asset bootstrap."""
+"""PRINTUP production asset bootstrap.
+
+Keep the application login in main.py. This module exposes reliable PRINTUP
+assets and injects the lightweight UI enhancement scripts into HTML responses.
+"""
 import warnings
 from pathlib import Path
 
@@ -25,7 +29,7 @@ try:
             "/manifest.json": ("manifest.json", "application/manifest+json"),
             "/service-worker.js": ("service-worker.js", "application/javascript"),
             "/favicon.svg": ("printup-icon.svg", "image/svg+xml"),
-            "/favicon.ico": ("printup-icon.svg", "image/svg+xml"),
+            "/favicon.ico": ("printup-icon.svg", "image/x-icon"),
             "/nrj_graphics_icon.svg": ("printup-icon.svg", "image/svg+xml"),
             "/printup_icon_64.png": ("printup-icon.svg", "image/svg+xml"),
             "/printup-icon.svg": ("printup-icon.svg", "image/svg+xml"),
@@ -49,10 +53,18 @@ try:
                 async for chunk in response.body_iterator:
                     chunks.append(chunk)
                 body = b"".join(chunks)
-                marker = b"</head>"
-                tags = b'<link rel="stylesheet" href="/printup-motion.css?v=1">'
-                if marker in body and b"printup-motion.css" not in body:
-                    body = body.replace(marker, tags + b"\n" + marker, 1)
+                head_marker = b"</head>"
+                body_marker = b"</body>"
+                motion = b'<link rel="stylesheet" href="/printup-motion.css?v=2">'
+                scripts = (
+                    b'<script src="/printup-services-catalog.js?v=5" defer></script>'
+                    b'<script src="/printup-account-drawer.js?v=3" defer></script>'
+                    b'<script src="/printup-profile-edit.js?v=2" defer></script>'
+                )
+                if head_marker in body and b"printup-motion.css" not in body:
+                    body = body.replace(head_marker, motion + b"\n" + head_marker, 1)
+                if body_marker in body and b"printup-services-catalog.js" not in body:
+                    body = body.replace(body_marker, scripts + b"\n" + body_marker, 1)
                 headers = dict(response.headers)
                 headers.pop("content-length", None)
                 return Response(content=body, status_code=response.status_code, headers=headers, media_type="text/html")
