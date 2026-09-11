@@ -19,7 +19,7 @@ try:
             target = base / path
             if not target.is_file():
                 return Response(status_code=404)
-            return FileResponse(target, media_type=media)
+            return FileResponse(target, media_type=media, headers={"Cache-Control": "no-store, max-age=0"})
 
         assets = {
             "/manifest.json": ("manifest.json", "application/manifest+json"),
@@ -47,7 +47,7 @@ try:
                     chunks.append(chunk)
                 body = b"".join(chunks)
                 marker = b"</body>"
-                tag = b'<script src="/printup-services-catalog.js?v=1" defer></script>'
+                tag = b'<script src="/printup-services-catalog.js?v=2" defer></script>'
                 if marker in body and tag not in body:
                     body = body.replace(marker, tag + b"\n" + marker, 1)
                 headers = dict(response.headers)
