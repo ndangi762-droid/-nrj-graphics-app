@@ -80,10 +80,7 @@ async def shop_update(body: dict):
     if error:
         return error
     token, shop_id, _ = auth
-    allowed = {
-        "shop_name", "owner_name", "mobile", "email", "address", "city", "state",
-        "pin_code", "business_type", "gstin", "pan", "logo_url", "invoice_prefix"
-    }
+    allowed = {"shop_name", "owner_name", "mobile", "email", "address", "city", "state", "pin_code", "business_type", "gstin", "pan", "logo_url", "invoice_prefix"}
     payload = {key: str(body.get(key, "")).strip() for key in allowed if key in body}
     if "shop_name" in payload and not payload["shop_name"]:
         return JSONResponse({"ok": False, "error": "Shop name is required."}, status_code=400)
@@ -117,14 +114,7 @@ async def customers_create(body: dict):
     name = str(body.get("name", "")).strip()
     if not name:
         return JSONResponse({"ok": False, "error": "Customer name is required."}, status_code=400)
-    payload = {
-        "shop_id": shop_id,
-        "name": name,
-        "phone": str(body.get("phone", "")).strip(),
-        "email": str(body.get("email", "")).strip(),
-        "address": str(body.get("address", "")).strip(),
-        "notes": str(body.get("notes", "")).strip(),
-    }
+    payload = {"shop_id": shop_id, "name": name, "phone": str(body.get("phone", "")).strip(), "email": str(body.get("email", "")).strip(), "address": str(body.get("address", "")).strip(), "notes": str(body.get("notes", "")).strip()}
     status, data = _request("/rest/v1/customers", method="POST", payload=payload, access_token=token)
     return _result(status, data, "Unable to create customer.")
 
@@ -159,20 +149,7 @@ async def jobs_create(body: dict):
     now = datetime.now(timezone.utc)
     stamp = now.strftime("%Y%m%d%H%M%S%f")
     job_number = str(body.get("job_number", "")).strip() or f"JOB-{stamp}"
-    payload = {
-        "shop_id": shop_id,
-        "customer_id": customer_id,
-        "job_number": job_number,
-        "bill_number": str(body.get("bill_number", "")).strip() or job_number,
-        "title": title,
-        "status": str(body.get("status", "pending")).strip() or "pending",
-        "total": total,
-        "advance": advance,
-        "balance": max(0.0, total - advance),
-        "expenses": expenses,
-        "notes": str(body.get("notes", "")).strip(),
-        "bill_type": str(body.get("bill_type", "bill")).strip() or "bill",
-    }
+    payload = {"shop_id": shop_id, "customer_id": customer_id, "job_number": job_number, "bill_number": str(body.get("bill_number", "")).strip() or job_number, "title": title, "status": str(body.get("status", "pending")).strip() or "pending", "total": total, "advance": advance, "balance": max(0.0, total - advance), "expenses": expenses, "notes": str(body.get("notes", "")).strip(), "bill_type": str(body.get("bill_type", "bill")).strip() or "bill"}
     status, data = _request("/rest/v1/jobs", method="POST", payload=payload, access_token=token)
     return _result(status, data, "Unable to create job/bill record.")
 
@@ -214,51 +191,14 @@ async def payments_create(body: dict):
         return JSONResponse({"ok": False, "error": "Payment amount must be greater than zero."}, status_code=400)
     job_id = str(body.get("job_id", "")).strip() or None
     customer_id = str(body.get("customer_id", "")).strip() or None
-
+    if not job_id:
+        return JSONResponse({"ok": False, "error": "Bill / job is required for a payment."}, status_code=400)
     if customer_id and not _owned_customer(token, shop_id, customer_id):
         return JSONResponse({"ok": False, "error": "Customer does not belong to this shop."}, status_code=400)
-
-    if job_id:
-        job_path = f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}&select=id,total,advance,balance,customer_id"
-        job_status, jobs = _request(job_path, method="GET", access_token=token)
-        if job_status >= 400 or not isinstance(jobs, list) or not jobs:
-            return JSONResponse({"ok": False, "error": "Bill / job not found."}, status_code=404)
-        job = jobs[0]
-        balance = max(0.0, _number(job.get("balance")))
-        if amount > balance:
-            return JSONResponse({"ok": False, "error": f"Payment cannot exceed the current due of ₹{balance:,.2f}."}, status_code=400)
-        if not customer_id and job.get("customer_id"):
-            customer_id = job.get("customer_id")
-        if customer_id and customer_id != job.get("customer_id"):
-            return JSONResponse({"ok": False, "error": "Payment customer does not match the bill."}, status_code=400)
-
-    payload = {
-        "shop_id": shop_id,
-        "job_id": job_id,
-        "customer_id": customer_id,
-        "amount": amount,
-        "method": str(body.get("method", "cash")).strip() or "cash",
-        "reference": str(body.get("reference", "")).strip(),
-        "notes": str(body.get("notes", "")).strip(),
-    }
-    status, data = _request("/rest/v1/payments", method="POST", payload=payload, access_token=token)
+    rpc_payload = {"p_job_id": job_id, "p_customer_id": customer_id, "p_amount": amount, "p_method": str(body.get("method", "cash")).strip() or "cash", "p_reference": str(body.get("reference", "")).strip(), "p_notes": str(body.get("notes", "")).strip()}
+    status, data = _request("/rest/v1/rpc/record_printup_payment", payload=rpc_payload, access_token=token)
     if status >= 400:
-        return _result(status, data, "Unable to record payment.")
-    if job_id:
-        job_path = f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}&select=total,advance,balance"
-        job_status, jobs = _request(job_path, method="GET", access_token=token)
-        if job_status < 400 and isinstance(jobs, list) and jobs:
-            job = jobs[0]
-            old_advance = max(0.0, _number(job.get("advance")))
-            total = max(0.0, _number(job.get("total")))
-            new_advance = min(total, old_advance + amount)
-            new_balance = max(0.0, total - new_advance)
-            _request(
-                f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}",
-                method="PATCH",
-                payload={"advance": new_advance, "balance": new_balance},
-                access_token=token,
-            )
+        return JSONResponse({"ok": False, "error": "Unable to record payment. Please refresh the bill and try again."}, status_code=400)
     return {"ok": True, "data": data}
 
 
