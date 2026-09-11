@@ -49,6 +49,14 @@ def _number(value, default=0.0):
         return default
 
 
+def _owned_customer(token, shop_id, customer_id):
+    if not customer_id:
+        return True
+    path = f"/rest/v1/customers?id=eq.{customer_id}&shop_id=eq.{shop_id}&select=id&limit=1"
+    status, data = _request(path, method="GET", access_token=token)
+    return status < 400 and isinstance(data, list) and bool(data)
+
+
 @router.get("/printup-public-data.js")
 async def public_data_js():
     content = (BASE_DIR / "printup-public-data.js").read_text(encoding="utf-8")
@@ -79,6 +87,8 @@ async def shop_update(body: dict):
     payload = {key: str(body.get(key, "")).strip() for key in allowed if key in body}
     if "shop_name" in payload and not payload["shop_name"]:
         return JSONResponse({"ok": False, "error": "Shop name is required."}, status_code=400)
+    if "owner_name" in payload and not payload["owner_name"]:
+        return JSONResponse({"ok": False, "error": "Owner name is required."}, status_code=400)
     if "invoice_prefix" in payload and not payload["invoice_prefix"]:
         payload["invoice_prefix"] = "INV"
     if not payload:
@@ -138,6 +148,9 @@ async def jobs_create(body: dict):
     title = str(body.get("title", "")).strip()
     if not title:
         return JSONResponse({"ok": False, "error": "Job title is required."}, status_code=400)
+    customer_id = str(body.get("customer_id", "")).strip() or None
+    if customer_id and not _owned_customer(token, shop_id, customer_id):
+        return JSONResponse({"ok": False, "error": "Customer does not belong to this shop."}, status_code=400)
     total = max(0.0, _number(body.get("total")))
     advance = max(0.0, _number(body.get("advance")))
     expenses = max(0.0, _number(body.get("expenses")))
@@ -148,7 +161,7 @@ async def jobs_create(body: dict):
     job_number = str(body.get("job_number", "")).strip() or f"JOB-{stamp}"
     payload = {
         "shop_id": shop_id,
-        "customer_id": body.get("customer_id") or None,
+        "customer_id": customer_id,
         "job_number": job_number,
         "bill_number": str(body.get("bill_number", "")).strip() or job_number,
         "title": title,
@@ -202,6 +215,9 @@ async def payments_create(body: dict):
     job_id = str(body.get("job_id", "")).strip() or None
     customer_id = str(body.get("customer_id", "")).strip() or None
 
+    if customer_id and not _owned_customer(token, shop_id, customer_id):
+        return JSONResponse({"ok": False, "error": "Customer does not belong to this shop."}, status_code=400)
+
     if job_id:
         job_path = f"/rest/v1/jobs?id=eq.{job_id}&shop_id=eq.{shop_id}&select=id,total,advance,balance,customer_id"
         job_status, jobs = _request(job_path, method="GET", access_token=token)
@@ -213,6 +229,8 @@ async def payments_create(body: dict):
             return JSONResponse({"ok": False, "error": f"Payment cannot exceed the current due of ₹{balance:,.2f}."}, status_code=400)
         if not customer_id and job.get("customer_id"):
             customer_id = job.get("customer_id")
+        if customer_id and customer_id != job.get("customer_id"):
+            return JSONResponse({"ok": False, "error": "Payment customer does not match the bill."}, status_code=400)
 
     payload = {
         "shop_id": shop_id,
