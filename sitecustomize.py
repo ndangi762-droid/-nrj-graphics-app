@@ -36,6 +36,7 @@ try:
             "/printup-services-catalog.js": ("printup-services-catalog.js", "application/javascript"),
             "/printup-account-drawer.js": ("printup-account-drawer.js", "application/javascript"),
             "/printup-profile-edit.js": ("printup-profile-edit.js", "application/javascript"),
+            "/printup-session-persist.js": ("printup-session-persist.js", "application/javascript"),
             "/printup-motion.css": ("printup-motion.css", "text/css"),
         }
         for route, (filename, media) in assets.items():
@@ -60,6 +61,7 @@ try:
                     b'<script src="/printup-services-catalog.js?v=5" defer></script>'
                     b'<script src="/printup-account-drawer.js?v=3" defer></script>'
                     b'<script src="/printup-profile-edit.js?v=2" defer></script>'
+                    b'<script src="/printup-session-persist.js?v=1" defer></script>'
                 )
                 if head_marker in body and b"printup-motion.css" not in body:
                     body = body.replace(head_marker, motion + b"\n" + head_marker, 1)
