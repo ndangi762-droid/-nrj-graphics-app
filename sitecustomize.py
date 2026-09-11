@@ -32,6 +32,7 @@ try:
             "/printup-services-catalog.js": ("printup-services-catalog.js", "application/javascript"),
             "/printup-account-drawer.js": ("printup-account-drawer.js", "application/javascript"),
             "/printup-profile-edit.js": ("printup-profile-edit.js", "application/javascript"),
+            "/printup-motion.css": ("printup-motion.css", "text/css"),
         }
         for route, (filename, media) in assets.items():
             async def asset_endpoint(_filename=filename, _media=media):
@@ -48,9 +49,9 @@ try:
                 async for chunk in response.body_iterator:
                     chunks.append(chunk)
                 body = b"".join(chunks)
-                marker = b"</body>"
-                tags = b'<script src="/printup-services-catalog.js?v=4" defer></script><script src="/printup-account-drawer.js?v=2" defer></script><script src="/printup-profile-edit.js?v=1" defer></script>'
-                if marker in body and b"printup-account-drawer.js" not in body:
+                marker = b"</head>"
+                tags = b'<link rel="stylesheet" href="/printup-motion.css?v=1">'
+                if marker in body and b"printup-motion.css" not in body:
                     body = body.replace(marker, tags + b"\n" + marker, 1)
                 headers = dict(response.headers)
                 headers.pop("content-length", None)
