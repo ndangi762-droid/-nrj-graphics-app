@@ -39,6 +39,7 @@ try:
             "/printup-session-persist.js": ("printup-session-persist.js", "application/javascript"),
             "/printup-motion.css": ("printup-motion.css", "text/css"),
             "/printup-core-enhance.js": ("printup-core-enhance.js", "application/javascript"),
+            "/printup-signup-session.js": ("printup-signup-session.js", "application/javascript"),
         }
         for route, (filename, media) in assets.items():
             async def asset_endpoint(_filename=filename, _media=media):
@@ -64,6 +65,7 @@ try:
                     b'<script src="/printup-profile-edit.js?v=2" defer></script>'
                     b'<script src="/printup-session-persist.js?v=1" defer></script>'
                     b'<script src="/printup-core-enhance.js?v=1" defer></script>'
+                    b'<script src="/printup-signup-session.js?v=1" defer></script>'
                 )
                 if head_marker in body and b"printup-motion.css" not in body:
                     body = body.replace(head_marker, motion + b"\n" + head_marker, 1)
