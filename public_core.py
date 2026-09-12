@@ -148,8 +148,16 @@ async def jobs_create(body: dict):
         advance = total
     now = datetime.now(timezone.utc)
     stamp = now.strftime("%Y%m%d%H%M%S%f")
+    bill_date = str(body.get("bill_date", "")).strip()
+    if bill_date:
+        try:
+            datetime.strptime(bill_date, "%Y-%m-%d")
+        except ValueError:
+            return JSONResponse({"ok": False, "error": "Invalid bill date. Use YYYY-MM-DD."}, status_code=400)
+    else:
+        bill_date = now.date().isoformat()
     job_number = str(body.get("job_number", "")).strip() or f"JOB-{stamp}"
-    payload = {"shop_id": shop_id, "customer_id": customer_id, "job_number": job_number, "bill_number": str(body.get("bill_number", "")).strip() or job_number, "title": title, "status": str(body.get("status", "pending")).strip() or "pending", "total": total, "advance": advance, "balance": max(0.0, total - advance), "expenses": expenses, "notes": str(body.get("notes", "")).strip(), "bill_type": str(body.get("bill_type", "bill")).strip() or "bill"}
+    payload = {"shop_id": shop_id, "customer_id": customer_id, "job_number": job_number, "bill_number": str(body.get("bill_number", "")).strip() or job_number, "title": title, "status": str(body.get("status", "pending")).strip() or "pending", "total": total, "advance": advance, "balance": max(0.0, total - advance), "expenses": expenses, "notes": str(body.get("notes", "")).strip(), "bill_type": str(body.get("bill_type", "bill")).strip() or "bill", "bill_date": bill_date}
     status, data = _request("/rest/v1/jobs", method="POST", payload=payload, access_token=token)
     return _result(status, data, "Unable to create job/bill record.")
 
