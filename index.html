@@ -608,4 +608,21 @@ document.addEventListener("DOMContentLoaded",function(){
  s.innerHTML='<div class="nrjTrustItem"><div class="nrjTrustIcon">🎨</div><b>Design Support</b><span>Need help with artwork or layout? We help you prepare it for production.</span></div><div class="nrjTrustItem"><div class="nrjTrustIcon">⚙️</div><b>Production Coordination</b><span>We coordinate printing and finishing with production partners.</span></div><div class="nrjTrustItem"><div class="nrjTrustIcon">💬</div><b>Direct WhatsApp</b><span>Share your requirement and artwork directly for a faster enquiry.</span></div>';
  hero.appendChild(s);
 });
+</script><style>
+/* NRJ ABOUT SECTION */
+.nrjAbout{margin:34px 0;padding:30px;border:1px solid #ffffff12;border-radius:22px;background:linear-gradient(135deg,#141719,#0d1011);display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:center}
+.nrjAbout h3{margin:0 0 10px;color:#fff;font-size:25px}.nrjAbout p{color:#aab1b4;line-height:1.7;font-size:14px;margin:0 0 16px}
+.nrjAboutGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nrjAboutMini{padding:14px;border-radius:14px;background:#ffffff06;border:1px solid #ffffff0d}.nrjAboutMini b{display:block;color:#fff;font-size:13px;margin-bottom:4px}.nrjAboutMini span{color:#8f999d;font-size:11px}
+.nrjAboutSide{padding:24px;border-radius:18px;background:#ffd21a;color:#111}.nrjAboutSide strong{display:block;font-size:22px;margin-bottom:7px}.nrjAboutSide span{font-size:12px;line-height:1.5}
+@media(max-width:700px){.nrjAbout{grid-template-columns:1fr;padding:22px}.nrjAbout h3{font-size:21px}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ if(document.getElementById("nrjAbout"))return;
+ const contact=document.querySelector("#contact");
+ if(!contact)return;
+ const s=document.createElement("section");s.id="nrjAbout";s.className="nrjAbout";
+ s.innerHTML='<div><h3>About NRJ Graphics</h3><p>Design se production tak — NRJ Graphics businesses, brands aur individuals ke liye creative design aur printing solutions provide karta hai. Hamara focus clean design, clear communication aur reliable production coordination par hai.</p><div class="nrjAboutGrid"><div class="nrjAboutMini"><b>🎨 Creative Design</b><span>Branding, social media, packaging & event designs.</span></div><div class="nrjAboutMini"><b>🖨️ Print Solutions</b><span>Digital, large-format, stickers & business printing.</span></div><div class="nrjAboutMini"><b>⚙️ Production Support</b><span>Requirement se final production tak coordination.</span></div><div class="nrjAboutMini"><b>💬 Direct Communication</b><span>Fast enquiry and updates through WhatsApp.</span></div></div></div><div class="nrjAboutSide"><strong>Simple Process</strong><span>Share Requirement → Confirm → Produce → Deliver</span></div>';
+ contact.parentNode.insertBefore(s,contact);
+});
 </script></body></html>
