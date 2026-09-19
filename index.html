@@ -491,4 +491,34 @@ async function trackNRJ(){
   box.innerHTML="<b>"+row.enquiry_id+"</b><span class='nrjStatus'>"+row.status+"</span><br><span style='font-size:12px;color:#899297'>Last recorded: "+new Date(row.created_at).toLocaleString("en-IN")+"</span>";
  }catch(e){console.error(e);box.innerHTML="Unable to check right now. Please contact NRJ Graphics on WhatsApp."}
 }
+</script><style>
+/* NRJ quick-action + conversion polish */
+.nrjQuick{display:none}
+@media(max-width:700px){
+ .nrjQuick{display:grid;grid-template-columns:1fr 1fr;position:fixed;left:10px;right:10px;bottom:10px;z-index:1001;background:#0d1012eF;border:1px solid #ffffff20;border-radius:16px;padding:7px;gap:7px;box-shadow:0 18px 50px #000b;backdrop-filter:blur(14px)}
+ .nrjQuick a{display:grid;place-items:center;text-decoration:none;border-radius:11px;padding:12px 8px;font-size:13px;font-weight:900}
+ .nrjQuick .qQuote{background:#ffd21a;color:#111}
+ .nrjQuick .qWa{background:#25D366;color:#071009}
+ .nrjFloat{bottom:82px!important}
+ .nrjTop{bottom:138px!important}
+ body{padding-bottom:72px}
+}
+.nrjTrustLine{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.nrjTrustLine span{border:1px solid #ffffff14;background:#111416;border-radius:999px;padding:8px 11px;color:#bfc6ca;font-size:12px}
+.nrjTrustLine b{color:#ffd21a}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ if(!document.getElementById("nrjQuick")){
+  const q=document.createElement("div");q.id="nrjQuick";q.className="nrjQuick";
+  q.innerHTML='<a class="qQuote" href="#quote">Get a Quote →</a><a class="qWa" href="https://wa.me/918690996080?text=Hi%20NRJ%20Graphics%2C%20I%20want%20a%20design%20or%20printing%20quote." target="_blank" rel="noopener">WhatsApp ↗</a>';
+  document.body.appendChild(q);
+ }
+ const hero=document.querySelector(".hero-copy");
+ if(hero && !document.getElementById("nrjTrustLine")){
+  const d=document.createElement("div");d.id="nrjTrustLine";d.className="nrjTrustLine";
+  d.innerHTML='<span>✓ <b>Design</b> Support</span><span>✓ <b>Print</b> Coordination</span><span>✓ <b>WhatsApp</b> Enquiry</span>';
+  hero.appendChild(d);
+ }
+});
 </script></body></html>
