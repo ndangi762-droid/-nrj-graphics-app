@@ -549,4 +549,47 @@ document.addEventListener("DOMContentLoaded",function(){
  menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{menu.classList.remove("open");btn.textContent="☰"}));
  document.addEventListener("click",e=>{if(!menu.contains(e.target)&&e.target!==btn){menu.classList.remove("open");btn.textContent="☰"}});
 });
+</script><style>
+/* NRJ catalogue discovery */
+.nrjSearchWrap{display:flex;gap:10px;align-items:center;margin:0 0 18px}
+.nrjSearch{flex:1;background:#101416;border:1px solid #343a3d;color:#fff;border-radius:12px;padding:14px 16px;font-size:14px;outline:none}
+.nrjSearch:focus{border-color:#ffd21a;box-shadow:0 0 0 3px #ffd21a12}
+.nrjCount{color:#929b9f;font-size:12px;white-space:nowrap}
+.nrjQuickCats{display:flex;gap:8px;overflow:auto;padding-bottom:5px;margin-bottom:18px}
+.nrjQuickCat{border:1px solid #ffffff16;background:#111416;color:#cdd2d5;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer}
+.nrjQuickCat.active{background:#ffd21a;color:#111;border-color:#ffd21a}
+.nrjNoResults{padding:35px 20px;text-align:center;color:#9da5a9;background:#111416;border:1px solid #ffffff12;border-radius:16px}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const products=document.getElementById("products");
+ if(!products||document.getElementById("nrjCatalogueSearch"))return;
+ const wrap=document.createElement("div");wrap.id="nrjCatalogueSearch";
+ wrap.innerHTML='<div class="nrjSearchWrap"><input id="nrjSearch" class="nrjSearch" placeholder="Search products… e.g. visiting cards, stickers, posters"><span id="nrjCount" class="nrjCount"></span></div><div class="nrjQuickCats" id="nrjQuickCats"><button class="nrjQuickCat active" data-q="">All</button><button class="nrjQuickCat" data-q="Visiting Cards">Visiting Cards</button><button class="nrjQuickCat" data-q="Flyers">Flyers</button><button class="nrjQuickCat" data-q="Stickers">Stickers</button><button class="nrjQuickCat" data-q="Brochures">Brochures</button><button class="nrjQuickCat" data-q="Posters">Posters</button><button class="nrjQuickCat" data-q="Packaging">Packaging</button></div>';
+ products.parentNode.insertBefore(wrap,products);
+ const search=document.getElementById("nrjSearch"),count=document.getElementById("nrjCount"),cats=document.querySelectorAll(".nrjQuickCat");
+ const cards=Array.from(products.children);
+ function filter(){
+   const q=(search.value||"").toLowerCase().trim();
+   let shown=0;
+   cards.forEach(card=>{
+     const text=(card.innerText||"").toLowerCase();
+     const ok=!q||text.includes(q);
+     card.style.display=ok?"":"none";
+     if(ok)shown++;
+   });
+   count.textContent=shown+" product"+(shown===1?"":"s");
+   let empty=document.getElementById("nrjNoResults");
+   if(!shown){
+     if(!empty){empty=document.createElement("div");empty.id="nrjNoResults";empty.className="nrjNoResults";empty.textContent="No matching products found. Try another keyword or contact us on WhatsApp.";products.parentNode.insertBefore(empty,products.nextSibling)}
+   }else if(empty)empty.remove();
+ }
+ search.addEventListener("input",filter);
+ cats.forEach(cat=>cat.addEventListener("click",function(){
+   cats.forEach(x=>x.classList.remove("active"));this.classList.add("active");
+   search.value=this.dataset.q||"";filter();
+   products.scrollIntoView({behavior:"smooth",block:"start"});
+ }));
+ filter();
+});
 </script></body></html>
