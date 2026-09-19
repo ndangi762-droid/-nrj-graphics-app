@@ -419,4 +419,19 @@ document.addEventListener("DOMContentLoaded",function(){
    if(target) target.insertAdjacentElement("afterend",wrap);
  }
 });
+</script><style>
+/* Payment QR setup */
+.paymentBox{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,#111516,#0b0d0e);border:1px solid #ffffff14;border-radius:22px;padding:26px;box-shadow:0 20px 55px #0006}.qrPlaceholder{width:200px;height:200px;border:1px dashed #555;background:#15191b;border-radius:16px;display:grid;place-items:center;text-align:center;color:#929a9f;padding:20px}.paymentText h2{margin:0 0 8px;color:#fff}.paymentText p{color:#aeb7bb;line-height:1.6}.paymentSteps{display:grid;gap:9px;margin:16px 0}.paymentSteps div{color:#d4d8da;font-size:13px}.paymentSteps b{color:#ffd21a}.payBtn{display:inline-block;background:#ffd21a;color:#111;text-decoration:none;font-weight:900;border-radius:11px;padding:12px 17px}@media(max-width:650px){.paymentBox{grid-template-columns:1fr}.qrPlaceholder{margin:auto}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact && !document.getElementById("paymentSetup")){
+   const sec=document.createElement("section");
+   sec.className="section";
+   sec.id="paymentSetup";
+   sec.innerHTML='<div class="head"><div><div class="eyebrow">PAYMENT</div><h2>Pay securely after confirmation.</h2><p class="muted">Payment details can be shared after your order and final quote are confirmed.</p></div></div><div class="paymentBox"><div class="qrPlaceholder">QR CODE<br><small>Add your UPI QR image here</small></div><div class="paymentText"><h2>NRJ Graphics Payment</h2><p>Use the QR code to make payment once your order amount is confirmed with NRJ Graphics.</p><div class="paymentSteps"><div><b>01</b> Confirm your order & final amount.</div><div><b>02</b> Scan the UPI QR and complete payment.</div><div><b>03</b> Send the payment screenshot on WhatsApp.</div></div><a class="payBtn" href="https://wa.me/918690996080?text=Hi%20NRJ%20Graphics%2C%20I%20have%20completed%20the%20payment.%20Please%20confirm." target="_blank" rel="noopener">Send Payment Proof →</a></div></div>';
+   contact.parentNode.insertBefore(sec,contact);
+ }
+});
 </script></body></html>
