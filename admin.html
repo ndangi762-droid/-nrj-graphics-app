@@ -142,10 +142,24 @@ function openDetail(id){
   $("detailSubtitle").textContent=(x.customer_name||"Customer")+" • "+new Date(x.created_at).toLocaleString("en-IN");
   const fields=[["Customer",x.customer_name],["Phone",x.phone],["Product",x.product],["Quantity",x.quantity],["Size",x.size],["Material",x.material],["Finishing",x.finishing],["Status",x.status],["Estimated Quote",x.estimated_quote?"₹"+Number(x.estimated_quote).toLocaleString("en-IN"):"—"],["Artwork",x.artwork_name],["Special Requirement",x.special_requirement,"full"]];
   $("detailBody").innerHTML=fields.map(([label,value,wide])=>"<div class='detailItem"+(wide?" full":"")+"'><div class='detailLabel'>"+esc(label)+"</div><div class='detailValue'>"+esc(value||"—")+"</div></div>").join("");
+  const quoteWrap=document.createElement("div");
+  quoteWrap.className="detailItem full";
+  quoteWrap.innerHTML="<div class='detailLabel'>Final Quote</div><div style='display:flex;gap:10px;align-items:center;flex-wrap:wrap'><input id='detailQuoteInput' class='input' type='number' min='0' step='1' value='"+(x.estimated_quote||"")+"' placeholder='Enter final quote' style='max-width:220px'><button class='detailAction' type='button' onclick="saveQuote('"+x.id+"')">Save Quote</button></div>";
+  $("detailBody").appendChild(quoteWrap);
   const actions=$("detailActions"); actions.innerHTML="";
   if(x.phone){const a=document.createElement("a");a.className="detailAction";a.target="_blank";a.href="https://wa.me/"+String(x.phone).replace(/\D/g,"")+"?text="+encodeURIComponent("Hi "+(x.customer_name||"")+", regarding your NRJ Graphics enquiry "+x.enquiry_id+".");a.textContent="WhatsApp Customer ↗";actions.appendChild(a)}
   const b=document.createElement("button");b.className="detailAction secondary";b.type="button";b.textContent="Close";b.onclick=closeDetail;actions.appendChild(b);
   $("detailOverlay").classList.remove("hiddenDetail");
+}
+async function saveQuote(id){
+  const input=$("detailQuoteInput");
+  const value=input.value.trim();
+  if(value===""||Number(value)<0){alert("Enter a valid quote.");return}
+  const result=await db.from("nrj_enquiries").update({estimated_quote:Number(value),updated_at:new Date().toISOString()}).eq("id",id);
+  if(result.error){alert("Could not save quote: "+result.error.message);return}
+  const x=items.find(i=>i.id===id); if(x)x.estimated_quote=Number(value);
+  render(); openDetail(id);
+  alert("Quote saved successfully.");
 }
 function closeDetail(){$("detailOverlay").classList.add("hiddenDetail")}
 
