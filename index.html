@@ -403,4 +403,20 @@ document.addEventListener("DOMContentLoaded",function(){
    products.parentNode.insertBefore(sec,products.nextElementSibling);
  }
 });
+</script><style>
+/* Portfolio showcase upgrade */
+.portfolioShowcaseNew{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-bottom:28px}.showcaseMain,.showcaseSide{border:1px solid #ffffff14;border-radius:20px;background:linear-gradient(145deg,#14191b,#0b0e10);overflow:hidden;position:relative}.showcaseMain{min-height:300px;padding:32px;display:flex;align-items:flex-end;background:radial-gradient(circle at 75% 25%,#00cfff18,transparent 30%),linear-gradient(135deg,#15191b,#080a0b)}.showcaseMain:before{content:"NRJ";position:absolute;right:5%;top:8%;font-size:150px;font-weight:1000;color:#fff;opacity:.025}.showcaseMain h3{font-size:38px;max-width:500px;margin:0 0 10px;color:#fff}.showcaseMain p{max-width:520px;color:#aeb7bb;line-height:1.6;margin:0}.showcaseSide{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#25292b}.showcaseMini{min-height:145px;padding:20px;background:#111416;display:flex;flex-direction:column;justify-content:flex-end}.showcaseMini .icon{font-size:30px;margin-bottom:auto}.showcaseMini b{color:#fff}.showcaseMini span{color:#929a9f;font-size:12px;margin-top:5px}.portfolioHint{margin-top:18px;color:#aeb7bb;font-size:13px}.portfolioHint b{color:#ffd21a}@media(max-width:800px){.portfolioShowcaseNew{grid-template-columns:1fr}.showcaseMain{min-height:260px}.showcaseMain h3{font-size:30px}}@media(max-width:500px){.showcaseSide{grid-template-columns:1fr 1fr}.showcaseMini{min-height:125px;padding:15px}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const p=document.getElementById("portfolio");
+ if(p && !document.getElementById("portfolioShowcaseNew")){
+   const wrap=document.createElement("div");
+   wrap.id="portfolioShowcaseNew";
+   wrap.className="portfolioShowcaseNew";
+   wrap.innerHTML='<div class="showcaseMain"><div><div class="eyebrow">NRJ GRAPHICS • SHOWCASE</div><h3>Designs made for real-world printing.</h3><p>Branding, business stationery, promotional creatives, packaging and print-ready artwork — all coordinated from design to production.</p><div class="portfolioHint"><b>Tip:</b> Add your latest real project images here as the portfolio grows.</div></div></div><div class="showcaseSide"><div class="showcaseMini"><div class="icon">🎨</div><b>Branding</b><span>Logos • identity • stationery</span></div><div class="showcaseMini"><div class="icon">🖨️</div><b>Print</b><span>Cards • flyers • posters</span></div><div class="showcaseMini"><div class="icon">📦</div><b>Packaging</b><span>Labels • boxes • pouches</span></div><div class="showcaseMini"><div class="icon">📱</div><b>Social</b><span>Posts • reels • promotions</span></div></div>';
+   const target=p.querySelector(".head");
+   if(target) target.insertAdjacentElement("afterend",wrap);
+ }
+});
 </script></body></html>
