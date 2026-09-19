@@ -466,4 +466,29 @@ document.addEventListener("DOMContentLoaded",function(){
    window.addEventListener("scroll",()=>b.classList.toggle("show",window.scrollY>500));
  }
 });
+</script><style>
+.nrjTrackBox{background:linear-gradient(145deg,#111516,#0b0d0e);border:1px solid #ffffff14;border-radius:22px;padding:24px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}.nrjTrackBox label{display:block;color:#cfd4d7;font-size:13px;font-weight:700;margin-bottom:7px}.nrjTrackBox input{width:100%;box-sizing:border-box;background:#0b0d0e;border:1px solid #303437;color:#fff;border-radius:10px;padding:13px}.nrjTrackBtn{border:0;background:#ffd21a;color:#111;font-weight:900;border-radius:10px;padding:13px 18px;cursor:pointer}.nrjTrackResult{margin-top:14px;padding:15px;border-radius:13px;background:#151819;color:#cbd0d3;display:none}.nrjTrackResult b{color:#fff}.nrjStatus{display:inline-block;margin-left:8px;padding:5px 9px;border-radius:999px;background:#24282a;color:#ffd21a;font-size:12px;font-weight:900}.nrjSteps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.nrjStep{background:#111416;border:1px solid #ffffff10;border-radius:13px;padding:14px;color:#aeb7bb;font-size:12px}.nrjStep b{display:block;color:#fff;margin-bottom:5px}@media(max-width:650px){.nrjTrackBox{grid-template-columns:1fr}.nrjTrackBtn{width:100%}.nrjSteps{grid-template-columns:1fr 1fr}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact&&!document.getElementById("nrjTracking")){
+  const sec=document.createElement("section");sec.className="section";sec.id="nrjTracking";
+  sec.innerHTML='<div class="head"><div><div class="eyebrow">ORDER TRACKING</div><h2>Check your enquiry status.</h2><p class="muted">Enter the NRJ enquiry ID you received after submitting your requirement.</p></div></div><div class="nrjTrackBox"><div><label for="nrjTrackId">Enquiry ID</label><input id="nrjTrackId" placeholder="Example: NRJ-482913" autocomplete="off"></div><button class="nrjTrackBtn" onclick="trackNRJ()">Track Order →</button></div><div id="nrjTrackResult" class="nrjTrackResult"></div><div class="nrjSteps"><div class="nrjStep"><b>01 • Enquiry</b>Requirement received</div><div class="nrjStep"><b>02 • Confirmed</b>Details & quotation checked</div><div class="nrjStep"><b>03 • Production</b>Job is being produced</div><div class="nrjStep"><b>04 • Completed</b>Order completed</div></div>';
+  contact.parentNode.insertBefore(sec,contact);
+ }
+});
+async function trackNRJ(){
+ const input=document.getElementById("nrjTrackId"),box=document.getElementById("nrjTrackResult");
+ const id=(input.value||"").trim();
+ if(!id){box.style.display="block";box.innerHTML="Please enter your enquiry ID.";return}
+ box.style.display="block";box.innerHTML="Checking status…";
+ try{
+  const {data,error}=await nrjSupabase.rpc("get_nrj_enquiry_status",{p_enquiry_id:id});
+  if(error) throw error;
+  const row=Array.isArray(data)?data[0]:null;
+  if(!row){box.innerHTML="No enquiry found for <b>"+id.replace(/</g,"&lt;")+"</b>. Please check the ID or contact NRJ Graphics on WhatsApp.";return}
+  box.innerHTML="<b>"+row.enquiry_id+"</b><span class='nrjStatus'>"+row.status+"</span><br><span style='font-size:12px;color:#899297'>Last recorded: "+new Date(row.created_at).toLocaleString("en-IN")+"</span>";
+ }catch(e){console.error(e);box.innerHTML="Unable to check right now. Please contact NRJ Graphics on WhatsApp."}
+}
 </script></body></html>
