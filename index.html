@@ -388,4 +388,19 @@ document.addEventListener("DOMContentLoaded",function(){
    },0);
  };
 })();
+</script><style>
+/* Trust + process upgrade */
+.trustGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.trustCard{background:#151718;border:1px solid #292b2d;border-radius:18px;padding:22px}.trustIcon{font-size:28px;margin-bottom:12px}.trustCard h3{margin:0 0 7px;color:#fff}.trustCard p{margin:0;color:#aeb7bb;font-size:13px;line-height:1.55}.processStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:18px}.processCard{background:#111516;border:1px solid #ffffff12;border-radius:16px;padding:20px}.processCard b{color:#ffd21a}.processCard p{color:#aeb7bb;font-size:13px;line-height:1.5;margin:7px 0 0}@media(max-width:850px){.trustGrid{grid-template-columns:1fr 1fr}.processStrip{grid-template-columns:1fr}}@media(max-width:500px){.trustGrid{grid-template-columns:1fr}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const products=document.getElementById("products");
+ if(products && !document.getElementById("nrjTrustBlock")){
+   const sec=document.createElement("section");
+   sec.className="section";
+   sec.id="nrjTrustBlock";
+   sec.innerHTML='<div class="head"><div><div class="eyebrow">WHY NRJ GRAPHICS</div><h2>Simple process. Clear communication.</h2><p class="muted">From design requirement to outsourced production and delivery coordination.</p></div></div><div class="trustGrid"><div class="trustCard"><div class="trustIcon">🎨</div><h3>Design Support</h3><p>Need artwork or print-ready setup? We can help prepare the design for production.</p></div><div class="trustCard"><div class="trustIcon">🧾</div><h3>Clear Enquiry</h3><p>Share product, size, quantity and finishing details before production is confirmed.</p></div><div class="trustCard"><div class="trustIcon">🔎</div><h3>Production Coordination</h3><p>We coordinate with production vendors and keep the job moving through the required stages.</p></div><div class="trustCard"><div class="trustIcon">💬</div><h3>Direct WhatsApp</h3><p>Send your requirement directly to NRJ Graphics for confirmation and final quotation.</p></div></div><div class="processStrip"><div class="processCard"><b>01 — Enquire</b><p>Choose your product and send the requirement.</p></div><div class="processCard"><b>02 — Confirm</b><p>Artwork, specifications, production and delivery are checked.</p></div><div class="processCard"><b>03 — Produce</b><p>Once confirmed, production is coordinated and the order moves forward.</p></div></div>';
+   products.parentNode.insertBefore(sec,products.nextElementSibling);
+ }
+});
 </script></body></html>
