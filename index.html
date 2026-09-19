@@ -220,7 +220,11 @@ renderPortfolio();
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:500px){.row2{grid-template-columns:1fr}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const NRJ_SUPABASE_URL="https://bjdxaknxhllhbtpckrza.supabase.co";
+const NRJ_SUPABASE_KEY="sb_publishable_ndgujsCl7qR_H_6Kvkk7Qw_deT4FYZk";
+const nrjSupabase=window.supabase.createClient(NRJ_SUPABASE_URL,NRJ_SUPABASE_KEY);
 const quoteProducts=["Visiting Cards","Flyers & Pamphlets","Stickers & Labels","Brochures","Letterheads","Posters","Packaging","Custom Printing"];
 function newOrderId(){return "NRJ-"+Date.now().toString().slice(-6)}
 function baseRate(){
@@ -249,7 +253,7 @@ function openOrder(i){
   estimate();
 }
 function closeOrder(){document.getElementById("modal").style.display="none";document.body.style.overflow=""}
-function send(){
+async function send(){
   const name=document.getElementById("name").value.trim();
   const phone=document.getElementById("phone").value.trim();
   const notes=document.getElementById("notes").value.trim();
@@ -267,6 +271,11 @@ function send(){
     "\nWhatsApp/Phone: "+(phone||"Not provided")+
     "\nRequirement: "+(notes||"None")+
     "\nArtwork selected: "+(fileInput.files[0]?fileInput.files[0].name:"No file selected");
+  try{
+    const row={enquiry_id:window.currentOrderId,customer_name:name,phone:phone||null,product:document.getElementById("product").value,quantity:document.getElementById("qty").value,size:document.getElementById("size").value,material:document.getElementById("material").value,finishing:document.getElementById("finish").value,special_requirement:notes||null,artwork_name:fileInput.files[0]?fileInput.files[0].name:null,estimated_quote:Number((document.getElementById("estimate").textContent||"").replace(/[^0-9.]/g,""))||null};
+    const {error}=await nrjSupabase.from("nrj_enquiries").insert(row);
+    if(error) console.warn("NRJ enquiry save:",error.message);
+  }catch(e){console.warn("NRJ enquiry save failed:",e);}
   window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
 }
 </script>
