@@ -359,4 +359,33 @@ document.addEventListener("DOMContentLoaded",function(){
    if(btn.getAttribute("onclick")) return;
  });
 });
+</script><style>
+/* Product-specific enquiry upgrade */
+.smartHint{margin:8px 0 14px;padding:10px 12px;border-radius:10px;background:#ffffff06;border:1px solid #ffffff10;color:#aeb7bb;font-size:12px;line-height:1.5}
+</style>
+<script>
+(function(){
+ const originalOpenOrder=window.openOrder;
+ window.openOrder=function(i){
+   originalOpenOrder(i);
+   setTimeout(function(){
+     const p=document.getElementById("product"), s=document.getElementById("size"), m=document.getElementById("material"), f=document.getElementById("finish");
+     if(!p)return;
+     function setOptions(arr){s.innerHTML=arr.map(x=>"<option>"+x+"</option>").join("")}
+     function update(){
+       const v=p.value;
+       if(v==="Visiting Cards"){setOptions(["Standard","90×54 mm","Custom Size"]);m.innerHTML="<option>Standard</option><option>300 GSM</option><option>500 GSM</option><option>800 GSM</option><option>PVC</option>";f.innerHTML="<option>None</option><option>Matt</option><option>Gloss</option><option>UV</option><option>Foil</option><option>Die Cut</option>}
+       else if(v==="Flyers & Pamphlets"){setOptions(["A4","A5","Half A4","Custom Size"]);m.innerHTML="<option>Standard</option><option>70 GSM</option><option>100 GSM</option><option>130 GSM</option><option>170 GSM</option><option>300 GSM</option>";f.innerHTML="<option>None</option><option>Single Side</option><option>Both Side</option><option>Lamination</option>}
+       else if(v==="Stickers & Labels"){setOptions(["Custom Size","2×2 inch","3×3 inch","4×4 inch","6×6 inch"]);m.innerHTML="<option>Vinyl</option><option>PVC</option><option>Normal Sticker</option><option>One Way Vision</option>";f.innerHTML="<option>None</option><option>Round Cut</option><option>Square Cut</option><option>Custom Shape / Die Cut</option>}
+       else if(v==="Brochures"){setOptions(["A4","A5","Tri-fold","Custom Size"]);m.innerHTML="<option>Standard</option><option>130 GSM</option><option>170 GSM</option><option>250 GSM</option><option>300 GSM</option>";f.innerHTML="<option>None</option><option>Single Side</option><option>Both Side</option><option>Folding</option><option>Lamination</option>}
+       else if(v==="Letterheads"){setOptions(["A4","A5","Custom Size"]);m.innerHTML="<option>70 GSM</option><option>80 GSM</option><option>100 GSM</option><option>120 GSM</option>";f.innerHTML="<option>None</option><option>Single Side</option><option>Both Side</option>}
+       else if(v==="Posters"){setOptions(["A4","A3","12×18 inch","15×20 inch","Custom Size"]);m.innerHTML="<option>70 GSM</option><option>130 GSM</option><option>170 GSM</option><option>250 GSM</option><option>Vinyl</option><option>Flex</option>";f.innerHTML="<option>None</option><option>Single Side</option><option>Lamination</option><option>Mounting</option>}
+       else if(v==="Packaging"){setOptions(["Custom Size","Box","Pouch","Label","Tag"]);m.innerHTML="<option>Paper</option><option>300 GSM</option><option>350 GSM</option><option>Art Paper</option><option>Vinyl</option><option>PVC</option>";f.innerHTML="<option>None</option><option>Matt</option><option>Gloss</option><option>UV</option><option>Foil</option><option>Die Cut</option>}
+       else {setOptions(["Standard","Custom Size"]);m.innerHTML="<option>Standard</option><option>300 GSM</option><option>Vinyl</option><option>PVC</option><option>Flex</option>";f.innerHTML="<option>None</option><option>Lamination</option><option>Gloss</option><option>Matte</option><option>Cutting</option>}
+       estimate();
+     }
+     p.onchange=update; update();
+   },0);
+ };
+})();
 </script></body></html>
