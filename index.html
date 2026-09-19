@@ -217,7 +217,11 @@ function openOrder(i){
 function closeOrder(){document.getElementById("modal").style.display="none";document.body.style.overflow=""}
 function send(){
   const name=document.getElementById("name").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const notes=document.getElementById("notes").value.trim();
+  const fileInput=document.getElementById("file");
   if(!name){alert("Please enter your name.");document.getElementById("name").focus();return;}
+  if(phone && !/^[0-9+()\\-\\s]{7,18}$/.test(phone)){alert("Please enter a valid phone number.");document.getElementById("phone").focus();return;}
   const msg="Hi NRJ Graphics, I want a print quote.\nEnquiry ID: "+window.currentOrderId+
     "\nProduct: "+document.getElementById("product").value+
     "\nQuantity: "+document.getElementById("qty").value+
@@ -225,7 +229,10 @@ function send(){
     "\nMaterial: "+document.getElementById("material").value+
     "\nFinishing: "+document.getElementById("finish").value+
     "\nEstimated Quote: "+document.getElementById("estimate").textContent+
-    "\nName: "+name;
+    "\nName: "+name+
+    "\nWhatsApp/Phone: "+(phone||"Not provided")+
+    "\nRequirement: "+(notes||"None")+
+    "\nArtwork selected: "+(fileInput.files[0]?fileInput.files[0].name:"No file selected");
   window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
 }
 </script>
@@ -243,9 +250,13 @@ function send(){
     </div>
     <label>Finishing</label>
     <select id="finish" onchange="estimate()"><option>None</option><option>Lamination</option><option>Gloss</option><option>Matte</option><option>Cutting</option></select>
-    <div class="estimate">Estimated Quote<br><b id="estimate">₹0</b><div id="orderId" style="font-size:12px;color:#999;margin-top:5px"></div></div>
+    <div class="estimate">Indicative Estimate<br><b id="estimate">₹0</b><div id="orderId" style="font-size:12px;color:#999;margin-top:5px"></div><div style="font-size:11px;color:#aeb4b8;margin-top:7px">Final quote is confirmed after checking artwork, exact specifications, production and delivery.</div></div>
     <label>Business / Name</label>
     <input id="name" placeholder="Your name">
+    <label>WhatsApp / Phone</label>
+    <input id="phone" type="tel" inputmode="tel" placeholder="Your WhatsApp number">
+    <label>Special Requirement</label>
+    <input id="notes" placeholder="Any special size, finish, delivery or design requirement">
     <label>Artwork</label>
     <input id="file" type="file" accept=".pdf,.jpg,.jpeg,.png,.cdr"><p style="font-size:12px;color:#9aa1a6;margin:-7px 0 12px">Artwork file is selected here for reference; please attach the actual file in WhatsApp when sending the enquiry.</p>
     <button class="primary" style="width:100%" onclick="send()">Continue to WhatsApp →</button>
