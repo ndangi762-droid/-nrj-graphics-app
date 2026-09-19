@@ -434,4 +434,26 @@ document.addEventListener("DOMContentLoaded",function(){
    contact.parentNode.insertBefore(sec,contact);
  }
 });
+</script>
+<style>
+/* Final conversion + usability upgrade */
+.nrjFaq{display:grid;grid-template-columns:1fr 1fr;gap:12px}.nrjFaq details{background:#111416;border:1px solid #ffffff12;border-radius:14px;padding:16px 18px}.nrjFaq summary{cursor:pointer;color:#fff;font-weight:800;list-style:none}.nrjFaq summary::-webkit-details-marker{display:none}.nrjFaq summary:after{content:"+";float:right;color:#9aa3a8;font-size:20px}.nrjFaq details[open] summary:after{content:"−"}.nrjFaq p{color:#aeb7bb;line-height:1.6;font-size:14px;margin:12px 0 0}.nrjArea{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.nrjChip{padding:9px 12px;border-radius:999px;background:#151819;border:1px solid #ffffff12;color:#c9ced1;font-size:12px}.nrjFloat{position:fixed;right:20px;bottom:20px;z-index:999;background:#25D366;color:#071009;text-decoration:none;border-radius:999px;padding:13px 17px;font-weight:900;box-shadow:0 12px 30px #0008}.nrjTop{position:fixed;right:20px;bottom:78px;z-index:998;width:42px;height:42px;border-radius:50%;border:1px solid #ffffff18;background:#151819;color:#fff;display:none;cursor:pointer;font-size:18px}.nrjTop.show{display:block}.nrjNote{margin-top:14px;color:#7f898e;font-size:12px;line-height:1.5}@media(max-width:700px){.nrjFaq{grid-template-columns:1fr}.nrjFloat{right:14px;bottom:14px}.nrjTop{right:14px;bottom:70px}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact && !document.getElementById("nrjFaqSection")){
+   const sec=document.createElement("section"); sec.className="section"; sec.id="nrjFaqSection";
+   sec.innerHTML='<div class="head"><div><div class="eyebrow">FAQ</div><h2>Quick answers before you order.</h2><p class="muted">Simple information for design, printing and production enquiries.</p></div></div><div class="nrjFaq"><details><summary>Do you provide design as well as printing?</summary><p>Yes. NRJ Graphics can help with artwork, print-ready setup and printing coordination.</p></details><details><summary>Can I request a custom size or finish?</summary><p>Yes. Share your exact size, quantity, material and finishing requirement on WhatsApp for confirmation.</p></details><details><summary>How do I place an order?</summary><p>Choose a product, submit the enquiry form, then send the requirement on WhatsApp. Final specifications and quotation are confirmed before production.</p></details><details><summary>Do you handle outsourced production?</summary><p>Yes. Production is coordinated with printing vendors according to the confirmed job requirements.</p></details><details><summary>Can I send my artwork on WhatsApp?</summary><p>Yes. Please send the actual artwork file on WhatsApp after submitting your enquiry.</p></details><details><summary>How is payment handled?</summary><p>Payment details are shared after the order and final amount are confirmed. Payment proof can then be sent on WhatsApp.</p></details></div><div class="nrjNote">Final pricing depends on artwork, quantity, specifications, production and delivery requirements.</div>';
+   contact.parentNode.insertBefore(sec,contact);
+ }
+ if(!document.getElementById("nrjFloatWa")){
+   const a=document.createElement("a"); a.id="nrjFloatWa"; a.className="nrjFloat"; a.href="https://wa.me/918690996080?text=Hi%20NRJ%20Graphics%2C%20I%20want%20a%20printing%20or%20design%20enquiry."; a.target="_blank"; a.rel="noopener"; a.textContent="WhatsApp ↗"; document.body.appendChild(a);
+ }
+ if(!document.getElementById("nrjTop")){
+   const b=document.createElement("button"); b.id="nrjTop"; b.className="nrjTop"; b.setAttribute("aria-label","Back to top"); b.textContent="↑"; document.body.appendChild(b);
+   b.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+   window.addEventListener("scroll",()=>b.classList.toggle("show",window.scrollY>500));
+ }
+});
 </script></body></html>
