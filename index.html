@@ -592,4 +592,20 @@ document.addEventListener("DOMContentLoaded",function(){
  }));
  filter();
 });
+</script><style>
+.nrjTrustStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.nrjTrustItem{padding:18px;border:1px solid #ffffff12;border-radius:16px;background:linear-gradient(135deg,#111517,#0d1011);text-align:left}
+.nrjTrustItem b{display:block;color:#fff;font-size:14px;margin-bottom:5px}
+.nrjTrustItem span{color:#929b9f;font-size:12px;line-height:1.5}
+.nrjTrustIcon{font-size:20px;margin-bottom:8px}
+@media(max-width:700px){.nrjTrustStrip{grid-template-columns:1fr}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const hero=document.querySelector(".hero-copy")||document.querySelector(".hero");
+ if(!hero||document.getElementById("nrjTrustStrip"))return;
+ const s=document.createElement("div");s.id="nrjTrustStrip";s.className="nrjTrustStrip";
+ s.innerHTML='<div class="nrjTrustItem"><div class="nrjTrustIcon">🎨</div><b>Design Support</b><span>Need help with artwork or layout? We help you prepare it for production.</span></div><div class="nrjTrustItem"><div class="nrjTrustIcon">⚙️</div><b>Production Coordination</b><span>We coordinate printing and finishing with production partners.</span></div><div class="nrjTrustItem"><div class="nrjTrustIcon">💬</div><b>Direct WhatsApp</b><span>Share your requirement and artwork directly for a faster enquiry.</span></div>';
+ hero.appendChild(s);
+});
 </script></body></html>
