@@ -346,4 +346,17 @@ function filterProducts(){
 <article class="bulkCard"><div class="bulkIcon">◉</div><div class="bulkTop"><span>One Way Vision — Car Back Window</span><span class="bulkTag">WINDOW</span></div><p>Perforated window graphics for car back-window applications and glass surfaces.</p><button class="bulkBtn" onclick="bulkQuote('One Way Vision — Car Back Window')">Order / Enquire →</button></article>
 <article class="bulkCard"><div class="bulkIcon">▥</div><div class="bulkTop"><span>Posters</span><span class="bulkTag">15×20 IN</span></div><p>15×20 inch posters for promotional, informational and event display requirements.</p><button class="bulkBtn" onclick="bulkQuote('Poster 15×20 inch')">Order / Enquire →</button></article>
 </div><div class="bulkNote">Rates are not displayed here. Final pricing depends on size, quantity, paper/material, finishing, artwork, production and delivery requirements.</div></div></div>
-<script>function openBulkPrintCards(){document.getElementById("bulkPrintModal").style.display="grid";document.body.style.overflow="hidden"}function closeBulkPrintCards(){document.getElementById("bulkPrintModal").style.display="none";document.body.style.overflow=""}function bulkQuote(type){var msg="Hi NRJ Graphics, I want Bulk Printing / Outdoor Printing.\nProduct: "+type+"\nPlease share available options and final quote.";window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank")}</script></body></html>
+<script>function openBulkPrintCards(){document.getElementById("bulkPrintModal").style.display="grid";document.body.style.overflow="hidden"}function closeBulkPrintCards(){document.getElementById("bulkPrintModal").style.display="none";document.body.style.overflow=""}function bulkQuote(type){var msg="Hi NRJ Graphics, I want Bulk Printing / Outdoor Printing.\nProduct: "+type+"\nPlease share available options and final quote.";window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank")}
+function productEnquiry(category,type){
+ var msg="Hi NRJ Graphics, I want to enquire about a product.\nCategory: "+category+"\nProduct: "+type+"\nQuantity: Please advise\nSize: Please advise\nRequirement: Please share available options and final quote.";
+ window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
+}</script><style>
+.enquiryBar{margin-top:22px;padding:18px 20px;border:1px solid #ffffff14;border-radius:16px;background:#111516;display:flex;align-items:center;justify-content:space-between;gap:18px}.enquiryBar h3{margin:0 0 5px;color:#fff}.enquiryBar p{margin:0;color:#aeb7bb;font-size:13px}.enquiryBar button{border:1px solid #ffd21a;background:#ffd21a;color:#111;border-radius:11px;padding:11px 16px;font-weight:900;white-space:nowrap}@media(max-width:650px){.enquiryBar{display:block}.enquiryBar button{width:100%;margin-top:14px}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ document.querySelectorAll(".vcBtn").forEach(function(btn){
+   if(btn.getAttribute("onclick")) return;
+ });
+});
+</script></body></html>
