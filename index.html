@@ -521,4 +521,32 @@ document.addEventListener("DOMContentLoaded",function(){
   hero.appendChild(d);
  }
 });
+</script><style>
+/* NRJ mobile navigation */
+.nrjMenuBtn{display:none;background:#151819;color:#fff;border:1px solid #ffffff18;border-radius:10px;padding:10px 12px;font-size:20px}
+.nrjMobileMenu{display:none;position:fixed;top:82px;left:10px;right:10px;z-index:49;background:#0d1012f7;border:1px solid #ffffff18;border-radius:16px;padding:10px;box-shadow:0 20px 55px #000b;backdrop-filter:blur(16px)}
+.nrjMobileMenu.open{display:grid;gap:4px}
+.nrjMobileMenu a{color:#eee;text-decoration:none;padding:13px 14px;border-radius:10px;font-weight:800}
+.nrjMobileMenu a:hover{background:#ffffff08;color:#ffd21a}
+@media(max-width:850px){
+ .nrjMenuBtn{display:block}
+ .nav .links{display:none!important}
+ .nav{padding:0 5%}
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const nav=document.querySelector(".nav");
+ if(!nav||document.getElementById("nrjMobileMenu"))return;
+ const btn=document.createElement("button");
+ btn.className="nrjMenuBtn";btn.id="nrjMenuBtn";btn.setAttribute("aria-label","Open menu");btn.textContent="☰";
+ const navbtn=nav.querySelector(".navbtn");
+ if(navbtn)nav.insertBefore(btn,navbtn);else nav.appendChild(btn);
+ const menu=document.createElement("div");menu.id="nrjMobileMenu";menu.className="nrjMobileMenu";
+ menu.innerHTML='<a href="#services">Services</a><a href="#products">Products</a><a href="#portfolio">Portfolio</a><a href="#contact">Contact</a><a href="#quote">Get a Quote →</a>';
+ document.body.appendChild(menu);
+ btn.onclick=function(){menu.classList.toggle("open");btn.textContent=menu.classList.contains("open")?"✕":"☰"};
+ menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{menu.classList.remove("open");btn.textContent="☰"}));
+ document.addEventListener("click",e=>{if(!menu.contains(e.target)&&e.target!==btn){menu.classList.remove("open");btn.textContent="☰"}});
+});
 </script></body></html>
