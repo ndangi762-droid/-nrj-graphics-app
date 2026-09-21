@@ -723,4 +723,65 @@ document.addEventListener("DOMContentLoaded",function(){
   contact.parentNode.insertBefore(sec,contact);
  }
 });
+</script><style>
+.nrjOwner{background:#101315;border:1px solid #ffffff14;border-radius:20px;padding:24px;margin-top:20px}
+.nrjOwnerGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nrjOwner input{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid #303438;background:#0b0d0e;color:#fff}
+.nrjOwner button{padding:12px 16px;border:0;border-radius:10px;background:#ffd21a;color:#111;font-weight:900;cursor:pointer}
+.nrjOwnerMsg{color:#9fa8ad;font-size:13px;margin-top:10px}
+.nrjOwnerStats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.nrjOwnerStat{background:#15191b;border:1px solid #ffffff10;border-radius:12px;padding:14px}
+.nrjOwnerStat b{display:block;font-size:24px;color:#fff}
+.nrjOwnerStat span{font-size:12px;color:#8f989d}
+.nrjOwnerTools{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.nrjOwnerTools input,.nrjOwnerTools select{padding:11px 13px;border-radius:9px;background:#0b0d0e;color:#fff;border:1px solid #303438}
+.nrjOwnerTools input{flex:1;min-width:220px}
+.nrjOwnerList{display:grid;gap:10px;margin-top:18px}
+.nrjOwnerItem{background:#15191b;border:1px solid #ffffff10;border-radius:12px;padding:15px}
+.nrjOwnerTop{display:flex;justify-content:space-between;gap:12px}
+.nrjOwnerItem select{margin-top:10px;width:100%;padding:10px;border-radius:9px;background:#0b0d0e;color:#fff;border:1px solid #303438}
+@media(max-width:700px){.nrjOwnerGrid{grid-template-columns:1fr}.nrjOwnerStats{grid-template-columns:1fr 1fr}.nrjOwnerTop{display:block}}
+</style>
+<script>
+let nrjOwnerCache=[];
+async function nrjOwnerLogin(){
+ const email=(document.getElementById("nrjOwnerEmail").value||"").trim(),pass=document.getElementById("nrjOwnerPass").value;
+ const {error}=await nrjSupabase.auth.signInWithPassword({email,password:pass});
+ const msg=document.getElementById("nrjOwnerMsg");
+ if(error){msg.textContent=error.message;return}
+ msg.textContent="Signed in. Loading enquiries…";
+ await nrjLoadOwnerOrders();
+}
+async function nrjLoadOwnerOrders(){
+ const box=document.getElementById("nrjOwnerList");
+ const {data:{user}}=await nrjSupabase.auth.getUser();
+ if(!user){box.innerHTML="";return}
+ const {data,error}=await nrjSupabase.from("nrj_enquiries").select("id,enquiry_id,customer_name,phone,product,quantity,status,estimated_quote,created_at").order("created_at",{ascending:false});
+ if(error){box.innerHTML='<div class="nrjOwnerMsg">Unable to load enquiries. Please check owner access.</div>';return}
+ nrjOwnerCache=data||[];
+ nrjRenderOwnerOrders();
+}
+function nrjRenderOwnerOrders(){
+ const box=document.getElementById("nrjOwnerList");
+ const q=(document.getElementById("nrjOwnerSearch")?.value||"").trim().toLowerCase();
+ const filter=document.getElementById("nrjOwnerFilter")?.value||"All";
+ const rows=nrjOwnerCache.filter(o=>(filter==="All"||o.status===filter)&&(!q||[o.enquiry_id,o.customer_name,o.phone,o.product].join(" ").toLowerCase().includes(q)));
+ const counts={All:nrjOwnerCache.length,New:0,"In Production":0,Completed:0,Cancelled:0};
+ nrjOwnerCache.forEach(o=>{if(counts[o.status]!==undefined)counts[o.status]++});
+ ["All","New","In Production","Completed","Cancelled"].forEach((k,n)=>{const el=document.getElementById("nrjOwnerStat"+n);if(el)el.textContent=counts[k]});
+ box.innerHTML=rows.length?rows.map(o=>'<div class="nrjOwnerItem"><div class="nrjOwnerTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><span>'+escapeNRJ(o.customer_name||"—")+'</span></div><div style="color:#aeb7bb;margin-top:7px">'+escapeNRJ(o.product)+' · Qty: '+escapeNRJ(o.quantity||"—")+' · '+escapeNRJ(o.phone||"")+'</div><div style="color:#8f989d;font-size:12px;margin-top:6px">'+(o.estimated_quote?"Indicative ₹"+Number(o.estimated_quote).toLocaleString("en-IN"):"Quote pending")+'</div><select onchange="nrjUpdateStatus(\''+o.id+'\',this.value)"><option '+(o.status==="New"?"selected":"")+'>New</option><option '+(o.status==="In Production"?"selected":"")+'>In Production</option><option '+(o.status==="Completed"?"selected":"")+'>Completed</option><option '+(o.status==="Cancelled"?"selected":"")+'>Cancelled</option></select></div>').join(""):'<div class="nrjOwnerMsg">No matching enquiries.</div>';
+}
+async function nrjUpdateStatus(id,status){
+ const {error}=await nrjSupabase.from("nrj_enquiries").update({status,updated_at:new Date().toISOString()}).eq("id",id);
+ document.getElementById("nrjOwnerMsg").textContent=error?"Could not update status.":"Status updated successfully.";
+ if(!error) await nrjLoadOwnerOrders();
+}
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact&&!document.getElementById("nrjOwnerSection")){
+  const sec=document.createElement("section");sec.className="section";sec.id="nrjOwnerSection";
+  sec.innerHTML='<div class="head"><div><div class="eyebrow">OWNER CONTROL</div><h2>Manage enquiries.</h2><p class="muted">Private owner area for updating customer order status.</p></div></div><div class="nrjOwner"><div class="nrjOwnerGrid"><input id="nrjOwnerEmail" type="email" placeholder="Owner email"><input id="nrjOwnerPass" type="password" placeholder="Password"></div><div style="margin-top:12px"><button onclick="nrjOwnerLogin()">Owner Sign In</button></div><div id="nrjOwnerMsg" class="nrjOwnerMsg"></div><div class="nrjOwnerStats"><div class="nrjOwnerStat"><b id="nrjOwnerStat0">0</b><span>All</span></div><div class="nrjOwnerStat"><b id="nrjOwnerStat1">0</b><span>New</span></div><div class="nrjOwnerStat"><b id="nrjOwnerStat2">0</b><span>In Production</span></div><div class="nrjOwnerStat"><b id="nrjOwnerStat3">0</b><span>Completed</span></div></div><div class="nrjOwnerTools"><input id="nrjOwnerSearch" placeholder="Search enquiry, customer, phone or product" oninput="nrjRenderOwnerOrders()"><select id="nrjOwnerFilter" onchange="nrjRenderOwnerOrders()"><option>All</option><option>New</option><option>In Production</option><option>Completed</option><option>Cancelled</option></select><button onclick="nrjLoadOwnerOrders()">Refresh</button></div><div id="nrjOwnerList" class="nrjOwnerList"></div></div>';
+  contact.parentNode.insertBefore(sec,contact);
+ }
+});
 </script></body></html>
