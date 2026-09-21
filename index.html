@@ -70,6 +70,38 @@ body>nav,body>main,body>footer{position:relative;z-index:1}
 .hero #particles{position:absolute;z-index:0;opacity:.55}
 .particle{animation:particleDrift linear infinite;will-change:transform,opacity}
 @keyframes particleDrift{0%{transform:translate3d(0,20px,0);opacity:0}15%{opacity:.7}50%{transform:translate3d(18px,-30px,0);opacity:.35}85%{opacity:.65}100%{transform:translate3d(-12px,-80px,0);opacity:0}}
+
+/* Desktop polish v2 */
+:root{--desktop-max:1320px}
+html{scroll-behavior:smooth}
+.wrap{width:min(var(--desktop-max),92%)}
+.top{font-size:12px;padding:9px 0;letter-spacing:.15px}
+nav{min-height:86px}
+.navin{min-height:86px;gap:22px}
+.logo{min-width:255px;font-size:22px;gap:11px}
+.mark.logo-img{width:54px;height:54px;border-radius:15px;padding:6px}
+.links{gap:5px}
+.links button{padding:11px 14px;font-size:13px}
+.hero{min-height:650px;padding:92px 0 86px;display:flex;align-items:center}
+.hero .wrap{width:min(var(--desktop-max),92%);grid-template-columns:minmax(0,1.08fr) minmax(470px,.92fr);gap:70px}
+.hero h1{font-size:clamp(58px,5.3vw,82px);max-width:760px;margin:16px 0 22px}
+.hero p{max-width:680px;font-size:19px}
+.actions{gap:12px;margin-top:30px}.btn{padding:14px 20px;border-radius:13px}
+.hero-art{height:455px;max-width:590px;width:100%;justify-self:end}
+.sheet.main{width:74%;height:350px;right:1%;top:18px;padding:26px}.sheet.main h2{font-size:46px;margin-top:42px}.sheet.side{width:38%;height:225px;left:0;bottom:5px;padding:22px}
+section{padding:92px 0}.head{margin-bottom:34px}.head h2{font-size:44px}
+.cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.card{padding:24px;min-height:235px}.card h3{font-size:21px}.card p{font-size:14px;line-height:1.65}
+.process{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.process .card{min-height:190px}
+.filters{gap:10px;margin-bottom:22px}.filter{padding:10px 15px}
+#productGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.prod{padding:16px;min-height:365px}.visual{height:165px}.prod h3{font-size:19px}
+.portfolio{grid-template-columns:1.35fr .825fr .825fr;grid-auto-rows:245px;gap:18px}.tile{border-radius:22px;padding:24px}.tile b{left:22px;bottom:22px}
+.contact{grid-template-columns:.9fr 1.1fr;gap:22px}.contactbox,.form{padding:32px;border-radius:24px}.grid2{gap:14px}
+.band{padding:38px 42px;border-radius:26px}.band h2{font-size:34px}
+.footer{padding:58px 0}.footgrid{gap:45px}
+.modal{padding:28px}.box{width:min(820px,100%);padding:32px;border-radius:26px}
+/* keep desktop content comfortably centered on very wide screens */
+@media(min-width:1500px){.wrap{width:min(1400px,90%)}.hero .wrap{width:min(1400px,90%)}.hero{min-height:700px}.cards,#productGrid{gap:24px}}
+@media(max-width:1150px) and (min-width:701px){.wrap{width:94%}.links button{padding:9px 9px;font-size:12px}.logo{min-width:215px;font-size:20px}.hero .wrap{grid-template-columns:1fr .85fr;gap:35px}.hero h1{font-size:58px}.hero-art{height:380px}.cards,#productGrid{gap:14px}.card{padding:18px}.prod{padding:12px}.visual{height:140px}}
 </style></head>
 <body><canvas id="particles" aria-hidden="true"></canvas>
 <div class="top"><div class="wrap"><span>Khalsa Printers • Print • Design • Promotion</span><span>Udaipur, Rajasthan</span></div></div>
