@@ -694,67 +694,7 @@ function printNRJQuote(){
  const id=(document.getElementById("nrjQuoteId").value||"NRJ").trim().toUpperCase();
  const w=window.open("","_blank","width=850,height=900");
  if(!w){alert("Please allow pop-ups to print the quotation.");return}
- w.document.write(`<!doctype html><html><head><title>NRJ Graphics - ${id}</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#17191a}h1{margin:0 0 5px}.brand{border-bottom:2px solid #17191a;padding-bottom:18px;margin-bottom:25px}.brand div{margin-top:5px}.nrjQuoteOut{display:block!important;margin-top:15px;padding:18px;border-radius:12px;background:#f7f7f7;color:#222}.nrjQuoteLine{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid #ddd;padding:10px 0;font-size:13px}.nrjQuoteTotal{font-size:22px;font-weight:800;margin-top:20px}.nrjNote{margin-top:18px;font-size:12px;color:#666;line-height:1.6}@media print{body{padding:20px}}</style></head><body><div class="brand"><h1>NRJ Graphics</h1><div>Design • Printing • Production Coordination</div><div>WhatsApp: +91 8690996080 · ndangi762@gmail.com</div></div><h2>Quotation / Enquiry</h2>${out.innerHTML}<script>
-function nrjOpenCustomer(id){
- const current=nrjOwnerCache.find(o=>o.id===id); if(!current)return; window.nrjCurrentCustomerId=id;
- const phone=String(current.phone||"").replace(/\D/g,"");
- const history=nrjOwnerCache.filter(o=>{const p=String(o.phone||"").replace(/\D/g,"");return phone?p===phone:String(o.customer_name||"").trim().toLowerCase()===String(current.customer_name||"").trim().toLowerCase()}).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
- const drawer=document.getElementById("nrjCustomerDrawer");if(!drawer)return;
- document.getElementById("nrjDrawerTitle").textContent=current.customer_name||"Customer";
- document.getElementById("nrjDrawerSub").textContent=(current.phone||"No phone saved")+" · "+history.length+" "+(history.length===1?"enquiry":"enquiries");
- const totalValue=history.reduce((s,o)=>s+(Number(o.estimated_quote)||0),0),paidValue=history.filter(o=>o.payment_status==="Paid").reduce((s,o)=>s+(Number(o.estimated_quote)||0),0),pendingValue=history.filter(o=>!o.payment_status||o.payment_status==="Pending"||o.payment_status==="Partial").reduce((s,o)=>s+(Number(o.estimated_quote)||0),0),paidCount=history.filter(o=>o.payment_status==="Paid").length;
- document.getElementById("nrjCustomerMeta").innerHTML='<div><span>Customer</span><b>'+escapeNRJ(current.customer_name||"—")+'</b></div><div><span>Phone</span><b>'+escapeNRJ(current.phone||"—")+'</b></div><div><span>Total Enquiries</span><b>'+history.length+'</b></div><div><span>Total Indicative Value</span><b>₹'+totalValue.toLocaleString("en-IN")+'</b></div><div><span>Paid Value</span><b>₹'+paidValue.toLocaleString("en-IN")+'</b></div><div><span>Pending / Partial</span><b>₹'+pendingValue.toLocaleString("en-IN")+'</b></div>';
- document.getElementById("nrjCustomerHistory").innerHTML=history.map(o=>'<div class="nrjHistoryItem"><div class="nrjHistoryTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><small>'+new Date(o.created_at).toLocaleDateString("en-IN")+'</small></div><div class="nrjHistoryLine"><span>Product</span><b>'+escapeNRJ(o.product||"—")+'</b></div><div class="nrjHistoryLine"><span>Quantity</span><b>'+escapeNRJ(o.quantity||"—")+'</b></div><div class="nrjHistoryLine"><span>Status</span><b>'+escapeNRJ(o.status||"—")+'</b></div><div class="nrjHistoryLine"><span>Payment</span><b>'+escapeNRJ(o.payment_status||"Pending")+'</b></div><div class="nrjHistoryLine"><span>Delivery</span><b>'+escapeNRJ(o.delivery_status||"Not Started")+'</b></div><div class="nrjHistoryLine"><span>Indicative Quote</span><b>'+(o.estimated_quote?"₹"+Number(o.estimated_quote).toLocaleString("en-IN"):"Pending")+'</b></div>'+(o.owner_notes?'<div class="nrjDrawerNote"><b>Private Note:</b> '+escapeNRJ(o.owner_notes)+'</div>':"")+'</div>').join("");
- drawer.classList.add("open");document.body.style.overflow="hidden";
-}
-function nrjCloseCustomer(){const d=document.getElementById("nrjCustomerDrawer");if(d)d.classList.remove("open");document.body.style.overflow="";}
-document.addEventListener("DOMContentLoaded",function(){
- if(document.getElementById("nrjCustomerDrawer"))return;
- const d=document.createElement("div");d.id="nrjCustomerDrawer";d.className="nrjDrawer";
- d.innerHTML='<div class="nrjDrawerPanel"><div class="nrjDrawerHead"><div><h2 id="nrjDrawerTitle">Customer</h2><div id="nrjDrawerSub" class="nrjOwnerMsg"></div></div><button class="nrjDrawerClose" onclick="nrjCloseCustomer()">✕</button></div><div id="nrjCustomerMeta" class="nrjCustomerMeta"></div><div class="nrjCustomerActions"><button class="nrjNewEnquiryBtn" onclick="nrjToggleNewEnquiry()">＋ New Enquiry</button><button class="nrjCustomerWaBtn" onclick="nrjDrawerWhatsApp()">WhatsApp Customer ↗</button></div><div id="nrjNewEnquiryForm" class="nrjNewEnquiryForm" style="display:none"><div class="eyebrow">NEW ENQUIRY</div><div class="nrjNewGrid"><input id="nrjNewProduct" placeholder="Product / Service"><input id="nrjNewQuantity" placeholder="Quantity"><input id="nrjNewSize" placeholder="Size"><input id="nrjNewMaterial" placeholder="Material"><input id="nrjNewFinishing" placeholder="Finishing"><input id="nrjNewQuote" type="number" min="0" placeholder="Indicative Quote (₹)"><input id="nrjNewArtwork" placeholder="Artwork name / reference"><input id="nrjNewRequirement" placeholder="Special requirement"></div><div class="nrjNewActions"><button class="nrjNewSave" onclick="nrjCreateCustomerEnquiry()">Create Enquiry</button><button class="nrjNewCancel" onclick="nrjToggleNewEnquiry()">Cancel</button></div><div id="nrjNewEnquiryMsg" class="nrjOwnerMsg"></div></div><div class="eyebrow">CUSTOMER HISTORY</div><div id="nrjCustomerHistory" class="nrjHistory"></div></div>';
- document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d)nrjCloseCustomer()});
-});
-</script><script>
-function nrjToggleNewEnquiry(){
- const f=document.getElementById("nrjNewEnquiryForm"); if(!f)return;
- f.style.display=f.style.display==="none"?"block":"none";
-}
-function nrjDrawerWhatsApp(){
- const id=window.nrjCurrentCustomerId; const o=nrjOwnerCache.find(x=>x.id===id); if(!o||!o.phone)return;
- const digits=String(o.phone).replace(/\D/g,""), normalized=digits.length===10?"91"+digits:digits;
- const msg="Hi "+(o.customer_name||"")+", this is NRJ Graphics. How can we help you with your next requirement?";
- window.open("https://wa.me/"+normalized+"?text="+encodeURIComponent(msg),"_blank");
-}
-async function nrjCreateCustomerEnquiry(){
- const base=nrjOwnerCache.find(o=>o.id===window.nrjCurrentCustomerId); if(!base)return;
- const product=(document.getElementById("nrjNewProduct").value||"").trim();
- const msg=document.getElementById("nrjNewEnquiryMsg");
- if(!product){msg.textContent="Please enter the product / service.";return}
- const {data:{user}}=await nrjSupabase.auth.getUser();
- const payload={
-  enquiry_id:"NRJ-"+Date.now().toString().slice(-8),
-  customer_name:base.customer_name||"",
-  phone:base.phone||"",
-  product,
-  quantity:(document.getElementById("nrjNewQuantity").value||"").trim(),
-  size:(document.getElementById("nrjNewSize").value||"").trim(),
-  material:(document.getElementById("nrjNewMaterial").value||"").trim(),
-  finishing:(document.getElementById("nrjNewFinishing").value||"").trim(),
-  estimated_quote:Number(document.getElementById("nrjNewQuote").value||0),
-  artwork_name:(document.getElementById("nrjNewArtwork").value||"").trim(),
-  special_requirement:(document.getElementById("nrjNewRequirement").value||"").trim(),
-  status:"New",payment_status:"Pending",delivery_status:"Not Started",user_id:user?.id||null
- };
- const {error}=await nrjSupabase.from("nrj_enquiries").insert(payload);
- if(error){msg.textContent=error.message;return}
- msg.textContent="New enquiry created successfully.";
- ["nrjNewProduct","nrjNewQuantity","nrjNewSize","nrjNewMaterial","nrjNewFinishing","nrjNewQuote","nrjNewArtwork","nrjNewRequirement"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
- await nrjLoadOwnerOrders();
- const refreshed=nrjOwnerCache.find(o=>o.phone===base.phone||o.customer_name===base.customer_name);
- if(refreshed)nrjOpenCustomer(refreshed.id);
-}
-</script></body></html>`);
- w.document.close();w.focus();setTimeout(()=>w.print(),400);
+ w.document.write(`<!doctype html><html><head><title>NRJ Graphics - ${id}</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#17191a}h1{margin:0 0 5px}.brand{border-bottom:2px solid #17191a;padding-bottom:18px;margin-bottom:25px}.brand div{margin-top:5px}.nrjQuoteOut{display:block!important;margin-top:15px;padding:18px;border-radius:12px;background:#f7f7f7;color:#222}.nrjQuoteLine{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid #ddd;padding:10px 0;font-size:13px}.nrjQuoteTotal{font-size:22px;font-weight:800;margin-top:20px}.nrjNote{margin-top:18px;font-size:12px;color:#666;line-height:1.6}@media print{body{padding:20px}}</style></head><body><div class="brand"><h1>NRJ Graphics</h1><div>Design • Printing • Production Coordination</div><div>WhatsApp: +91 8690996080 · ndangi762@gmail.com</div></div><h2>Quotation / Enquiry</h2>${out.innerHTML}</body></html>`);w.document.close();w.focus();setTimeout(()=>w.print(),400);
 }
 function shareQuoteWhatsApp(){
  const id=(document.getElementById("nrjQuoteId").value||"").trim().toUpperCase();
@@ -865,4 +805,63 @@ document.addEventListener("DOMContentLoaded",function(){
   contact.parentNode.insertBefore(sec,contact);
  }
 });
+</script><script>
+function nrjOpenCustomer(id){
+ const current=nrjOwnerCache.find(o=>o.id===id); if(!current)return; window.nrjCurrentCustomerId=id;
+ const phone=String(current.phone||"").replace(/\D/g,"");
+ const history=nrjOwnerCache.filter(o=>{const p=String(o.phone||"").replace(/\D/g,"");return phone?p===phone:String(o.customer_name||"").trim().toLowerCase()===String(current.customer_name||"").trim().toLowerCase()}).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const drawer=document.getElementById("nrjCustomerDrawer");if(!drawer)return;
+ document.getElementById("nrjDrawerTitle").textContent=current.customer_name||"Customer";
+ document.getElementById("nrjDrawerSub").textContent=(current.phone||"No phone saved")+" · "+history.length+" "+(history.length===1?"enquiry":"enquiries");
+ const totalValue=history.reduce((s,o)=>s+(Number(o.estimated_quote)||0),0),paidValue=history.filter(o=>o.payment_status==="Paid").reduce((s,o)=>s+(Number(o.estimated_quote)||0),0),pendingValue=history.filter(o=>!o.payment_status||o.payment_status==="Pending"||o.payment_status==="Partial").reduce((s,o)=>s+(Number(o.estimated_quote)||0),0),paidCount=history.filter(o=>o.payment_status==="Paid").length;
+ document.getElementById("nrjCustomerMeta").innerHTML='<div><span>Customer</span><b>'+escapeNRJ(current.customer_name||"—")+'</b></div><div><span>Phone</span><b>'+escapeNRJ(current.phone||"—")+'</b></div><div><span>Total Enquiries</span><b>'+history.length+'</b></div><div><span>Total Indicative Value</span><b>₹'+totalValue.toLocaleString("en-IN")+'</b></div><div><span>Paid Value</span><b>₹'+paidValue.toLocaleString("en-IN")+'</b></div><div><span>Pending / Partial</span><b>₹'+pendingValue.toLocaleString("en-IN")+'</b></div>';
+ document.getElementById("nrjCustomerHistory").innerHTML=history.map(o=>'<div class="nrjHistoryItem"><div class="nrjHistoryTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><small>'+new Date(o.created_at).toLocaleDateString("en-IN")+'</small></div><div class="nrjHistoryLine"><span>Product</span><b>'+escapeNRJ(o.product||"—")+'</b></div><div class="nrjHistoryLine"><span>Quantity</span><b>'+escapeNRJ(o.quantity||"—")+'</b></div><div class="nrjHistoryLine"><span>Status</span><b>'+escapeNRJ(o.status||"—")+'</b></div><div class="nrjHistoryLine"><span>Payment</span><b>'+escapeNRJ(o.payment_status||"Pending")+'</b></div><div class="nrjHistoryLine"><span>Delivery</span><b>'+escapeNRJ(o.delivery_status||"Not Started")+'</b></div><div class="nrjHistoryLine"><span>Indicative Quote</span><b>'+(o.estimated_quote?"₹"+Number(o.estimated_quote).toLocaleString("en-IN"):"Pending")+'</b></div>'+(o.owner_notes?'<div class="nrjDrawerNote"><b>Private Note:</b> '+escapeNRJ(o.owner_notes)+'</div>':"")+'</div>').join("");
+ drawer.classList.add("open");document.body.style.overflow="hidden";
+}
+function nrjCloseCustomer(){const d=document.getElementById("nrjCustomerDrawer");if(d)d.classList.remove("open");document.body.style.overflow="";}
+document.addEventListener("DOMContentLoaded",function(){
+ if(document.getElementById("nrjCustomerDrawer"))return;
+ const d=document.createElement("div");d.id="nrjCustomerDrawer";d.className="nrjDrawer";
+ d.innerHTML='<div class="nrjDrawerPanel"><div class="nrjDrawerHead"><div><h2 id="nrjDrawerTitle">Customer</h2><div id="nrjDrawerSub" class="nrjOwnerMsg"></div></div><button class="nrjDrawerClose" onclick="nrjCloseCustomer()">✕</button></div><div id="nrjCustomerMeta" class="nrjCustomerMeta"></div><div class="nrjCustomerActions"><button class="nrjNewEnquiryBtn" onclick="nrjToggleNewEnquiry()">＋ New Enquiry</button><button class="nrjCustomerWaBtn" onclick="nrjDrawerWhatsApp()">WhatsApp Customer ↗</button></div><div id="nrjNewEnquiryForm" class="nrjNewEnquiryForm" style="display:none"><div class="eyebrow">NEW ENQUIRY</div><div class="nrjNewGrid"><input id="nrjNewProduct" placeholder="Product / Service"><input id="nrjNewQuantity" placeholder="Quantity"><input id="nrjNewSize" placeholder="Size"><input id="nrjNewMaterial" placeholder="Material"><input id="nrjNewFinishing" placeholder="Finishing"><input id="nrjNewQuote" type="number" min="0" placeholder="Indicative Quote (₹)"><input id="nrjNewArtwork" placeholder="Artwork name / reference"><input id="nrjNewRequirement" placeholder="Special requirement"></div><div class="nrjNewActions"><button class="nrjNewSave" onclick="nrjCreateCustomerEnquiry()">Create Enquiry</button><button class="nrjNewCancel" onclick="nrjToggleNewEnquiry()">Cancel</button></div><div id="nrjNewEnquiryMsg" class="nrjOwnerMsg"></div></div><div class="eyebrow">CUSTOMER HISTORY</div><div id="nrjCustomerHistory" class="nrjHistory"></div></div>';
+ document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d)nrjCloseCustomer()});
+});
+</script><script>
+function nrjToggleNewEnquiry(){
+ const f=document.getElementById("nrjNewEnquiryForm"); if(!f)return;
+ f.style.display=f.style.display==="none"?"block":"none";
+}
+function nrjDrawerWhatsApp(){
+ const id=window.nrjCurrentCustomerId; const o=nrjOwnerCache.find(x=>x.id===id); if(!o||!o.phone)return;
+ const digits=String(o.phone).replace(/\D/g,""), normalized=digits.length===10?"91"+digits:digits;
+ const msg="Hi "+(o.customer_name||"")+", this is NRJ Graphics. How can we help you with your next requirement?";
+ window.open("https://wa.me/"+normalized+"?text="+encodeURIComponent(msg),"_blank");
+}
+async function nrjCreateCustomerEnquiry(){
+ const base=nrjOwnerCache.find(o=>o.id===window.nrjCurrentCustomerId); if(!base)return;
+ const product=(document.getElementById("nrjNewProduct").value||"").trim();
+ const msg=document.getElementById("nrjNewEnquiryMsg");
+ if(!product){msg.textContent="Please enter the product / service.";return}
+ const {data:{user}}=await nrjSupabase.auth.getUser();
+ const payload={
+  enquiry_id:"NRJ-"+Date.now().toString().slice(-8),
+  customer_name:base.customer_name||"",
+  phone:base.phone||"",
+  product,
+  quantity:(document.getElementById("nrjNewQuantity").value||"").trim(),
+  size:(document.getElementById("nrjNewSize").value||"").trim(),
+  material:(document.getElementById("nrjNewMaterial").value||"").trim(),
+  finishing:(document.getElementById("nrjNewFinishing").value||"").trim(),
+  estimated_quote:Number(document.getElementById("nrjNewQuote").value||0),
+  artwork_name:(document.getElementById("nrjNewArtwork").value||"").trim(),
+  special_requirement:(document.getElementById("nrjNewRequirement").value||"").trim(),
+  status:"New",payment_status:"Pending",delivery_status:"Not Started",user_id:user?.id||null
+ };
+ const {error}=await nrjSupabase.from("nrj_enquiries").insert(payload);
+ if(error){msg.textContent=error.message;return}
+ msg.textContent="New enquiry created successfully.";
+ ["nrjNewProduct","nrjNewQuantity","nrjNewSize","nrjNewMaterial","nrjNewFinishing","nrjNewQuote","nrjNewArtwork","nrjNewRequirement"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+ await nrjLoadOwnerOrders();
+ const refreshed=nrjOwnerCache.find(o=>o.phone===base.phone||o.customer_name===base.customer_name);
+ if(refreshed)nrjOpenCustomer(refreshed.id);
+}
 </script></body></html>
