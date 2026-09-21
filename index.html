@@ -659,4 +659,29 @@ document.addEventListener("DOMContentLoaded",function(){
  s.innerHTML='<div><h3>About NRJ Graphics</h3><p>Design se production tak — NRJ Graphics businesses, brands aur individuals ke liye creative design aur printing solutions provide karta hai. Hamara focus clean design, clear communication aur reliable production coordination par hai.</p><div class="nrjAboutGrid"><div class="nrjAboutMini"><b>🎨 Creative Design</b><span>Branding, social media, packaging & event designs.</span></div><div class="nrjAboutMini"><b>🖨️ Print Solutions</b><span>Digital, large-format, stickers & business printing.</span></div><div class="nrjAboutMini"><b>⚙️ Production Support</b><span>Requirement se final production tak coordination.</span></div><div class="nrjAboutMini"><b>💬 Direct Communication</b><span>Fast enquiry and updates through WhatsApp.</span></div></div></div><div class="nrjAboutSide"><strong>Neeraj Dangi</strong><span>Founder & Owner • NRJ Graphics<br>Udaipur, Rajasthan<br><br>Design • Branding • Printing Solutions</span></div>';
  contact.parentNode.insertBefore(s,contact);
 });
+</script><style>
+.nrjTrack{background:#101315;border:1px solid #ffffff14;border-radius:20px;padding:24px;margin-top:22px}.nrjTrackRow{display:grid;grid-template-columns:1fr auto;gap:10px}.nrjTrack input{width:100%;box-sizing:border-box;padding:13px 15px;border-radius:10px;border:1px solid #303438;background:#0b0d0e;color:#fff}.nrjTrack button{padding:13px 18px;border:0;border-radius:10px;background:#ffd21a;color:#111;font-weight:900;cursor:pointer}.nrjTrackResult{display:none;margin-top:16px;padding:16px;border-radius:12px;background:#15191b;color:#d8dde0}.nrjTrackResult strong{color:#fff}.nrjSteps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.nrjStep{padding:12px;border:1px solid #ffffff10;border-radius:10px;color:#9fa8ad;font-size:12px}.nrjStep.active{border-color:#ffd21a;color:#fff}.nrjStep b{display:block;color:#ffd21a;margin-bottom:5px}@media(max-width:600px){.nrjTrackRow{grid-template-columns:1fr}.nrjSteps{grid-template-columns:1fr}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact&&!document.getElementById("nrjTracking")){
+  const sec=document.createElement("section");sec.className="section";sec.id="nrjTracking";
+  sec.innerHTML='<div class="head"><div><div class="eyebrow">ORDER TRACKING</div><h2>Track your enquiry.</h2><p class="muted">Enter the NRJ enquiry ID received after submitting your requirement.</p></div></div><div class="nrjTrack"><div class="nrjTrackRow"><input id="nrjTrackId" placeholder="Example: NRJ-123456" autocomplete="off"><button onclick="trackNRJ()">Track Status</button></div><div id="nrjTrackResult" class="nrjTrackResult"></div></div>';
+  contact.parentNode.insertBefore(sec,contact);
+ }
+});
+async function trackNRJ(){
+ const id=(document.getElementById("nrjTrackId").value||"").trim().toUpperCase();
+ const box=document.getElementById("nrjTrackResult");
+ if(!id){box.style.display="block";box.innerHTML="Please enter your enquiry ID.";return}
+ box.style.display="block";box.innerHTML="Checking enquiry…";
+ try{
+  const {data,error}=await nrjSupabase.from("nrj_enquiries").select("enquiry_id,product,quantity,status,created_at").eq("enquiry_id",id).maybeSingle();
+  if(error||!data){box.innerHTML="Enquiry not found. Please check the ID and try again.";return}
+  const status=data.status||"New";
+  const active=status==="Completed"?3:status==="In Production"?2:1;
+  box.innerHTML='<strong>'+data.enquiry_id+'</strong><br>'+data.product+' · Qty: '+(data.quantity||"—")+'<br>Status: <strong>'+status+'</strong><div class="nrjSteps"><div class="nrjStep '+(active>=1?"active":"")+'"><b>01</b>Enquiry</div><div class="nrjStep '+(active>=2?"active":"")+'"><b>02</b>Production</div><div class="nrjStep '+(active>=3?"active":"")+'"><b>03</b>Completed</div></div>';
+ }catch(e){box.innerHTML="Unable to check right now. Please contact NRJ Graphics on WhatsApp."}
+}
 </script></body></html>
