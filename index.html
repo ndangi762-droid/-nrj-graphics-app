@@ -743,6 +743,26 @@ document.addEventListener("DOMContentLoaded",async function(){
  const {data:{session}}=await nrjSupabase.auth.getSession();
  if(session) loadNRJOrders();
 });
+</script><style>
+.nrjNotify{margin-top:16px;padding:16px;border-radius:12px;background:#15191b;border:1px solid #ffffff10}.nrjNotify b{color:#fff}.nrjNotify a{color:#ffd21a;text-decoration:none;font-weight:800}.nrjNotify small{display:block;color:#8f989d;margin-top:6px;line-height:1.5}
+</style>
+<script>
+async function nrjSendStatusWhatsApp(){
+ const id=(document.getElementById("nrjTrackId")?.value||document.getElementById("nrjQuoteId")?.value||"").trim().toUpperCase();
+ if(!id){alert("Enter your enquiry ID first.");return}
+ const {data,error}=await nrjSupabase.from("nrj_enquiries").select("enquiry_id,product,status").eq("enquiry_id",id).maybeSingle();
+ if(error||!data){alert("Enquiry not found.");return}
+ const msg="Hi NRJ Graphics, I am checking my order.\nEnquiry ID: "+data.enquiry_id+"\nProduct: "+data.product+"\nCurrent Status: "+data.status;
+ window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
+}
+document.addEventListener("DOMContentLoaded",function(){
+ const track=document.getElementById("nrjTracking");
+ if(track&&!document.getElementById("nrjNotifyBox")){
+  const d=document.createElement("div");d.id="nrjNotifyBox";d.className="nrjNotify";
+  d.innerHTML='<b>Need an update?</b><small>WhatsApp NRJ Graphics directly with your enquiry ID for the latest confirmation.</small><br><a href="#" onclick="nrjSendStatusWhatsApp();return false;">Ask for an update on WhatsApp →</a>';
+  track.querySelector(".nrjTrack")?.appendChild(d);
+ }
+});
 </script></body></html>');
  w.document.close();w.focus();setTimeout(()=>w.print(),400);
 }
