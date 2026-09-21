@@ -741,7 +741,7 @@ document.addEventListener("DOMContentLoaded",function(){
 .nrjOwnerTop{display:flex;justify-content:space-between;gap:12px}
 .nrjOwnerItem select{margin-top:10px;width:100%;padding:10px;border-radius:9px;background:#0b0d0e;color:#fff;border:1px solid #303438}
 @media(max-width:700px){.nrjOwnerGrid{grid-template-columns:1fr}.nrjOwnerStats{grid-template-columns:1fr 1fr}.nrjOwnerTop{display:block}}
-</style>
+.nrjOwnerActions{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:10px}.nrjOwnerWa{background:#19d66b!important;color:#07100a!important}.nrjOwnerActions select{margin-top:0!important}@media(max-width:700px){.nrjOwnerActions{grid-template-columns:1fr}.nrjOwnerWa{width:100%}}</style>
 <script>
 let nrjOwnerCache=[];
 async function nrjOwnerLogin(){
@@ -769,7 +769,14 @@ function nrjRenderOwnerOrders(){
  const counts={All:nrjOwnerCache.length,New:0,"In Production":0,Completed:0,Cancelled:0};
  nrjOwnerCache.forEach(o=>{if(counts[o.status]!==undefined)counts[o.status]++});
  ["All","New","In Production","Completed","Cancelled"].forEach((k,n)=>{const el=document.getElementById("nrjOwnerStat"+n);if(el)el.textContent=counts[k]});
- box.innerHTML=rows.length?rows.map(o=>'<div class="nrjOwnerItem"><div class="nrjOwnerTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><span>'+escapeNRJ(o.customer_name||"—")+'</span></div><div style="color:#aeb7bb;margin-top:7px">'+escapeNRJ(o.product)+' · Qty: '+escapeNRJ(o.quantity||"—")+' · '+escapeNRJ(o.phone||"")+'</div><div style="color:#8f989d;font-size:12px;margin-top:6px">'+(o.estimated_quote?"Indicative ₹"+Number(o.estimated_quote).toLocaleString("en-IN"):"Quote pending")+'</div><select onchange="nrjUpdateStatus(\''+o.id+'\',this.value)"><option '+(o.status==="New"?"selected":"")+'>New</option><option '+(o.status==="In Production"?"selected":"")+'>In Production</option><option '+(o.status==="Completed"?"selected":"")+'>Completed</option><option '+(o.status==="Cancelled"?"selected":"")+'>Cancelled</option></select></div>').join(""):'<div class="nrjOwnerMsg">No matching enquiries.</div>';
+ box.innerHTML=rows.length?rows.map(o=>'<div class="nrjOwnerItem"><div class="nrjOwnerTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><span>'+escapeNRJ(o.customer_name||"—")+'</span></div><div style="color:#aeb7bb;margin-top:7px">'+escapeNRJ(o.product)+' · Qty: '+escapeNRJ(o.quantity||"—")+' · '+escapeNRJ(o.phone||"")+'</div><div style="color:#8f989d;font-size:12px;margin-top:6px">'+(o.estimated_quote?"Indicative ₹"+Number(o.estimated_quote).toLocaleString("en-IN"):"Quote pending")+'</div><div class="nrjOwnerActions"><select onchange="nrjUpdateStatus(\\''+o.id+'\\',this.value)"><option '+(o.status==="New"?"selected":"")+'>New</option><option '+(o.status==="In Production"?"selected":"")+'>In Production</option><option '+(o.status==="Completed"?"selected":"")+'>Completed</option><option '+(o.status==="Cancelled"?"selected":"")+'>Cancelled</option></select><button class="nrjOwnerWa" onclick="nrjOwnerWhatsApp(\\''+escapeNRJ(o.phone||'')+'\\',\\''+escapeNRJ(o.enquiry_id)+'\\',\\''+escapeNRJ(o.customer_name||'')+'\\')">WhatsApp Customer ↗</button></div></div>').join(""):'<div class="nrjOwnerMsg">No matching enquiries.</div>';
+}
+function nrjOwnerWhatsApp(phone,id,name){
+ const digits=String(phone||"").replace(/\\D/g,"");
+ if(!digits){document.getElementById("nrjOwnerMsg").textContent="No customer WhatsApp number is saved for this enquiry.";return}
+ const normalized=digits.length===10?"91"+digits:digits;
+ const msg="Hi "+(name||"")+ ", this is NRJ Graphics regarding your enquiry "+id+". We are sharing a quick update on your requirement. Please reply here if you need any help.";
+ window.open("https://wa.me/"+normalized+"?text="+encodeURIComponent(msg),"_blank");
 }
 async function nrjUpdateStatus(id,status){
  const {error}=await nrjSupabase.from("nrj_enquiries").update({status,updated_at:new Date().toISOString()}).eq("id",id);
