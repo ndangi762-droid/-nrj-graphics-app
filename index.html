@@ -684,4 +684,33 @@ async function trackNRJ(){
   box.innerHTML='<strong>'+data.enquiry_id+'</strong><br>'+data.product+' · Qty: '+(data.quantity||"—")+'<br>Status: <strong>'+status+'</strong><div class="nrjSteps"><div class="nrjStep '+(active>=1?"active":"")+'"><b>01</b>Enquiry</div><div class="nrjStep '+(active>=2?"active":"")+'"><b>02</b>Production</div><div class="nrjStep '+(active>=3?"active":"")+'"><b>03</b>Completed</div></div>';
  }catch(e){box.innerHTML="Unable to check right now. Please contact NRJ Graphics on WhatsApp."}
 }
+</script><style>
+.nrjQuoteCard{margin-top:22px;background:#101315;border:1px solid #ffffff14;border-radius:20px;padding:24px}.nrjQuoteGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.nrjQuoteGrid label{display:block;color:#9fa8ad;font-size:12px;margin-bottom:6px}.nrjQuoteGrid input{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid #303438;background:#0b0d0e;color:#fff}.nrjQuoteActions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}.nrjQuoteActions button{padding:12px 16px;border-radius:10px;border:0;font-weight:900;cursor:pointer}.nrjQuoteActions .primary{background:#ffd21a;color:#111}.nrjQuoteActions .secondary{background:#1b2022;color:#fff;border:1px solid #ffffff14}.nrjQuoteOut{display:none;margin-top:15px;padding:18px;border-radius:12px;background:#15191b;color:#d8dde0}.nrjQuoteOut h3{margin:0 0 10px;color:#fff}.nrjQuoteLine{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid #ffffff0d;padding:7px 0;font-size:13px}.nrjQuoteTotal{font-size:22px;color:#fff;font-weight:900;margin-top:12px}@media(max-width:600px){.nrjQuoteGrid{grid-template-columns:1fr}}
+</style>
+<script>
+function makeQuote(){
+ const id=(document.getElementById("nrjQuoteId").value||"").trim().toUpperCase(), out=document.getElementById("nrjQuoteOut");
+ if(!id){out.style.display="block";out.innerHTML="Please enter your enquiry ID.";return}
+ out.style.display="block";out.innerHTML="Loading quotation…";
+ nrjSupabase.from("nrj_enquiries").select("enquiry_id,customer_name,phone,product,quantity,size,material,finishing,special_requirement,estimated_quote,status,created_at").eq("enquiry_id",id).maybeSingle().then(({data,error})=>{
+  if(error||!data){out.innerHTML="Enquiry not found. Please check your enquiry ID.";return}
+  const total=data.estimated_quote?("₹"+Number(data.estimated_quote).toLocaleString("en-IN")):"To be confirmed";
+  out.innerHTML='<h3>NRJ Graphics — Quotation</h3><div class="nrjQuoteLine"><span>Enquiry ID</span><b>'+data.enquiry_id+'</b></div><div class="nrjQuoteLine"><span>Customer</span><b>'+escapeNRJ(data.customer_name||"—")+'</b></div><div class="nrjQuoteLine"><span>Product</span><b>'+escapeNRJ(data.product)+'</b></div><div class="nrjQuoteLine"><span>Quantity</span><b>'+escapeNRJ(data.quantity||"—")+'</b></div><div class="nrjQuoteLine"><span>Size / Material</span><b>'+escapeNRJ((data.size||"—")+" / "+(data.material||"—"))+'</b></div><div class="nrjQuoteLine"><span>Finishing</span><b>'+escapeNRJ(data.finishing||"—")+'</b></div><div class="nrjQuoteTotal">Indicative: '+total+'</div><div class="nrjNote">Final quotation is confirmed after artwork, exact specifications, production and delivery requirements are checked.</div>';
+ }).catch(()=>out.innerHTML="Unable to load quotation right now.");
+}
+function escapeNRJ(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+function shareQuoteWhatsApp(){
+ const id=(document.getElementById("nrjQuoteId").value||"").trim().toUpperCase();
+ if(!id)return;
+ const msg="Hi NRJ Graphics, I want to confirm/check my quotation. Enquiry ID: "+id;
+ window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
+}
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact&&!document.getElementById("nrjQuoteSection")){
+  const sec=document.createElement("section");sec.className="section";sec.id="nrjQuoteSection";
+  sec.innerHTML='<div class="head"><div><div class="eyebrow">MY QUOTATION</div><h2>Check your enquiry quote.</h2><p class="muted">Enter your NRJ enquiry ID to view the current quotation details.</p></div></div><div class="nrjQuoteCard"><div class="nrjQuoteGrid"><div><label>Enquiry ID</label><input id="nrjQuoteId" placeholder="NRJ-123456"></div></div><div class="nrjQuoteActions"><button class="primary" onclick="makeQuote()">View Quote</button><button class="secondary" onclick="shareQuoteWhatsApp()">Ask on WhatsApp</button></div><div id="nrjQuoteOut" class="nrjQuoteOut"></div></div>';
+  contact.parentNode.insertBefore(sec,contact);
+ }
+});
 </script></body></html>
