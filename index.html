@@ -307,7 +307,8 @@ async function send(){
     "\nRequirement: "+(notes||"None")+
     "\nArtwork selected: "+(fileInput.files[0]?fileInput.files[0].name:"No file selected");
   try{
-    const row={enquiry_id:window.currentOrderId,customer_name:name,phone:phone||null,product:document.getElementById("product").value,quantity:document.getElementById("qty").value,size:document.getElementById("size").value,material:document.getElementById("material").value,finishing:document.getElementById("finish").value,special_requirement:notes||null,artwork_name:fileInput.files[0]?fileInput.files[0].name:null,estimated_quote:Number((document.getElementById("estimate").textContent||"").replace(/[^0-9.]/g,""))||null};
+    const {data:{user:currentUser}}=await nrjSupabase.auth.getUser();
+    const row={enquiry_id:window.currentOrderId,user_id:currentUser?currentUser.id:null,customer_name:name,phone:phone||null,product:document.getElementById("product").value,quantity:document.getElementById("qty").value,size:document.getElementById("size").value,material:document.getElementById("material").value,finishing:document.getElementById("finish").value,special_requirement:notes||null,artwork_name:fileInput.files[0]?fileInput.files[0].name:null,estimated_quote:Number((document.getElementById("estimate").textContent||"").replace(/[^0-9.]/g,""))||null};
     const {error}=await nrjSupabase.from("nrj_enquiries").insert(row);
     if(error) console.warn("NRJ enquiry save:",error.message);
   }catch(e){console.warn("NRJ enquiry save failed:",e);}
@@ -705,7 +706,44 @@ function printNRJQuote(){
  const id=(document.getElementById("nrjQuoteId").value||"NRJ").trim().toUpperCase();
  const w=window.open("","_blank","width=850,height=900");
  if(!w){alert("Please allow pop-ups to print the quotation.");return}
- w.document.write('<!doctype html><html><head><title>NRJ Graphics - '+id+'</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#17191a}h1{margin:0 0 5px}h2{margin-top:30px}.brand{border-bottom:2px solid #17191a;padding-bottom:18px;margin-bottom:25px}.row{display:flex;justify-content:space-between;border-bottom:1px solid #ddd;padding:12px 0}.total{font-size:22px;font-weight:800;margin-top:20px}.note{margin-top:30px;font-size:12px;color:#666;line-height:1.6}@media print{body{padding:20px}}</style></head><body><div class="brand"><h1>NRJ Graphics</h1><div>Design • Printing • Production Coordination</div><div>WhatsApp: +91 8690996080 · ndangi762@gmail.com</div></div><h2>Quotation / Enquiry</h2>'+out.innerHTML+'</body></html>');
+ w.document.write('<!doctype html><html><head><title>NRJ Graphics - '+id+'</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#17191a}h1{margin:0 0 5px}h2{margin-top:30px}.brand{border-bottom:2px solid #17191a;padding-bottom:18px;margin-bottom:25px}.row{display:flex;justify-content:space-between;border-bottom:1px solid #ddd;padding:12px 0}.total{font-size:22px;font-weight:800;margin-top:20px}.note{margin-top:30px;font-size:12px;color:#666;line-height:1.6}@media print{body{padding:20px}}</style></head><body><div class="brand"><h1>NRJ Graphics</h1><div>Design • Printing • Production Coordination</div><div>WhatsApp: +91 8690996080 · ndangi762@gmail.com</div></div><h2>Quotation / Enquiry</h2>'+out.innerHTML+'<style>
+.nrjAccount{background:#101315;border:1px solid #ffffff14;border-radius:20px;padding:24px;margin-top:22px}.nrjAuthGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.nrjAuthGrid input{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid #303438;background:#0b0d0e;color:#fff}.nrjAuthActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.nrjAuthActions button{padding:12px 16px;border-radius:10px;border:0;font-weight:900;cursor:pointer}.nrjAuthActions .main{background:#ffd21a;color:#111}.nrjAuthActions .dark{background:#1b2022;color:#fff;border:1px solid #ffffff14}.nrjAuthMsg{margin-top:12px;color:#aeb7bb;font-size:13px}.nrjOrders{display:grid;gap:10px;margin-top:16px}.nrjOrder{padding:15px;border:1px solid #ffffff10;background:#15191b;border-radius:12px}.nrjOrderTop{display:flex;justify-content:space-between;gap:10px}.nrjStatus{font-weight:900;color:#ffd21a}.nrjEmpty{color:#8f989d;font-size:13px}@media(max-width:600px){.nrjAuthGrid{grid-template-columns:1fr}.nrjOrderTop{display:block}.nrjStatus{display:block;margin-top:6px}}
+</style>
+<script>
+async function nrjSignUp(){
+ const email=(document.getElementById("nrjEmail").value||"").trim(), pass=document.getElementById("nrjPass").value;
+ if(!email||pass.length<6){nrjAuthMessage("Enter a valid email and password of at least 6 characters.");return}
+ const {error}=await nrjSupabase.auth.signUp({email,password:pass});
+ if(error){nrjAuthMessage(error.message);return}
+ nrjAuthMessage("Account created. If email confirmation is enabled, check your email, then sign in.");
+}
+async function nrjSignIn(){
+ const email=(document.getElementById("nrjEmail").value||"").trim(), pass=document.getElementById("nrjPass").value;
+ const {error}=await nrjSupabase.auth.signInWithPassword({email,password:pass});
+ if(error){nrjAuthMessage(error.message);return}
+ nrjAuthMessage("Signed in successfully.");
+ await loadNRJOrders();
+}
+async function nrjSignOut(){await nrjSupabase.auth.signOut();nrjAuthMessage("Signed out.");document.getElementById("nrjOrders").innerHTML="";}
+function nrjAuthMessage(t){const e=document.getElementById("nrjAuthMsg");if(e)e.textContent=t}
+async function loadNRJOrders(){
+ const {data:{user}}=await nrjSupabase.auth.getUser();
+ if(!user){document.getElementById("nrjOrders").innerHTML='<div class="nrjEmpty">Sign in to view your order history.</div>';return}
+ const {data,error}=await nrjSupabase.from("nrj_enquiries").select("enquiry_id,product,quantity,status,estimated_quote,created_at").eq("user_id",user.id).order("created_at",{ascending:false});
+ if(error){document.getElementById("nrjOrders").innerHTML='<div class="nrjEmpty">Unable to load orders right now.</div>';return}
+ document.getElementById("nrjOrders").innerHTML=data.length?data.map(o=>'<div class="nrjOrder"><div class="nrjOrderTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><span class="nrjStatus">'+escapeNRJ(o.status)+'</span></div><div style="color:#cbd0d3;margin-top:7px">'+escapeNRJ(o.product)+' · Qty: '+escapeNRJ(o.quantity||"—")+'</div><div style="color:#8f989d;font-size:12px;margin-top:6px">Quote: '+(o.estimated_quote?"₹"+Number(o.estimated_quote).toLocaleString("en-IN"):"To be confirmed")+'</div></div>').join(""):'<div class="nrjEmpty">No orders found in this account yet.</div>';
+}
+document.addEventListener("DOMContentLoaded",async function(){
+ const contact=document.getElementById("contact");
+ if(contact&&!document.getElementById("nrjAccountSection")){
+  const sec=document.createElement("section");sec.className="section";sec.id="nrjAccountSection";
+  sec.innerHTML='<div class="head"><div><div class="eyebrow">CUSTOMER ACCOUNT</div><h2>Your orders in one place.</h2><p class="muted">Create an account to view your NRJ Graphics enquiry history and current statuses.</p></div></div><div class="nrjAccount"><div class="nrjAuthGrid"><input id="nrjEmail" type="email" placeholder="Email address" autocomplete="email"><input id="nrjPass" type="password" placeholder="Password (6+ characters)" autocomplete="current-password"></div><div class="nrjAuthActions"><button class="main" onclick="nrjSignIn()">Sign In</button><button class="dark" onclick="nrjSignUp()">Create Account</button><button class="dark" onclick="nrjSignOut()">Sign Out</button></div><div id="nrjAuthMsg" class="nrjAuthMsg"></div><div id="nrjOrders" class="nrjOrders"><div class="nrjEmpty">Sign in to view your order history.</div></div></div>';
+  contact.parentNode.insertBefore(sec,contact);
+ }
+ const {data:{session}}=await nrjSupabase.auth.getSession();
+ if(session) loadNRJOrders();
+});
+</script></body></html>');
  w.document.close();w.focus();setTimeout(()=>w.print(),400);
 }
 function shareQuoteWhatsApp(){
