@@ -763,6 +763,37 @@ document.addEventListener("DOMContentLoaded",function(){
   track.querySelector(".nrjTrack")?.appendChild(d);
  }
 });
+</script><style>
+.nrjOwner{background:#101315;border:1px solid #ffffff14;border-radius:20px;padding:24px;margin-top:20px}.nrjOwnerGrid{display:grid;grid-template-columns:1fr auto;gap:10px}.nrjOwner input{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid #303438;background:#0b0d0e;color:#fff}.nrjOwner button{padding:12px 16px;border:0;border-radius:10px;background:#ffd21a;color:#111;font-weight:900;cursor:pointer}.nrjOwnerMsg{color:#9fa8ad;font-size:13px;margin-top:10px}.nrjOwnerList{display:grid;gap:10px;margin-top:18px}.nrjOwnerItem{background:#15191b;border:1px solid #ffffff10;border-radius:12px;padding:15px}.nrjOwnerTop{display:flex;justify-content:space-between;gap:12px}.nrjOwnerItem select{margin-top:10px;width:100%;padding:10px;border-radius:9px;background:#0b0d0e;color:#fff;border:1px solid #303438}@media(max-width:650px){.nrjOwnerGrid{grid-template-columns:1fr}.nrjOwnerTop{display:block}}
+</style>
+<script>
+async function nrjOwnerLogin(){
+ const email=(document.getElementById("nrjOwnerEmail").value||"").trim(),pass=document.getElementById("nrjOwnerPass").value;
+ const {error}=await nrjSupabase.auth.signInWithPassword({email,password:pass});
+ if(error){document.getElementById("nrjOwnerMsg").textContent=error.message;return}
+ document.getElementById("nrjOwnerMsg").textContent="Signed in. Loading enquiries…";await nrjLoadOwnerOrders();
+}
+async function nrjLoadOwnerOrders(){
+ const box=document.getElementById("nrjOwnerList");
+ const {data:{user}}=await nrjSupabase.auth.getUser();
+ if(!user){box.innerHTML="";return}
+ const {data,error}=await nrjSupabase.from("nrj_enquiries").select("id,enquiry_id,customer_name,phone,product,quantity,status,estimated_quote,created_at").order("created_at",{ascending:false});
+ if(error){box.innerHTML='<div class="nrjOwnerMsg">Unable to load enquiries. Owner access policy may need to be configured.</div>';return}
+ box.innerHTML=data.length?data.map(o=>'<div class="nrjOwnerItem"><div class="nrjOwnerTop"><b>'+escapeNRJ(o.enquiry_id)+'</b><span>'+escapeNRJ(o.customer_name||"—")+'</span></div><div style="color:#aeb7bb;margin-top:7px">'+escapeNRJ(o.product)+' · Qty: '+escapeNRJ(o.quantity||"—")+' · '+escapeNRJ(o.phone||"")+'</div><select onchange="nrjUpdateStatus(\''+o.id+'\',this.value)"><option '+(o.status==="New"?"selected":"")+'>New</option><option '+(o.status==="In Production"?"selected":"")+'>In Production</option><option '+(o.status==="Completed"?"selected":"")+'>Completed</option><option '+(o.status==="Cancelled"?"selected":"")+'>Cancelled</option></select></div>').join(""):'<div class="nrjOwnerMsg">No enquiries yet.</div>';
+}
+async function nrjUpdateStatus(id,status){
+ const {error}=await nrjSupabase.from("nrj_enquiries").update({status,updated_at:new Date().toISOString()}).eq("id",id);
+ document.getElementById("nrjOwnerMsg").textContent=error?"Could not update status.":"Status updated successfully.";
+ if(!error) await nrjLoadOwnerOrders();
+}
+document.addEventListener("DOMContentLoaded",function(){
+ const contact=document.getElementById("contact");
+ if(contact&&!document.getElementById("nrjOwnerSection")){
+  const sec=document.createElement("section");sec.className="section";sec.id="nrjOwnerSection";
+  sec.innerHTML='<div class="head"><div><div class="eyebrow">OWNER CONTROL</div><h2>Manage enquiries.</h2><p class="muted">Private owner area for updating customer order status.</p></div></div><div class="nrjOwner"><div class="nrjOwnerGrid"><input id="nrjOwnerEmail" type="email" placeholder="Owner email"><input id="nrjOwnerPass" type="password" placeholder="Password"></div><div style="margin-top:12px"><button onclick="nrjOwnerLogin()">Owner Sign In</button></div><div id="nrjOwnerMsg" class="nrjOwnerMsg"></div><div id="nrjOwnerList" class="nrjOwnerList"></div></div>';
+  contact.parentNode.insertBefore(sec,contact);
+ }
+});
 </script></body></html>');
  w.document.close();w.focus();setTimeout(()=>w.print(),400);
 }
