@@ -1219,20 +1219,25 @@ body.nrjPageMode .hero.nrjActivePage{padding-top:168px}
 .nrjProductCard .productLink{margin-top:auto}
 #nrjPrintRatesModal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);display:none;place-items:center;padding:18px}
 #nrjPrintRatesModal.open{display:grid}
-.nrjPrintBox{width:min(1180px,96vw);max-height:92vh;overflow:auto;background:#f7f9fb;color:#101828;border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.45)}
-.nrjPrintHead{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #e4e7ec;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.nrjPrintHead h2{margin:4px 0;font-size:clamp(26px,3vw,40px);color:#101828}.nrjPrintHead p{margin:0;color:#667085;font-size:13px}
-.nrjPrintClose{width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid #d0d5dd;color:#111;font-size:18px;cursor:pointer}
-.nrjPrintBody{padding:24px}
-.nrjPrintGroup{background:#fff;border:1px solid #e4e7ec;border-radius:18px;margin-bottom:18px;overflow:hidden;box-shadow:0 8px 24px rgba(16,24,40,.06)}
-.nrjPrintGroupHead{padding:20px 22px;background:linear-gradient(135deg,#fff9df,#fff);border-bottom:1px solid #e8ebef}
-.nrjPrintGroupHead h3{margin:0;font-size:clamp(21px,2vw,26px);line-height:1.2;color:#101828;font-weight:900}.nrjPrintGroupHead span{display:block;margin-top:7px;color:#667085;font-size:14px;font-weight:600}
-.nrjPrintRows{padding:8px 16px}.nrjPrintRow{display:grid;grid-template-columns:minmax(0,1fr) 105px auto;gap:18px;align-items:center;padding:18px 8px;border-bottom:1px solid #edf0f2}.nrjPrintRow:last-child{border-bottom:0}
-.nrjPrintDetail{font-size:16px;line-height:1.6;color:#1d2939;font-weight:650}.nrjPrintQty{font-size:14px;color:#475467;white-space:nowrap;font-weight:800;background:#f2f4f7;border-radius:999px;padding:8px 10px;text-align:center}.nrjPrintPrice{display:none}
-.nrjPrintBtn{background:#ffd21a;color:#111;border:0;border-radius:10px;padding:11px 16px;font-size:14px;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.08)}
-.nrjPrintBtn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.12)}
-@media(max-width:850px){.nrjProductGrid{grid-template-columns:1fr 1fr}.nrjPrintRow{grid-template-columns:minmax(0,1fr) auto}.nrjPrintQty{justify-self:start}}
-@media(max-width:600px){.nrjProductGrid{grid-template-columns:1fr}.nrjPrintBody{padding:14px}.nrjPrintHead{padding:18px}.nrjPrintGroupHead{padding:17px}.nrjPrintRows{padding:4px 10px}.nrjPrintRow{grid-template-columns:1fr auto;gap:10px;padding:16px 5px}.nrjPrintDetail{font-size:15px}.nrjPrintQty{font-size:13px}.nrjPrintBtn{grid-column:2;grid-row:2;padding:9px 12px}.nrjPrintQty{grid-column:1;grid-row:2}}
+.nrjPrintBox{width:min(1240px,96vw);max-height:94vh;overflow-y:auto;background:#f7f9fb!important;color:#101828!important;border:0!important;border-radius:20px!important;box-shadow:0 30px 90px rgba(0,0,0,.45)!important}
+.nrjPrintHead{position:sticky;top:0;z-index:20;background:#fff!important;padding:28px 28px 12px!important;border-bottom:1px solid #e3e7eb;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nrjPrintHead h2{color:#101828!important;font-size:clamp(32px,4vw,52px)!important;margin:8px 0!important}.nrjPrintHead p{color:#667085!important;font-size:14px;margin:0}
+.nrjPrintClose{width:38px;height:38px;border-radius:50%;background:#fff!important;border:1px solid #d9dee5!important;color:#111!important;font-size:18px;cursor:pointer}
+.nrjPrintBody{padding:24px 28px 38px;background:#f7f9fb;color:#101828}
+.nrjPrintChoiceIntro{padding:10px 4px 22px}.nrjPrintChoiceIntro b{display:block;font-size:30px;line-height:1.2;color:#101828}.nrjPrintChoiceIntro span{display:block;margin-top:8px;font-size:16px;color:#667085;line-height:1.5}
+.nrjPrintChoiceGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.nrjPrintChoice{appearance:none;text-align:left;background:#fff;border:1px solid #e4e7ec;border-radius:18px;padding:22px;min-height:165px;cursor:pointer;box-shadow:0 5px 18px rgba(16,24,40,.06);transition:.18s}
+.nrjPrintChoice:hover{transform:translateY(-3px);border-color:#ffd21a;box-shadow:0 10px 28px rgba(16,24,40,.10)}
+.nrjPrintChoiceIcon{width:44px;height:44px;border-radius:12px;background:#fff4bf;display:grid;place-items:center;font-size:22px;margin-bottom:15px;color:#b07d00}
+.nrjPrintChoice strong{display:block;font-size:21px;line-height:1.3;color:#101828}.nrjPrintChoice small{display:block;margin-top:12px;color:#087443;font-weight:900;font-size:14px}
+.nrjPrintGroup{background:#fff;border:1px solid #e4e7ec;border-radius:16px;margin-bottom:18px;overflow:hidden;box-shadow:0 5px 18px rgba(16,24,40,.06)}
+.nrjPrintGroupHead{padding:16px;background:linear-gradient(135deg,#fff9df,#fff);border-bottom:1px solid #e8ebef}.nrjPrintGroupHead h3{margin:0 0 4px;font-size:22px;line-height:1.25;color:#101828;font-weight:900}.nrjPrintGroupHead span{display:block;color:#667085;font-size:12px}
+.nrjPrintRows{padding:7px 10px 10px}.nrjPrintRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:14px 6px;border-bottom:1px solid #edf0f2}.nrjPrintRow:last-child{border-bottom:0}
+.nrjPrintDetail{font-size:15px;line-height:1.5;color:#1d2939;font-weight:700}.nrjPrintQty{font-size:12px;color:#667085;white-space:nowrap;background:#f2f4f7;border-radius:999px;padding:8px 10px;font-weight:800}.nrjPrintPrice{display:none}
+.nrjPrintBtn{background:#ffd21a;color:#111;border:0;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:900;cursor:pointer;white-space:nowrap}.nrjPrintBtn:hover{filter:brightness(.96)}
+.nrjPrintBack{border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer;margin-bottom:16px}
+@media(max-width:900px){.nrjPrintChoiceGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.nrjPrintRow{grid-template-columns:minmax(0,1fr) auto}}
+@media(max-width:600px){.nrjPrintBox{width:100vw;max-height:100vh;border-radius:0!important}.nrjPrintBody{padding:16px}.nrjPrintHead{padding:22px 18px 12px!important}.nrjPrintChoiceGrid{grid-template-columns:1fr}.nrjPrintChoiceIntro b{font-size:25px}.nrjPrintGroupHead{padding:15px}.nrjPrintRows{padding:5px 10px}.nrjPrintRow{grid-template-columns:minmax(0,1fr) auto;gap:9px;padding:12px 6px}.nrjPrintDetail{font-size:14px}.nrjPrintBtn{grid-column:2;grid-row:1/3}.nrjPrintQty{grid-column:1;grid-row:2;justify-self:start}}
 </style>
 <style>
 .nrjPrintChoiceIntro{padding:10px 4px 22px}.nrjPrintChoiceIntro b{display:block;font-size:27px;color:#101828;line-height:1.2}.nrjPrintChoiceIntro span{display:block;margin-top:7px;font-size:16px;color:#667085;line-height:1.5}
