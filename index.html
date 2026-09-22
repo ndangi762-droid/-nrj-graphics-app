@@ -1055,4 +1055,49 @@ document.addEventListener("DOMContentLoaded",function(){
   if(quick){var sec=quick.closest("section.section");if(sec)sec.remove();}
 });
 </script>
+<style>
+/* NRJ Premium Readability Pass — consistent spacing and no text collisions */
+:root{--nrj-yellow:#ffd21a;--nrj-border:#2b3034;--nrj-muted:#aeb6bd}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
+.nrjPageMode .section{padding:72px 5.5%;min-height:0}
+.nrjPageMode .head{gap:24px;margin-bottom:30px;align-items:flex-end}
+.nrjPageMode .head h2{font-size:clamp(28px,3vw,40px);line-height:1.12;letter-spacing:-.02em}
+.nrjPageMode .head p,.nrjPageMode .head .muted{line-height:1.55;max-width:620px}
+.nrjPageMode .services{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.nrjPageMode .service{min-height:205px;height:auto;padding:22px 21px 20px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;overflow:visible}
+.nrjPageMode .service .icon{flex:0 0 52px}
+.nrjPageMode .service h3{font-size:18px;line-height:1.25;margin:15px 0 7px;white-space:normal}
+.nrjPageMode .service p{font-size:13px;line-height:1.6;margin:0;max-width:100%;overflow-wrap:anywhere}
+.nrjPageMode .service:hover{transform:translateY(-3px)}
+.nrjPageMode .products{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.nrjPageMode .card{min-width:0;height:auto;display:flex;flex-direction:column}
+.nrjPageMode .card h3{font-size:18px;line-height:1.3;white-space:normal;overflow-wrap:anywhere}
+.nrjPageMode .card p{line-height:1.55;min-height:44px}
+.nrjPageMode .cardfoot{margin-top:auto}
+.nrjPageMode .portfolioGrid,.nrjPageMode .portfolioCards{gap:18px}
+.nrjPageMode .portfolioCard{min-width:0;height:auto}
+.nrjPageMode .portfolioInfo h3{line-height:1.3;overflow-wrap:anywhere}
+.nrjPageMode .portfolioInfo p{line-height:1.55}
+.nrjPageMode .steps{gap:18px}
+.nrjPageMode .step{min-height:180px;height:auto}
+.nrjPageMode .step h3{line-height:1.3}
+.nrjPageMode .step p{line-height:1.55}
+.nrjPageMode .quote{min-height:190px}
+.nrjPageMode .footer{gap:28px;flex-wrap:wrap;align-items:center;line-height:1.5}
+.nrjPageMode .footer>span{line-height:1.7}
+@media(max-width:1050px){
+ .nrjPageMode .services{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .nrjPageMode .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .nrjPageMode .section{padding:54px 18px}
+ .nrjPageMode .head{display:block;margin-bottom:22px}
+ .nrjPageMode .head h2{margin-bottom:10px}
+ .nrjPageMode .services,.nrjPageMode .products{grid-template-columns:1fr}
+ .nrjPageMode .service{min-height:0;padding:20px}
+ .nrjPageMode .card p{min-height:0}
+ .nrjPageMode .footer{display:block;padding:30px 18px}
+ .nrjPageMode .footer>*{margin-bottom:10px}
+}
+</style>
 </body></html>
