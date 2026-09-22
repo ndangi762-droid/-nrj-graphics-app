@@ -1128,11 +1128,11 @@ body.nrjPageMode .hero.nrjActivePage{padding-top:168px}
 .nrjPrintGroup{background:#fff;border:1px solid #e4e7ec;border-radius:16px;margin-bottom:16px;overflow:hidden}
 .nrjPrintGroupHead{padding:15px 17px;background:linear-gradient(135deg,#fff9df,#fff);border-bottom:1px solid #e8ebef}
 .nrjPrintGroupHead h3{margin:0;font-size:18px;color:#101828}.nrjPrintGroupHead span{display:block;margin-top:3px;color:#667085;font-size:12px}
-.nrjPrintRows{padding:6px 10px}.nrjPrintRow{display:grid;grid-template-columns:minmax(0,1fr) 110px 145px auto;gap:12px;align-items:center;padding:12px 6px;border-bottom:1px solid #edf0f2}.nrjPrintRow:last-child{border-bottom:0}
-.nrjPrintDetail{font-size:12px;line-height:1.45;color:#344054}.nrjPrintQty{font-size:12px;color:#667085;white-space:nowrap}.nrjPrintPrice{font-size:15px;font-weight:900;color:#087443;white-space:nowrap}
+.nrjPrintRows{padding:6px 10px}.nrjPrintRow{display:grid;grid-template-columns:minmax(0,1fr) 110px auto;gap:12px;align-items:center;padding:12px 6px;border-bottom:1px solid #edf0f2}.nrjPrintRow:last-child{border-bottom:0}
+.nrjPrintDetail{font-size:12px;line-height:1.45;color:#344054}.nrjPrintQty{font-size:12px;color:#667085;white-space:nowrap}.nrjPrintPrice{display:none}
 .nrjPrintBtn{background:#ffd21a;color:#111;border:0;border-radius:8px;padding:8px 12px;font-weight:900;cursor:pointer;white-space:nowrap}
-@media(max-width:850px){.nrjProductGrid{grid-template-columns:1fr 1fr}.nrjPrintRow{grid-template-columns:minmax(0,1fr) auto auto}}
-@media(max-width:600px){.nrjProductGrid{grid-template-columns:1fr}.nrjPrintBody{padding:14px}.nrjPrintHead{padding:18px}.nrjPrintRow{grid-template-columns:1fr auto}.nrjPrintPrice{grid-column:2;grid-row:1}.nrjPrintBtn{grid-column:2;grid-row:2}.nrjPrintQty{grid-column:1;grid-row:2}}
+@media(max-width:850px){.nrjProductGrid{grid-template-columns:1fr 1fr}.nrjPrintRow{grid-template-columns:minmax(0,1fr) auto}}
+@media(max-width:600px){.nrjProductGrid{grid-template-columns:1fr}.nrjPrintBody{padding:14px}.nrjPrintHead{padding:18px}.nrjPrintRow{grid-template-columns:1fr auto}.nrjPrintBtn{grid-column:2;grid-row:2}.nrjPrintQty{grid-column:1;grid-row:2}}
 </style>
 <div id="nrjPrintRatesModal" aria-hidden="true"><div class="nrjPrintBox"><div class="nrjPrintHead"><div><div class="eyebrow" style="color:#b07d00">NRJ GRAPHICS • PRINT RATES</div><h2 id="nrjPrintTitle">Print Rates</h2><p id="nrjPrintSub">Choose an option and enquire directly.</p></div><button class="nrjPrintClose" onclick="closeNRJPrintRates()">✕</button></div><div class="nrjPrintBody" id="nrjPrintBody"></div></div></div>
 <script>
@@ -1145,18 +1145,18 @@ window.openNRJPrintRates=function(cat){
  var filtered=rates.filter(function(r){return r.p.indexOf(wanted)===0;});
  var groups={};filtered.forEach(function(r){(groups[r.p]||(groups[r.p]=[])).push(r);});
  document.getElementById("nrjPrintTitle").textContent=cat==="PAMPHLET"?"Pamphlet Printing":"Poster Printing";
- document.getElementById("nrjPrintSub").textContent=cat==="PAMPHLET"?"All 37 pamphlet options with ₹3,000 added to each source rate.":"All 120 poster options with ₹3,000 added to each source rate.";
+ document.getElementById("nrjPrintSub").textContent=cat==="PAMPHLET"?"All 37 pamphlet options • Quantity and specifications":"All 120 poster options • Quantity and specifications";
  var html="";
  Object.keys(groups).forEach(function(name){
    html+='<section class="nrjPrintGroup"><div class="nrjPrintGroupHead"><h3>'+esc(name)+'</h3><span>'+groups[name].length+' pricing options</span></div><div class="nrjPrintRows">';
    groups[name].forEach(function(r){
      var q=(r.d.match(/Qty\.:([0-9]+)/)||[])[1]||"—";
-     html+='<div class="nrjPrintRow"><div class="nrjPrintDetail">'+esc(r.d.replace(/;Qty\.:\d+/,""))+'</div><div class="nrjPrintQty">'+q+' qty</div><div class="nrjPrintPrice">'+money(r.v)+'</div><button class="nrjPrintBtn" data-product="'+esc(r.p)+'" data-detail="'+esc(r.d)+'" data-price="'+r.v+'">Enquire</button></div>';
+     html+='<div class="nrjPrintRow"><div class="nrjPrintDetail">'+esc(r.d.replace(/;Qty\.:\d+/,""))+'</div><div class="nrjPrintQty">'+q+' qty</div><div class="nrjPrintPrice" aria-hidden="true"></div><button class="nrjPrintBtn" data-product="'+esc(r.p)+'" data-detail="'+esc(r.d)+'" data-price="'+r.v+'">Enquire</button></div>';
    });
    html+='</div></section>';
  });
  document.getElementById("nrjPrintBody").innerHTML=html;
- document.querySelectorAll("#nrjPrintBody .nrjPrintBtn").forEach(function(b){b.onclick=function(){var msg="Hi NRJ Graphics, I want to enquire about "+b.dataset.product+" printing.\nDetails: "+b.dataset.detail+"\nClient Price: "+money(b.dataset.price)+"\nPlease confirm final quotation.";window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");};});
+ document.querySelectorAll("#nrjPrintBody .nrjPrintBtn").forEach(function(b){b.onclick=function(){var msg="Hi NRJ Graphics, I want to enquire about "+b.dataset.product+" printing.\nDetails: "+b.dataset.detail+"\nPlease confirm the current quotation and final price.";window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");};});
  var m=document.getElementById("nrjPrintRatesModal");m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
 };
 window.closeNRJPrintRates=function(){var m=document.getElementById("nrjPrintRatesModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow="";};
