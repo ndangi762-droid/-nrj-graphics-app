@@ -1024,4 +1024,45 @@ function mount(){
 document.addEventListener("DOMContentLoaded",mount);setTimeout(mount,600);
 })();
 </script>
-</body></html>
+<style>
+/* Simple customer-first navigation */
+.nrjQuickStart{max-width:1180px;margin:-8px auto 0;padding:0 24px 28px;position:relative;z-index:3}
+.nrjQuickTitle{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:#98a2b3;font-weight:900;margin-bottom:10px}
+.nrjQuickGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.nrjQuickBtn{border:1px solid #ffffff16;background:#111719;color:#fff;border-radius:13px;padding:13px 12px;text-align:left;cursor:pointer;transition:.18s}
+.nrjQuickBtn:hover{transform:translateY(-2px);border-color:#ffd21a;background:#171b1d}
+.nrjQuickBtn b{display:block;font-size:14px}.nrjQuickBtn span{display:block;font-size:11px;color:#98a2b3;margin-top:4px}
+#services .head h2{margin-bottom:8px}#services .head p{max-width:650px}
+.nrjSimpleServices{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.nrjSimpleServices .service{min-height:150px!important;padding:22px!important}
+.nrjSimpleServices .service p{font-size:13px!important;line-height:1.5!important}
+.nrjServiceHint{font-size:11px;color:#98a2b3;margin-top:10px}
+@media(max-width:850px){.nrjQuickGrid{grid-template-columns:repeat(2,1fr)}.nrjSimpleServices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.nrjQuickStart{padding:0 16px 22px}.nrjQuickGrid{grid-template-columns:1fr}.nrjSimpleServices{grid-template-columns:1fr}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  var hero=document.querySelector("body > section.hero");
+  if(hero && !document.getElementById("nrjQuickStart")){
+    var q=document.createElement("div");q.id="nrjQuickStart";q.className="nrjQuickStart";
+    q.innerHTML='<div class="nrjQuickTitle">Start here</div><div class="nrjQuickGrid">'+
+      '<button class="nrjQuickBtn" data-go="services"><b>🎨 Design Services</b><span>Logo, branding, social & more</span></button>'+
+      '<button class="nrjQuickBtn" data-go="products"><b>🪪 Visiting Cards</b><span>View cards & pricing</span></button>'+
+      '<button class="nrjQuickBtn" data-go="products"><b>🖨️ Printing</b><span>Flyers, stickers, posters</span></button>'+
+      '<button class="nrjQuickBtn" data-go="portfolio"><b>✨ Our Work</b><span>See selected designs</span></button>'+
+      '<button class="nrjQuickBtn" data-go="contact"><b>💬 Get a Quote</b><span>WhatsApp us directly</span></button>'+
+      '</div>';
+    hero.parentNode.insertBefore(q,hero.nextSibling);
+    q.querySelectorAll("[data-go]").forEach(function(b){b.addEventListener("click",function(){if(window.nrjGoPage)window.nrjGoPage(b.dataset.go);});});
+  }
+  var services=document.querySelector("#services .services");
+  if(services && !services.classList.contains("nrjSimpleServices")){
+    services.classList.add("nrjSimpleServices");
+    var keep=["Graphic Design","Branding","Social Media Design","Packaging Design","Large Format Printing","Sticker & Label Printing"];
+    services.querySelectorAll(".service").forEach(function(el){
+      var h=el.querySelector("h3"); if(!h || keep.indexOf(h.textContent.trim())===-1) el.remove();
+      else {var hint=document.createElement("div");hint.className="nrjServiceHint";hint.textContent="Click to see what's included →";el.appendChild(hint);}
+    });
+  }
+});
+</script></body></html>
