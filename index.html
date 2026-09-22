@@ -1100,4 +1100,17 @@ body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",san
  .nrjPageMode .footer>*{margin-bottom:10px}
 }
 </style>
+<style>
+/* Global top breathing room — keep page content clear of the fixed header */
+body.nrjPageMode .section.nrjActivePage{padding-top:104px}
+body.nrjPageMode .hero.nrjActivePage{padding-top:168px}
+@media(max-width:850px){
+  body.nrjPageMode .section.nrjActivePage{padding-top:96px}
+  body.nrjPageMode .hero.nrjActivePage{padding-top:132px}
+}
+@media(max-width:500px){
+  body.nrjPageMode .section.nrjActivePage{padding-top:88px}
+  body.nrjPageMode .hero.nrjActivePage{padding-top:118px}
+}
+</style>
 </body></html>
