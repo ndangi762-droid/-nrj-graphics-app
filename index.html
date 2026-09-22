@@ -1036,4 +1036,23 @@ document.addEventListener("DOMContentLoaded",mount);setTimeout(mount,600);
 #nrjCatalogueSearch,
 #products .cats{display:none!important}
 </style>
+<style>
+/* Keep the public site focused: remove redundant information blocks */
+#about-nrj,#nrjTrustBlock,#portfolioShowcaseNew{display:none!important}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  var removeTitles=[
+    "Find what you need.",
+    "From artwork to delivery.",
+    "Need a custom quote?"
+  ];
+  document.querySelectorAll("body > section.section").forEach(function(sec){
+    var h=sec.querySelector("h2");
+    if(h && removeTitles.indexOf((h.textContent||"").trim())>=0) sec.remove();
+  });
+  var quick=document.querySelector(".quickGrid");
+  if(quick){var sec=quick.closest("section.section");if(sec)sec.remove();}
+});
+</script>
 </body></html>
