@@ -282,7 +282,7 @@ body:before,body:after{display:none!important}
   </div>
 </div>
 <div class="nrjServicesGrid">
-  <article class="nrjServiceTile" onclick="document.getElementById('visitingCardsModal').style.display='grid';document.body.style.overflow='hidden';if(window.nrjVcOpen)window.nrjVcOpen();"><div class="nrjServiceVisual v1"><span>💼</span><b>NRJ</b></div><h3>Visiting Cards</h3><p>Premium business cards with multiple finishes.</p><span class="nrjServiceLink">View Collection →</span></article>
+  <article class="nrjServiceTile" onclick="openVisitingCards()"><div class="nrjServiceVisual v1"><span>💼</span><b>NRJ</b></div><h3>Visiting Cards</h3><p>Premium business cards with multiple finishes.</p><span class="nrjServiceLink">View Collection →</span></article>
   <article class="nrjServiceTile" onclick="openNRJPrintRates('PAMPHLET')"><div class="nrjServiceVisual v2"><span>📄</span><b>PRINT</b></div><h3>Pamphlets</h3><p>70, 90, 115 & 170 GSM options with quantity-wise pricing.</p><span class="nrjServiceLink">View Pamphlet Rates →</span></article>
   <article class="nrjServiceTile" onclick="openNRJPrintRates('POSTER')"><div class="nrjServiceVisual v3"><span>🖼️</span><b>PRINT</b></div><h3>Posters</h3><p>15×20, 18×23 & 20×30 poster options.</p><span class="nrjServiceLink">View Poster Rates →</span></article>
   <article class="nrjServiceTile" onclick="openStickerCards()"><div class="nrjServiceVisual v4"><span>🏷️</span><b>LABEL</b></div><h3>Stickers</h3><p>Vinyl, PVC, normal stickers and custom labels.</p><span class="nrjServiceLink">View Sticker Options →</span></article>
@@ -384,7 +384,7 @@ vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nr
 '</div></div>'+
 '<aside class="nrjVcRight"><h3>Product Description</h3><ul><li>Product Code: <b>VC=7-A</b></li><li>Product Class: <b>Super Premium (Unique)</b></li><li>Paper Quality: <b>Imported 500 GSM Art Paper</b></li><li>Production Time: <b>3 days</b></li><li>Lamination Type: <b>Velvet</b></li></ul><h3>Our Specialization</h3><ul><li>Premium visiting card production</li><li>Foil, Spot UV &amp; Die-Cut options</li><li>Final specifications confirmed before production</li></ul></aside></div></div>';
 window.nrjVcCurrentProduct=product;
-}window.nrjVcSubmit=function(){
+};window.nrjVcSubmit=function(){
 var product=window.nrjVcCurrentProduct||"500 GSM + Velvet";
 var qty=document.getElementById("nrjVcQty")?.value||"500";
 var printing=document.getElementById("nrjVcPrinting")?.value||"Not selected";
