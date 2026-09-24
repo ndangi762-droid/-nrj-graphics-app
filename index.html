@@ -278,22 +278,22 @@ body:before,body:after{display:none!important}
   <div>
     <div class="eyebrow">OUR SERVICES</div>
     <h2>Everything your business needs.</h2>
-    <p class="muted">Design, branding, advertising and print production — all in one place.</p>
+    <p class="muted">Choose a service to view options, rates or send an enquiry on WhatsApp.</p>
   </div>
 </div>
 <div class="nrjServicesGrid">
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v1"><span>💳</span><b>NRJ</b></div><h3>Visiting Cards</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v2"><span>📰</span><b>PRINT</b></div><h3>Pamphlets / Posters</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v3"><span>🏷️</span><b>SALE</b></div><h3>Tags</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v4"><span>📄</span><b>BRAND</b></div><h3>Files & Folders</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v5"><span>✉️</span><b>NRJ</b></div><h3>Letterheads</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v6"><span>📨</span><b>MAIL</b></div><h3>Envelopes</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v7"><span>🖨️</span><b>PRINT</b></div><h3>Digital Printing</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v8"><span>💳</span><b>ATM</b></div><h3>ATM Pouches</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v9"><span>📚</span><b>BILL</b></div><h3>Bill Books</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v10"><span>🎟️</span><b>LABEL</b></div><h3>Stickers & Labels</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v11"><span>🖊️</span><b>NRJ</b></div><h3>Promotional Pens</h3></article>
-  <article class="nrjServiceTile"><div class="nrjServiceVisual v12"><span>📦</span><b>PACK</b></div><h3>Packaging</h3></article>
+  <article class="nrjServiceTile" onclick="openVisitingCards()"><div class="nrjServiceVisual v1"><span>💳</span><b>CARDS</b></div><h3>Visiting Cards</h3></article>
+  <article class="nrjServiceTile" onclick="openNRJPrintRates('PAMPHLET')"><div class="nrjServiceVisual v2"><span>📰</span><b>PRINT</b></div><h3>Pamphlets</h3></article>
+  <article class="nrjServiceTile" onclick="openNRJPrintRates('POSTER')"><div class="nrjServiceVisual v3"><span>🖼️</span><b>PRINT</b></div><h3>Posters</h3></article>
+  <article class="nrjServiceTile" onclick="openStickerCards()"><div class="nrjServiceVisual v4"><span>🏷️</span><b>LABEL</b></div><h3>Stickers</h3></article>
+  <article class="nrjServiceTile" onclick="openLetterheadCards()"><div class="nrjServiceVisual v5"><span>📑</span><b>OFFICE</b></div><h3>Letterheads</h3></article>
+  <article class="nrjServiceTile" onclick="openEnvelopeCards()"><div class="nrjServiceVisual v6"><span>✉️</span><b>MAIL</b></div><h3>Envelopes</h3></article>
+  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v7"><span>🖨️</span><b>PRINT</b></div><h3>Digital Printing</h3></article>
+  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v8"><span>🏷️</span><b>BRAND</b></div><h3>Tags & Labels</h3></article>
+  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v9"><span>📚</span><b>BILL</b></div><h3>Bill Books</h3></article>
+  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v10"><span>📁</span><b>BRAND</b></div><h3>Files & Folders</h3></article>
+  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v11"><span>🖊️</span><b>PROMO</b></div><h3>Promotional Pens</h3></article>
+  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v12"><span>📦</span><b>PACK</b></div><h3>Packaging</h3></article>
 </div>
 </section>
 <style>
@@ -358,13 +358,7 @@ function openPortfolio(i){currentPortfolio=portfolioItems[i];document.getElement
 function closePortfolio(){document.getElementById('portfolioModal').style.display='none'}
 function portfolioEnquire(){window.open('https://wa.me/918690996080?text='+encodeURIComponent('Hi NRJ Graphics, I am interested in: '+currentPortfolio[1]+' ('+currentPortfolio[0]+')'),'_blank')}
 renderPortfolio();
-</script><section class="section" id="products"><div class="head"><div><div class="eyebrow">SHOP PRINT</div><h2>Popular products</h2></div><span class="muted">Choose a product to view options and enquire.</span></div><div class="products nrjProductGrid" id="grid">
-<article class="product nrjProductCard" onclick="openVisitingCards()" style="cursor:pointer"><div class="productIcon">💼</div><h3>Visiting Cards</h3><p>Premium, mid-range and regular business cards with multiple finishes.</p><span class="productLink">View Collection →</span></article>
-<article class="product nrjProductCard" onclick="openNRJPrintRates('PAMPHLET')" style="cursor:pointer"><div class="productIcon">📄</div><h3>Pamphlets</h3><p>70 GSM, 90 GSM, 115 GSM and 170 GSM pamphlet options with quantity-wise pricing.</p><span class="productLink">View Pamphlet Rates →</span></article>
-<article class="product nrjProductCard" onclick="openNRJPrintRates('POSTER')" style="cursor:pointer"><div class="productIcon">🖼️</div><h3>Posters</h3><p>15×20, 18×23 and 20×30 poster options with paper quality and quantity choices.</p><span class="productLink">View Poster Rates →</span></article><article class="product nrjProductCard" onclick="openStickerCards()" style="cursor:pointer"><div class="productIcon">🏷️</div><h3>Stickers</h3><p>Vinyl, PVC, normal stickers, product labels, custom shapes and window graphics.</p><span class="productLink">View Sticker Options →</span></article>
-<article class="product nrjProductCard" onclick="openLetterheadCards()" style="cursor:pointer"><div class="productIcon">📑</div><h3>Letterheads</h3><p>Office stationery papers in multiple GSM and paper-quality options.</p><span class="productLink">View Letterhead Options →</span></article><article class="product nrjProductCard" onclick="openEnvelopeCards()" style="cursor:pointer"><div class="productIcon">✉️</div><h3>Envelopes</h3><p>Office, invitation, card and file envelopes in multiple sizes.</p><span class="productLink">View Envelope Options →</span></article>
-</div></section></section>
-<div class="modal visitingModal" id="envelopeCardsModal"><div class="visitingBox"><button class="close" onclick="closeEnvelopeCards()">✕</button><div class="vcModalHead"><div class="eyebrow">NRJ GRAPHICS • ENVELOPES</div><h2>Choose your envelope</h2><p class="muted">Select a size based on your office, invitation or file requirement.</p></div><section class="section"><div class="head"><div><div class="eyebrow">ENVELOPE COLLECTION</div><h2>Available Sizes</h2></div><span class="muted">Production time • 4 days</span></div><div class="vcGrid nrjEnvelopeGrid">
+</script><div class="modal visitingModal" id="envelopeCardsModal"><div class="visitingBox"><button class="close" onclick="closeEnvelopeCards()">✕</button><div class="vcModalHead"><div class="eyebrow">NRJ GRAPHICS • ENVELOPES</div><h2>Choose your envelope</h2><p class="muted">Select a size based on your office, invitation or file requirement.</p></div><section class="section"><div class="head"><div><div class="eyebrow">ENVELOPE COLLECTION</div><h2>Available Sizes</h2></div><span class="muted">Production time • 4 days</span></div><div class="vcGrid nrjEnvelopeGrid">
 <article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 1</span><span>9x4</span></div><h3 style="margin:10px 0 6px">Envelope - 9x4</h3><p>For Office Letters<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('9x4','For Office Letters')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 2</span><span>10.75x4.75</span></div><h3 style="margin:10px 0 6px">Envelope - 10.75x4.75</h3><p>For Office Letters<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('10.75x4.75','For Office Letters')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 3</span><span>9.70x4.20</span></div><h3 style="margin:10px 0 6px">Envelope - 9.70x4.20</h3><p>For Office Letters<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('9.70x4.20','For Office Letters')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 4</span><span>5x7</span></div><h3 style="margin:10px 0 6px">Envelope - 5x7</h3><p>For Invitations / Cards<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('5x7','For Invitations / Cards')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 5</span><span>6x8</span></div><h3 style="margin:10px 0 6px">Envelope - 6x8</h3><p>For Invitations / Cards<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('6x8','For Invitations / Cards')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 6</span><span>8.60x10.60</span></div><h3 style="margin:10px 0 6px">Envelope - 8.60x10.60</h3><p>For Brochures / Files<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('8.60x10.60','For Brochures / Files')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 7</span><span>9.40x12.40</span></div><h3 style="margin:10px 0 6px">Envelope - 9.40x12.40</h3><p>For Brochures / Files<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('9.40x12.40','For Brochures / Files')">Enquire →</button></article><article class="vcCard nrjEnvelopeCard"><div class="vcIcon">✉</div><div class="vcTop"><span class="vcCode">ENVELOPE 8</span><span>Gift Envelope</span></div><h3 style="margin:10px 0 6px">Gift Envelope</h3><p>Gift & Premium Packaging<br><b>Production Time: 4 days</b></p><button class="nrjVcBtn" onclick="enquireEnvelope('Gift Envelope','Gift & Premium Packaging')">Enquire →</button></article>
 </div></section></div></div>
 <script>
@@ -1500,4 +1494,18 @@ window.closeNRJPrintRates=function(){var m=document.getElementById("nrjPrintRate
 .nrjStickerBox .nrjStickerList{padding:0 28px 30px!important;grid-template-columns:1fr!important}
 @media(max-width:1000px){.catalogModalBox .catalogGrid,.nrjStickerBox .nrjStickerHome{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:600px){.catalogModalBox .vcModalHead{padding:22px 18px 14px!important}.catalogModalBox .catalogGrid,.nrjStickerBox .nrjStickerHome{grid-template-columns:1fr!important;padding:18px!important}.catalogModalBox .catalogCard,.nrjStickerChoice{min-height:140px!important}.catalogModalBox .vcModalHead h2{font-size:30px!important}.nrjStickerBox .nrjStickerList{padding:0 18px 18px!important}}
+</style><style>
+/* NRJ unified services catalogue */
+#products{display:none!important}
+.nrjServicesSection{background:#080a0b!important;padding-top:64px!important;padding-bottom:72px!important}
+.nrjServicesHead{max-width:1200px;margin:0 auto 30px!important}
+.nrjServicesGrid{max-width:1200px;margin:0 auto!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}
+.nrjServiceTile{background:#111619;border:1px solid #252b2e;border-radius:16px;padding:12px 12px 15px;min-width:0;cursor:pointer;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.nrjServiceTile:hover{transform:translateY(-5px);border-color:#ffd21a88;box-shadow:0 18px 40px #0008}
+.nrjServiceVisual{height:150px!important;border-radius:12px!important}
+.nrjServiceTile h3{font-size:16px!important;text-align:left!important;margin:12px 4px 0!important}
+.nrjServiceTile:first-child,.nrjServiceTile:nth-child(2),.nrjServiceTile:nth-child(3),.nrjServiceTile:nth-child(4),.nrjServiceTile:nth-child(5),.nrjServiceTile:nth-child(6){border-color:#ffffff24}
+@media(max-width:950px){.nrjServicesGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:700px){.nrjServicesGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}.nrjServiceVisual{height:125px!important}.nrjServiceTile h3{font-size:14px!important}}
+@media(max-width:480px){.nrjServicesGrid{grid-template-columns:1fr 1fr!important}.nrjServiceVisual{height:115px!important}.nrjServiceVisual span{font-size:46px!important}}
 </style>
