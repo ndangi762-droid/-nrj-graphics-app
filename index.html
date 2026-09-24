@@ -330,15 +330,71 @@ function closeEnvelopeCards(){var m=document.getElementById("envelopeCardsModal"
 function enquireEnvelope(size,utility){var msg="Hi NRJ Graphics, I want to enquire about Envelope - "+size+" printing.\nUtility: "+utility+"\nProduction Time: 4 days\nPlease confirm the available material, quantity and final quotation.";window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank")}
 </script>
 <div class="modal visitingModal" id="visitingCardsModal">
-  <div class="visitingBox nrjVcFreshStart">
-    <button class="nrjOrderClose" onclick="closeVisitingCards()">✕</button>
-    <div class="nrjFreshIcon">💳</div>
-    <div class="eyebrow">NRJ GRAPHICS • VISITING CARDS</div>
-    <h2>Visiting Cards</h2>
-    <p>Product details are being rebuilt from a fresh, verified rate list.</p>
-    <p class="muted">No old prices, codes or specifications are being used here.</p>
+  <div class="visitingBox nrjVcFlow">
+    <button class="nrjVcClose" onclick="closeVisitingCards()">✕</button>
+    <div id="nrjVcFlowBody"></div>
   </div>
-</div><section class="section"><div class="head"><div><div class="eyebrow">PRINT CATEGORIES</div><h2>Find what you need.</h2><p class="muted">Quick access to NRJ Graphics product categories.</p></div></div><div class="quickGrid"><button class="quickItem" onclick="openOrder(0)"><b>Visiting Cards</b><span>Premium • regular • PVC</span></button><button class="quickItem" onclick="openFlexCards()"><b>Flex Printing</b><span>Star • HS • BB • Backlit</span></button><button class="quickItem" onclick="openPamphletCards()"><b>Pamphlets</b><span>Flyers • leaflets • handbills</span></button><button class="quickItem" onclick="openStickerCards()"><b>Stickers</b><span>Vinyl • PVC • labels</span></button><button class="quickItem" onclick="openBulkPrintCards()"><b>Bulk Printing</b><span>Pamphlets • posters • outdoor</span></button><button class="quickItem" onclick="openOrder(1)"><b>Flyers & Pamphlets</b><span>Marketing & promotions</span></button><button class="quickItem" onclick="openOrder(2)"><b>Stickers & Labels</b><span>Vinyl • PVC • custom</span></button><button class="quickItem" onclick="openOrder(3)"><b>Brochures</b><span>Business & product</span></button><button class="quickItem" onclick="openOrder(4)"><b>Letterheads</b><span>Business stationery</span></button><button class="quickItem" onclick="openOrder(5)"><b>Posters</b><span>Indoor & promotional</span></button><button class="quickItem" onclick="openOrder(6)"><b>Packaging</b><span>Labels • boxes • pouches</span></button><button class="quickItem" onclick="openOrder(7)"><b>Custom Printing</b><span>Tell us your requirement</span></button></div></section><section class="section"><div class="head"><div><div class="eyebrow">HOW IT WORKS</div><h2>From artwork to delivery.</h2></div></div><div class="steps"><div class="step"><div class="num">1</div><h3>Choose & customize</h3><p class="muted">Select your product, quantity, material and finishing.</p></div><div class="step"><div class="num">2</div><h3>Upload artwork</h3><p class="muted">Send your print-ready file with your order details.</p></div><div class="step"><div class="num">3</div><h3>We produce & dispatch</h3><p class="muted">NRJ coordinates production and keeps your order moving.</p></div></div></section><section class="section"><div class="quote"><div><div class="eyebrow" style="color:#ffd21a">READY WHEN YOU ARE</div><h2>Need a custom quote?</h2><p>Tell us what you need and we'll prepare the order details.</p></div><button class="primary" onclick="openOrder()">Get a quote →</button></div></section><section class="section" id="about-nrj">
+</div>
+<style>
+.nrjVcFlow{width:min(1180px,96vw);max-height:94vh;overflow:auto;background:#fff!important;color:#111!important;border-radius:18px!important;box-shadow:0 30px 90px #0009!important;padding:0!important}
+.nrjVcClose{position:absolute;right:14px;top:12px;z-index:20;width:38px;height:38px;border:0;border-radius:50%;background:#fff;color:#111;font-size:22px;cursor:pointer;box-shadow:0 2px 8px #0002}
+.nrjVcFlow *{box-sizing:border-box}.nrjVcStep{padding:28px 34px 36px}.nrjVcTitle{font-size:34px;font-weight:900;color:#f08a00;margin:0 0 4px}.nrjVcTitle span{font-size:15px}.nrjVcSub{color:#555;margin:0 0 22px}.nrjVcCards{display:grid;grid-template-columns:1fr 1fr;gap:42px;max-width:900px;margin:0 auto}.nrjVcProductCard{border:0;background:#fff;text-align:center;cursor:pointer;padding:8px}.nrjVcProductVisual{height:120px;background:linear-gradient(135deg,#f58b00,#ffb000);display:grid;place-items:center;color:#fff;font-weight:1000;font-size:23px;border:1px solid #fff;outline:1px solid #f08a00;outline-offset:-11px}.nrjVcProductVisual span{display:block}.nrjVcProductMeta{font-size:12px;color:#555;margin-top:8px;line-height:1.45}.nrjVcProductMeta b{color:#f07800}.nrjVcProductCard:hover .nrjVcProductVisual{filter:brightness(1.05);transform:translateY(-2px)}.nrjVcBack{border:1px solid #ccc;background:#fff;border-radius:7px;padding:8px 14px;font-weight:800;cursor:pointer;margin-bottom:18px}.nrjVcSelectTitle{font-size:16px;font-weight:900;margin:10px 0 8px}.nrjVcSelect{width:100%;height:44px;border:1px solid #bfc7d1;border-radius:6px;padding:0 12px;background:#fff;font-size:15px;color:#333}.nrjVcDetailGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.nrjVcPanel{border:1px solid #d6d6d6}.nrjVcPanelTitle{padding:16px;font-size:16px;font-weight:900;border-bottom:1px solid #d6d6d6}.nrjVcField{display:grid;grid-template-columns:180px 1fr;align-items:center;border-bottom:1px solid #e1e1e1;min-height:58px;padding:10px}.nrjVcField label{font-weight:800;color:#222}.nrjVcField input,.nrjVcField select,.nrjVcField textarea{width:100%;border:1px solid #c9d1dc;border-radius:5px;padding:9px 10px;background:#fff;color:#333}.nrjVcField textarea{min-height:70px}.nrjVcRadio{display:flex;gap:24px;flex-wrap:wrap}.nrjVcNotice{padding:18px;font-weight:900;border-bottom:1px solid #ddd}.nrjVcFile{padding:18px;background:#f7f9fb}.nrjVcCosts{border-top:1px solid #ddd}.nrjVcCost{display:grid;grid-template-columns:1fr 150px;padding:12px 14px;border-bottom:1px solid #ddd}.nrjVcRight{border-left:4px solid #315fb5;padding:18px;background:#fff}.nrjVcRight h3{color:#173b79;text-decoration:underline;margin:0 0 10px;font-size:22px}.nrjVcRight ul{margin:0 0 24px;padding-left:20px;color:#6a6f7c;line-height:1.65}.nrjVcOrderBtn{width:100%;padding:14px;background:#087df5;color:#fff;border:0;border-radius:6px;font-weight:900;font-size:16px;cursor:pointer}.nrjVcOrange{color:#f07800}.nrjVcSmall{font-size:12px;color:#777}@media(max-width:800px){.nrjVcCards,.nrjVcDetailGrid{grid-template-columns:1fr}.nrjVcStep{padding:22px 16px}.nrjVcField{grid-template-columns:1fr;gap:7px}.nrjVcRight{border-left:0;border-top:4px solid #315fb5}}
+</style>
+<script>
+(function(){
+function vcBody(){return document.getElementById("nrjVcFlowBody")}
+function escVc(s){return String(s||"").replace(/[&<>"']/g,function(m){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]})}
+var velvetProducts=[
+"500 GSM + Velvet + Die Cut",
+"500 GSM + Velvet + UV + Die Cut",
+"500 GSM + Velvet + Foil + Die Cut",
+"500 GSM + Velvet + UV + Foil + Die Cut",
+"500 GSM + Velvet + UV + Foil + Customized Die Cut"
+];
+function step1(){
+vcBody().innerHTML='<div class="nrjVcStep"><h2 class="nrjVcTitle">500 GSM CARDS <span>(QTY. 500 CARDS)</span></h2><p class="nrjVcSub">Choose the card type to continue.</p><div class="nrjVcCards">'+
+'<button class="nrjVcProductCard" onclick="nrjVcStep2(\'velvet\')"><div class="nrjVcProductVisual"><span>500 GSM<br>+<br>VELVET</span></div><div class="nrjVcProductMeta">Product Code: <b>7</b><br><span class="nrjVcOrange">Available with Foil, Spot UV &amp; Die-Cut.</span><br>Production Time: 3 days</div></button>'+
+'<button class="nrjVcProductCard" onclick="nrjVcStep2(\'matt\')"><div class="nrjVcProductVisual"><span>500 GSM<br>+<br>MATT</span></div><div class="nrjVcProductMeta">Product Code: <b>8</b><br><span class="nrjVcOrange">Available with Foil, Spot UV &amp; Die-Cut.</span><br>Production Time: 3 days</div></button>'+
+'</div></div>';
+}
+window.nrjVcStep2=function(type){
+if(type==="matt"){alert("500 GSM + Matt details next step me add karenge. Pehle iska exact product detail bhej dena.");return}
+vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep1()">← Back</button><h2 class="nrjVcTitle">500 GSM + VELVET</h2><p class="nrjVcSub">Select the exact product option.</p><div class="nrjVcSelectTitle">SELECT PRODUCT</div><select class="nrjVcSelect" id="nrjVcProductSelect"><option>--Select Product--</option>'+velvetProducts.map(function(x){return '<option>'+escVc(x)+'</option>'}).join("")+'</select><div style="margin-top:22px"><button class="nrjVcOrderBtn" onclick="nrjVcStep3()">Continue →</button></div></div>';
+}
+window.nrjVcStep1=step1;
+window.nrjVcStep3=function(){
+var sel=document.getElementById("nrjVcProductSelect");if(!sel||sel.selectedIndex===0){alert("Please select a product.");return}
+var product=sel.value;
+vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep2(\'velvet\')">← Back</button><h2 class="nrjVcTitle">ORDER DETAILS</h2><p class="nrjVcSub">Product: <b>'+escVc(product)+'</b></p><div class="nrjVcDetailGrid"><div><div class="nrjVcPanel"><div class="nrjVcPanelTitle">SELECT DETAIL</div>'+
+'<div class="nrjVcField"><label>Quantity</label><div><input id="nrjVcQty" type="number" min="500" value="500"> <span class="nrjVcSmall">(Min Qty.: 500)</span></div></div>'+
+'<div class="nrjVcField"><label>Printing</label><select id="nrjVcPrinting"><option>--Select--</option><option>Single Side</option><option>Both Side</option></select></div>'+
+'<div class="nrjVcField"><label>Die Shape</label><select id="nrjVcDie"><option>--Select--</option><option>Standard</option><option>Custom Die Shape</option></select></div>'+
+'<div class="nrjVcField"><label>Privacy Packing</label><div class="nrjVcRadio"><label><input type="radio" name="nrjPack" value="Required"> Required</label><label><input type="radio" name="nrjPack" value="Not Required" checked> Not Required</label></div></div>'+
+'<div class="nrjVcNotice">CONGRATULATIONS! ORDER\'S ELIGIBLE FOR FREE DELIVERY</div>'+
+'<div class="nrjVcFile"><b>SELECT FILE OPTION</b><div class="nrjVcRadio" style="margin-top:12px"><label><input type="radio" name="nrjFile" value="Attach File Online" checked> Attach File Online</label><label><input type="radio" name="nrjFile" value="Send via Email"> Send via Email</label></div></div>'+
+'<div class="nrjVcCosts"><div class="nrjVcCost"><span>Applicable Cost</span><b>To be confirmed</b></div><div class="nrjVcCost"><span>GST</span><b>To be confirmed</b></div><div class="nrjVcCost"><span>Amount Payable</span><b>To be confirmed</b></div></div>'+
+'<div class="nrjVcField"><label>Special Remark<br><span class="nrjVcSmall">(Optional)</span></label><textarea id="nrjVcRemark" placeholder="remarks for order processing team..."></textarea></div>'+
+'<div class="nrjVcField"><label>Enter Pressline</label><input id="nrjVcPressline" value="NRJ GRAPHICS"></div>'+
+'<div style="padding:14px"><button class="nrjVcOrderBtn" onclick="nrjVcSubmit()">Send Order Enquiry →</button></div>'+
+'</div></div>'+
+'<aside class="nrjVcRight"><h3>Product Description</h3><ul><li>Product Code: <b>VC=7-A</b></li><li>Product Class: <b>Super Premium (Unique)</b></li><li>Paper Quality: <b>Imported 500 GSM Art Paper</b></li><li>Production Time: <b>3 days</b></li><li>Lamination Type: <b>Velvet</b></li></ul><h3>Our Specialization</h3><ul><li>Premium visiting card production</li><li>Foil, Spot UV &amp; Die-Cut options</li><li>Final specifications confirmed before production</li></ul></aside></div></div>';
+window.nrjVcCurrentProduct=product;
+}
+window.nrjVcSubmit=function(){
+var product=window.nrjVcCurrentProduct||"500 GSM + Velvet";
+var qty=document.getElementById("nrjVcQty")?.value||"500";
+var printing=document.getElementById("nrjVcPrinting")?.value||"Not selected";
+var die=document.getElementById("nrjVcDie")?.value||"Not selected";
+var pack=document.querySelector('input[name="nrjPack"]:checked')?.value||"Not selected";
+var file=document.querySelector('input[name="nrjFile"]:checked')?.value||"Not selected";
+var remark=document.getElementById("nrjVcRemark")?.value||"";
+var press=document.getElementById("nrjVcPressline")?.value||"";
+var msg="Hi NRJ Graphics, I want to enquire about Visiting Cards.\nProduct: "+product+"\nQuantity: "+qty+"\nPrinting: "+printing+"\nDie Shape: "+die+"\nPrivacy Packing: "+pack+"\nFile Option: "+file+"\nPressline: "+press+"\nRemark: "+remark;
+window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
+}
+window.nrjVcOpen=step1; step1();
+})();
+</script><section class="section"><div class="head"><div><div class="eyebrow">PRINT CATEGORIES</div><h2>Find what you need.</h2><p class="muted">Quick access to NRJ Graphics product categories.</p></div></div><div class="quickGrid"><button class="quickItem" onclick="openOrder(0)"><b>Visiting Cards</b><span>Premium • regular • PVC</span></button><button class="quickItem" onclick="openFlexCards()"><b>Flex Printing</b><span>Star • HS • BB • Backlit</span></button><button class="quickItem" onclick="openPamphletCards()"><b>Pamphlets</b><span>Flyers • leaflets • handbills</span></button><button class="quickItem" onclick="openStickerCards()"><b>Stickers</b><span>Vinyl • PVC • labels</span></button><button class="quickItem" onclick="openBulkPrintCards()"><b>Bulk Printing</b><span>Pamphlets • posters • outdoor</span></button><button class="quickItem" onclick="openOrder(1)"><b>Flyers & Pamphlets</b><span>Marketing & promotions</span></button><button class="quickItem" onclick="openOrder(2)"><b>Stickers & Labels</b><span>Vinyl • PVC • custom</span></button><button class="quickItem" onclick="openOrder(3)"><b>Brochures</b><span>Business & product</span></button><button class="quickItem" onclick="openOrder(4)"><b>Letterheads</b><span>Business stationery</span></button><button class="quickItem" onclick="openOrder(5)"><b>Posters</b><span>Indoor & promotional</span></button><button class="quickItem" onclick="openOrder(6)"><b>Packaging</b><span>Labels • boxes • pouches</span></button><button class="quickItem" onclick="openOrder(7)"><b>Custom Printing</b><span>Tell us your requirement</span></button></div></section><section class="section"><div class="head"><div><div class="eyebrow">HOW IT WORKS</div><h2>From artwork to delivery.</h2></div></div><div class="steps"><div class="step"><div class="num">1</div><h3>Choose & customize</h3><p class="muted">Select your product, quantity, material and finishing.</p></div><div class="step"><div class="num">2</div><h3>Upload artwork</h3><p class="muted">Send your print-ready file with your order details.</p></div><div class="step"><div class="num">3</div><h3>We produce & dispatch</h3><p class="muted">NRJ coordinates production and keeps your order moving.</p></div></div></section><section class="section"><div class="quote"><div><div class="eyebrow" style="color:#ffd21a">READY WHEN YOU ARE</div><h2>Need a custom quote?</h2><p>Tell us what you need and we'll prepare the order details.</p></div><button class="primary" onclick="openOrder()">Get a quote →</button></div></section><section class="section" id="about-nrj">
 <div class="nrjFounderCard">
   <div class="nrjFounderMain">
     <div class="nrjFounderEyebrow">ABOUT THE FOUNDER</div>
