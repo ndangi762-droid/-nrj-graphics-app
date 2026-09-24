@@ -363,12 +363,17 @@ vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nr
 }
 window.nrjVcStep1=step1;
 window.nrjVcStep3=function(){
-var sel=document.getElementById("nrjVcProductSelect");if(!sel||sel.selectedIndex===0){alert("Please select a product.");return}
+var sel=document.getElementById("nrjVcProductSelect");
+if(!sel||sel.selectedIndex===0){alert("Please select a product.");return}
 var product=sel.value;
-vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep2(\'velvet\')">← Back</button><h2 class="nrjVcTitle">ORDER DETAILS</h2><p class="nrjVcSub">Product: <b>'+escVc(product)+'</b></p><div class="nrjVcDetailGrid"><div><div class="nrjVcPanel"><div class="nrjVcPanelTitle">SELECT DETAIL</div>'+
+var dieOptions="";
+for(var d=1;d<=19;d++){dieOptions+='<option value="Die Shape '+d+'">Die Shape '+d+'</option>';}
+vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep2(\\'velvet\\')">← Back</button>'+
+'<h2 class="nrjVcTitle">ORDER DETAILS</h2><p class="nrjVcSub">Product: <b>'+escVc(product)+'</b></p>'+
+'<div class="nrjVcDetailGrid"><div><div class="nrjVcPanel"><div class="nrjVcPanelTitle">SELECT DETAIL</div>'+
 '<div class="nrjVcField"><label>Quantity</label><div><input id="nrjVcQty" type="number" min="500" value="500"> <span class="nrjVcSmall">(Min Qty.: 500)</span></div></div>'+
-'<div class="nrjVcField"><label>Printing</label><select id="nrjVcPrinting"><option>--Select--</option><option>Single Side</option><option>Both Side</option></select></div>'+
-'<div class="nrjVcField"><label>Die Shape</label><select id="nrjVcDie"><option>--Select--</option><option>Standard</option><option>Custom Die Shape</option></select></div>'+
+'<div class="nrjVcField"><label>Printing</label><select id="nrjVcPrinting"><option value="">--Select--</option><option value="Single Side">Single Side</option><option value="Both Side">Both Side</option></select></div>'+
+'<div class="nrjVcField"><label>Die Shape</label><select id="nrjVcDie"><option value="">--Select--</option>'+dieOptions+'</select></div>'+
 '<div class="nrjVcField"><label>Privacy Packing</label><div class="nrjVcRadio"><label><input type="radio" name="nrjPack" value="Required"> Required</label><label><input type="radio" name="nrjPack" value="Not Required" checked> Not Required</label></div></div>'+
 '<div class="nrjVcNotice">CONGRATULATIONS! ORDER\'S ELIGIBLE FOR FREE DELIVERY</div>'+
 '<div class="nrjVcFile"><b>SELECT FILE OPTION</b><div class="nrjVcRadio" style="margin-top:12px"><label><input type="radio" name="nrjFile" value="Attach File Online" checked> Attach File Online</label><label><input type="radio" name="nrjFile" value="Send via Email"> Send via Email</label></div></div>'+
@@ -379,8 +384,7 @@ vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nr
 '</div></div>'+
 '<aside class="nrjVcRight"><h3>Product Description</h3><ul><li>Product Code: <b>VC=7-A</b></li><li>Product Class: <b>Super Premium (Unique)</b></li><li>Paper Quality: <b>Imported 500 GSM Art Paper</b></li><li>Production Time: <b>3 days</b></li><li>Lamination Type: <b>Velvet</b></li></ul><h3>Our Specialization</h3><ul><li>Premium visiting card production</li><li>Foil, Spot UV &amp; Die-Cut options</li><li>Final specifications confirmed before production</li></ul></aside></div></div>';
 window.nrjVcCurrentProduct=product;
-}
-window.nrjVcSubmit=function(){
+}window.nrjVcSubmit=function(){
 var product=window.nrjVcCurrentProduct||"500 GSM + Velvet";
 var qty=document.getElementById("nrjVcQty")?.value||"500";
 var printing=document.getElementById("nrjVcPrinting")?.value||"Not selected";
