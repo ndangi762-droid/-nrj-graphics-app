@@ -395,6 +395,11 @@ var velvetProducts=[
 "500 GSM + Velvet + UV + Foil + Die Cut",
 "500 GSM + Velvet + UV + Foil + Customized Die Cut"
 ];
+var mattProducts=[
+"500 GSM + Matt + UV + Die Cut",
+"500 GSM + Matt + Foil + Die Cut",
+"500 GSM + Matt + UV + Foil + Die Cut"
+];
 function step1(){
 vcBody().innerHTML='<div class="nrjVcStep"><h2 class="nrjVcTitle">500 GSM CARDS <span>(QTY. 500 CARDS)</span></h2><p class="nrjVcSub">Choose the card type to continue.</p><div class="nrjVcCards">'+
 '<button class="nrjVcProductCard" onclick="nrjVcStep2(\'velvet\')"><div class="nrjVcProductVisual"><span>500 GSM<br>+<br>VELVET</span></div><div class="nrjVcProductMeta">Product Code: <b>7</b><br><span class="nrjVcOrange">Available with Foil, Spot UV &amp; Die-Cut.</span><br>Production Time: 3 days</div></button>'+
@@ -402,23 +407,35 @@ vcBody().innerHTML='<div class="nrjVcStep"><h2 class="nrjVcTitle">500 GSM CARDS 
 '</div></div>';
 }
 window.nrjVcStep2=function(type){
-if(type==="matt"){alert("500 GSM + Matt details next step me add karenge. Pehle iska exact product detail bhej dena.");return}
-vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep1()">← Back</button><h2 class="nrjVcTitle">500 GSM + VELVET</h2><p class="nrjVcSub">Select the exact product option.</p><div class="nrjVcSelectTitle">SELECT PRODUCT</div><select class="nrjVcSelect" id="nrjVcProductSelect"><option>--Select Product--</option>'+velvetProducts.map(function(x){return '<option>'+escVc(x)+'</option>'}).join("")+'</select><div style="margin-top:22px"><button class="nrjVcOrderBtn" onclick="nrjVcStep3()">Continue →</button></div></div>';
+var isMatt=type==="matt";
+var products=isMatt?mattProducts:velvetProducts;
+var title=isMatt?"500 GSM + MATT":"500 GSM + VELVET";
+vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep1()">← Back</button><h2 class="nrjVcTitle">'+title+'</h2><p class="nrjVcSub">Select the exact product option.</p><div class="nrjVcSelectTitle">SELECT PRODUCT</div><select class="nrjVcSelect" id="nrjVcProductSelect"><option>--Select Product--</option>'+products.map(function(x){return '<option>'+escVc(x)+'</option>'}).join("")+'</select><div style="margin-top:22px"><button class="nrjVcOrderBtn" onclick="nrjVcStep3(\\'"+type+"\\')">Continue →</button></div></div>';
 }
 window.nrjVcStep1=step1;
-window.nrjVcStep3=function(){
+window.nrjVcStep3=function(type){
 var sel=document.getElementById("nrjVcProductSelect");
 if(!sel||sel.selectedIndex===0){alert("Please select a product.");return}
 var product=sel.value;
+var isMatt=type==="matt";
 var dieOptions="";
-for(var d=1;d<=19;d++){dieOptions+='<option value="Die Shape '+d+'">Die Shape '+d+'</option>';}
+for(var d=1;d<=36;d++){dieOptions+='<option value="DIE-'+d+'">DIE-'+d+'</option>';}
+var code=isMatt?"VC=8-B":"VC=7-A";
+var lamination=isMatt?"Matt":"Velvet";
+var specialization=isMatt
+?'<li>We are India\'s No. 1 Visiting card manufacturer.</li><li><b>B2B Exclusive:</b> Serving only printing presses, no direct sales to customers.</li><li><b>Real-Time Order Tracking:</b> Full transparency with online tracking.</li><li><b>Fast &amp; Reliable Service:</b> Competitive pricing with quick turnaround.</li>'
+:'<li>Premium visiting card production</li><li>Foil, Spot UV &amp; Die-Cut options</li><li>Final specifications confirmed before production</li>';
+var productSpecialization=isMatt
+?'<li>Product has natural look with sophisticated feel</li><li>Embossed Spot UV adds to the magnificence of the card</li><li>Printing using the latest Komori offset machines (2023 model)</li><li>Innovative, Advanced &amp; Equipped Post Printing Unit</li><li>Constant quality with reasonable price</li>'
+:'<li>Premium visiting card production</li><li>Foil, Spot UV &amp; Die-Cut options</li><li>Final specifications confirmed before production</li>';
 vcBody().innerHTML='<div class="nrjVcStep">'+
 '<div class="nrjVcOrderTop"><b>ADD ORDER</b></div>'+
-'<div class="nrjVcTopField"><label>ORDER NAME</label><input class="nrjVcTopInput" id="nrjVcOrderName" placeholder="यहाँ अपने कस्टमर का नाम टाइप करें जिससे आर्डर को स्टेटस चेक करने में आसानी होगी..."></div>'+
+'<div class="nrjVcTopField"><label>ORDER NAME</label><input class="nrjVcTopInput" id="nrjVcOrderName" placeholder="यहाँ अपने कस्टमर का नाम टाइप करें जिससे आर्डर का स्टेटस चेक करने में आसानी होगी..."></div>'+
 '<div class="nrjVcTopField nrjVcSelectWrap"><label>SELECT PRODUCT</label><select class="nrjVcSelect" id="nrjVcProductReadonly"><option>'+escVc(product)+'</option></select></div>'+
 '<div class="nrjVcDetailCard"><div class="nrjVcPanelTitle">SELECT DETAIL</div>'+
 '<div class="nrjVcRow"><div class="nrjVcRowLabel"><span class="nrjVcRowIcon">♙</span>Quantity</div><div><input id="nrjVcQty" type="number" min="500" value="500" style="width:102px;height:35px;border:1px solid #c9d1dc;border-radius:5px;padding:0 10px;text-align:right"> <span style="color:#4285f4;margin-left:8px">(Min Qty.: 500)</span></div></div>'+
 '<div class="nrjVcRow"><div class="nrjVcRowLabel"><span class="nrjVcRowIcon">▣</span>Printing</div><select id="nrjVcPrinting" class="nrjVcSelect"><option value="">--Select--</option><option value="Single Side">Single Side</option><option value="Both Side">Both Side</option></select></div>'+
+(isMatt?'<div class="nrjVcRow"><div class="nrjVcRowLabel"><span class="nrjVcRowIcon">✦</span>Spot UV</div><select id="nrjVcSpotUV" class="nrjVcSelect"><option value="">--Select--</option><option value="Required">Required</option><option value="Not Required">Not Required</option></select></div>':'')+
 '<div class="nrjVcRow"><div class="nrjVcRowLabel"><span class="nrjVcRowIcon">✂</span>Die Shape</div><select id="nrjVcDie" class="nrjVcSelect"><option value="">--Select--</option>'+dieOptions+'</select></div>'+
 '<div class="nrjVcRow"><div class="nrjVcRowLabel" style="color:#111">PRIVACY PACKING</div><div class="nrjVcRadioLine"><label><input type="radio" name="nrjPack" value="Required"> Required</label><label><input type="radio" name="nrjPack" value="Not Required" checked> Not Required</label></div></div>'+
 '<div class="nrjVcDelivery">CONGRATULATIONS! ORDER\'S ELIGIBLE FOR FREE DELIVERY</div>'+
@@ -427,10 +444,18 @@ vcBody().innerHTML='<div class="nrjVcStep">'+
 '<div class="nrjVcBottomField"><label>Special Remark<br><span class="nrjVcSmall">(Optional)</span></label><textarea id="nrjVcRemark" placeholder="remarks for order processing team..."></textarea></div>'+
 '<div class="nrjVcBottomField"><label>Enter Pressline</label><input id="nrjVcPressline" value="NRJ GRAPHICS"></div>'+
 '<div class="nrjVcActions"><button class="nrjVcOrderBtn" onclick="nrjVcSubmit()">Send Order Enquiry →</button></div>'+
-'</div></div>';
+'</div>'+
+'<aside class="nrjVcRight"><h3>Product Description</h3><ul>'+
+(isMatt?'<li>Product Ref.: <b>VC/11th Edition (Sample File)</b></li>':'')+
+'<li>Product Code: <b>'+code+'</b></li><li>Product Class: <b>Super Premium (Unique)</b></li>'+
+(isMatt?'<li>Product Core:</li>':'')+
+'<li>Paper Quality: <b>Imported 500 GSM Art Paper</b></li><li>Production Time: <b>3 days</b></li><li>Lamination Type: <b>'+lamination+'</b></li>'+
+'</ul><h3>Our Specialization</h3><ul>'+specialization+'</ul><h3>Product Specialization</h3><ul>'+productSpecialization+'</ul></aside></div></div>';
 window.nrjVcCurrentProduct=product;
+window.nrjVcCurrentType=type;
 };window.nrjVcSubmit=function(){
 var product=window.nrjVcCurrentProduct||"500 GSM + Velvet";
+var spotUV=document.getElementById("nrjVcSpotUV")?.value||"Not applicable";
 var qty=document.getElementById("nrjVcQty")?.value||"500";
 var printing=document.getElementById("nrjVcPrinting")?.value||"Not selected";
 var die=document.getElementById("nrjVcDie")?.value||"Not selected";
@@ -438,7 +463,7 @@ var pack=document.querySelector('input[name="nrjPack"]:checked')?.value||"Not se
 var file=document.querySelector('input[name="nrjFile"]:checked')?.value||"Not selected";
 var remark=document.getElementById("nrjVcRemark")?.value||"";
 var press=document.getElementById("nrjVcPressline")?.value||"";
-var msg="Hi NRJ Graphics, I want to enquire about Visiting Cards.\nProduct: "+product+"\nQuantity: "+qty+"\nPrinting: "+printing+"\nDie Shape: "+die+"\nPrivacy Packing: "+pack+"\nFile Option: "+file+"\nPressline: "+press+"\nRemark: "+remark;
+var msg="Hi NRJ Graphics, I want to enquire about Visiting Cards.\nProduct: "+product+"\nQuantity: "+qty+"\nPrinting: "+printing+"\nSpot UV: "+spotUV+"\nDie Shape: "+die+"\nPrivacy Packing: "+pack+"\nFile Option: "+file+"\nPressline: "+press+"\nRemark: "+remark;
 window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
 }
 window.nrjVcOpen=step1; step1();
