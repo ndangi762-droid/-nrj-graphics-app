@@ -282,7 +282,7 @@ body:before,body:after{display:none!important}
   </div>
 </div>
 <div class="nrjServicesGrid">
-  <article class="nrjServiceTile" onclick="openVisitingCards()"><div class="nrjServiceVisual v1"><span>💼</span><b>NRJ</b></div><h3>Visiting Cards</h3><p>Premium business cards with multiple finishes.</p><span class="nrjServiceLink">View Collection →</span></article>
+  <article class="nrjServiceTile" onclick="document.getElementById('visitingCardsModal').style.display='grid';document.body.style.overflow='hidden';if(window.nrjVcOpen)window.nrjVcOpen();"><div class="nrjServiceVisual v1"><span>💼</span><b>NRJ</b></div><h3>Visiting Cards</h3><p>Premium business cards with multiple finishes.</p><span class="nrjServiceLink">View Collection →</span></article>
   <article class="nrjServiceTile" onclick="openNRJPrintRates('PAMPHLET')"><div class="nrjServiceVisual v2"><span>📄</span><b>PRINT</b></div><h3>Pamphlets</h3><p>70, 90, 115 & 170 GSM options with quantity-wise pricing.</p><span class="nrjServiceLink">View Pamphlet Rates →</span></article>
   <article class="nrjServiceTile" onclick="openNRJPrintRates('POSTER')"><div class="nrjServiceVisual v3"><span>🖼️</span><b>PRINT</b></div><h3>Posters</h3><p>15×20, 18×23 & 20×30 poster options.</p><span class="nrjServiceLink">View Poster Rates →</span></article>
   <article class="nrjServiceTile" onclick="openStickerCards()"><div class="nrjServiceVisual v4"><span>🏷️</span><b>LABEL</b></div><h3>Stickers</h3><p>Vinyl, PVC, normal stickers and custom labels.</p><span class="nrjServiceLink">View Sticker Options →</span></article>
@@ -522,7 +522,7 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.targ
 targets.forEach(x=>io.observe(x));
 }else targets.forEach(x=>x.classList.add('show'));
 })();
-</script><script>function vcQuote(type,code){var msg='Hi NRJ Graphics, I want Visiting Cards.\nProduct: '+type+'\nProduct Code: '+code+'\nPlease share available options and final quote.';window.open('https://wa.me/918690996080?text='+encodeURIComponent(msg),'_blank')}</script><script>function openVisitingCards(){document.getElementById("visitingCardsModal").style.display="grid";document.body.style.overflow="hidden"}function closeVisitingCards(){document.getElementById("visitingCardsModal").style.display="none";document.body.style.overflow=""}</script><script>
+</script><script>function vcQuote(type,code){var msg='Hi NRJ Graphics, I want Visiting Cards.\nProduct: '+type+'\nProduct Code: '+code+'\nPlease share available options and final quote.';window.open('https://wa.me/918690996080?text='+encodeURIComponent(msg),'_blank')}</script><script>function openVisitingCards(){var m=document.getElementById("visitingCardsModal");if(!m)return;m.style.display="grid";document.body.style.overflow="hidden";if(window.nrjVcOpen)window.nrjVcOpen()}function closeVisitingCards(){document.getElementById("visitingCardsModal").style.display="none";document.body.style.overflow=""}</script><script>
 function filterProducts(){
  const q=(document.getElementById("productSearch")?.value||"").toLowerCase().trim();
  const cards=[...document.querySelectorAll(".products .card")];
