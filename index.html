@@ -410,7 +410,8 @@ window.nrjVcStep2=function(type){
 var isMatt=type==="matt";
 var products=isMatt?mattProducts:velvetProducts;
 var title=isMatt?"500 GSM + MATT":"500 GSM + VELVET";
-vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep1()">← Back</button><h2 class="nrjVcTitle">'+title+'</h2><p class="nrjVcSub">Select the exact product option.</p><div class="nrjVcSelectTitle">SELECT PRODUCT</div><select class="nrjVcSelect" id="nrjVcProductSelect"><option>--Select Product--</option>'+products.map(function(x){return '<option>'+escVc(x)+'</option>'}).join("")+'</select><div style="margin-top:22px"><button class="nrjVcOrderBtn" onclick="nrjVcStep3(\\'"+type+"\\')">Continue →</button></div></div>';
+window.nrjVcCurrentType=type;
+vcBody().innerHTML='<div class="nrjVcStep"><button class="nrjVcBack" onclick="nrjVcStep1()">← Back</button><h2 class="nrjVcTitle">'+title+'</h2><p class="nrjVcSub">Select the exact product option.</p><div class="nrjVcSelectTitle">SELECT PRODUCT</div><select class="nrjVcSelect" id="nrjVcProductSelect"><option>--Select Product--</option>'+products.map(function(x){return '<option>'+escVc(x)+'</option>'}).join("")+'</select><div style="margin-top:22px"><button class="nrjVcOrderBtn" onclick="nrjVcStep3(window.nrjVcCurrentType)">Continue →</button></div></div>';
 }
 window.nrjVcStep1=step1;
 window.nrjVcStep3=function(type){
