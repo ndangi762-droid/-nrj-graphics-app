@@ -282,19 +282,13 @@ body:before,body:after{display:none!important}
   </div>
 </div>
 <div class="nrjServicesGrid">
-  <article class="nrjServiceTile" onclick="openVisitingCards()"><div class="nrjServiceVisual v1"><span>💳</span><b>CARDS</b></div><h3>Visiting Cards</h3></article>
-  <article class="nrjServiceTile" onclick="openNRJPrintRates('PAMPHLET')"><div class="nrjServiceVisual v2"><span>📰</span><b>PRINT</b></div><h3>Pamphlets</h3></article>
-  <article class="nrjServiceTile" onclick="openNRJPrintRates('POSTER')"><div class="nrjServiceVisual v3"><span>🖼️</span><b>PRINT</b></div><h3>Posters</h3></article>
-  <article class="nrjServiceTile" onclick="openStickerCards()"><div class="nrjServiceVisual v4"><span>🏷️</span><b>LABEL</b></div><h3>Stickers</h3></article>
-  <article class="nrjServiceTile" onclick="openLetterheadCards()"><div class="nrjServiceVisual v5"><span>📑</span><b>OFFICE</b></div><h3>Letterheads</h3></article>
-  <article class="nrjServiceTile" onclick="openEnvelopeCards()"><div class="nrjServiceVisual v6"><span>✉️</span><b>MAIL</b></div><h3>Envelopes</h3></article>
-  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v7"><span>🖨️</span><b>PRINT</b></div><h3>Digital Printing</h3></article>
-  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v8"><span>🏷️</span><b>BRAND</b></div><h3>Tags & Labels</h3></article>
-  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v9"><span>📚</span><b>BILL</b></div><h3>Bill Books</h3></article>
-  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v10"><span>📁</span><b>BRAND</b></div><h3>Files & Folders</h3></article>
-  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v11"><span>🖊️</span><b>PROMO</b></div><h3>Promotional Pens</h3></article>
-  <article class="nrjServiceTile" onclick="openOrder()"><div class="nrjServiceVisual v12"><span>📦</span><b>PACK</b></div><h3>Packaging</h3></article>
-</div>
+  <article class="nrjServiceTile" onclick="openVisitingCards()"><div class="nrjServiceVisual v1"><span>💼</span><b>NRJ</b></div><h3>Visiting Cards</h3><p>Premium business cards with multiple finishes.</p><span class="nrjServiceLink">View Collection →</span></article>
+  <article class="nrjServiceTile" onclick="openNRJPrintRates('PAMPHLET')"><div class="nrjServiceVisual v2"><span>📄</span><b>PRINT</b></div><h3>Pamphlets</h3><p>70, 90, 115 & 170 GSM options with quantity-wise pricing.</p><span class="nrjServiceLink">View Pamphlet Rates →</span></article>
+  <article class="nrjServiceTile" onclick="openNRJPrintRates('POSTER')"><div class="nrjServiceVisual v3"><span>🖼️</span><b>PRINT</b></div><h3>Posters</h3><p>15×20, 18×23 & 20×30 poster options.</p><span class="nrjServiceLink">View Poster Rates →</span></article>
+  <article class="nrjServiceTile" onclick="openStickerCards()"><div class="nrjServiceVisual v4"><span>🏷️</span><b>LABEL</b></div><h3>Stickers</h3><p>Vinyl, PVC, normal stickers and custom labels.</p><span class="nrjServiceLink">View Sticker Options →</span></article>
+  <article class="nrjServiceTile" onclick="openLetterheadCards()"><div class="nrjServiceVisual v5"><span>📑</span><b>OFFICE</b></div><h3>Letterheads</h3><p>Office stationery in multiple GSM and paper options.</p><span class="nrjServiceLink">View Letterhead Options →</span></article>
+  <article class="nrjServiceTile" onclick="openEnvelopeCards()"><div class="nrjServiceVisual v6"><span>✉️</span><b>MAIL</b></div><h3>Envelopes</h3><p>Office, invitation, card and file envelopes.</p><span class="nrjServiceLink">View Envelope Options →</span></article>
+</div></div>
 </section>
 <style>
 .nrjServicesSection{padding-top:64px!important;padding-bottom:72px!important;background:#080a0b!important}
@@ -1508,4 +1502,16 @@ window.closeNRJPrintRates=function(){var m=document.getElementById("nrjPrintRate
 @media(max-width:950px){.nrjServicesGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:700px){.nrjServicesGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}.nrjServiceVisual{height:125px!important}.nrjServiceTile h3{font-size:14px!important}}
 @media(max-width:480px){.nrjServicesGrid{grid-template-columns:1fr 1fr!important}.nrjServiceVisual{height:115px!important}.nrjServiceVisual span{font-size:46px!important}}
+</style><style>
+/* Final integrated catalogue: products live only inside Services */
+#products{display:none!important}
+.nrjServicesGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+.nrjServiceTile{padding:12px 12px 17px!important;background:#111619!important;border:1px solid #252b2e!important;border-radius:16px!important;overflow:hidden!important}
+.nrjServiceVisual{height:155px!important}
+.nrjServiceTile h3{font-size:18px!important;margin:12px 4px 6px!important;text-align:left!important}
+.nrjServiceTile p{margin:0 4px 12px!important;color:#aeb7bb!important;font-size:13px!important;line-height:1.45!important}
+.nrjServiceLink{display:block;margin:0 4px;color:#ffd21a;font-size:13px;font-weight:900}
+.nrjServiceTile:hover .nrjServiceLink{color:#fff}
+@media(max-width:850px){.nrjServicesGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:520px){.nrjServicesGrid{grid-template-columns:1fr!important}.nrjServiceVisual{height:145px!important}}
 </style>
