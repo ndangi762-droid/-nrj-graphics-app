@@ -330,100 +330,13 @@ function closeEnvelopeCards(){var m=document.getElementById("envelopeCardsModal"
 function enquireEnvelope(size,utility){var msg="Hi NRJ Graphics, I want to enquire about Envelope - "+size+" printing.\nUtility: "+utility+"\nProduction Time: 4 days\nPlease confirm the available material, quantity and final quotation.";window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank")}
 </script>
 <div class="modal visitingModal" id="visitingCardsModal">
-  <div class="nrjOrderShell">
+  <div class="visitingBox nrjVcFreshStart">
     <button class="nrjOrderClose" onclick="closeVisitingCards()">✕</button>
-
-    <div class="nrjOrderLeft">
-      <div class="nrjOrderEyebrow">NRJ GRAPHICS • VISITING CARDS</div>
-      <h2>Place Your Order</h2>
-      <p class="nrjOrderSub">Choose your card type, quantity and finishing. We’ll confirm the final quotation after checking the artwork.</p>
-
-      <label>ORDER NAME</label>
-      <input id="vcOrderName" type="text" placeholder="Enter customer / order name">
-
-      <label>SELECT PRODUCT</label>
-      <select id="vcProduct" onchange="updateVCOrder()">
-        <option value="Code 18|Gloss Lamination|749">Code 18 — Gloss Lamination — From ₹749</option>
-        <option value="Code 19|Gloss UV Coated|699">Code 19 — Gloss UV Coated — From ₹699</option>
-        <option value="Code 15|Matt Lamination|1299">Code 15 — Matt Lamination — From ₹1,299</option>
-        <option value="Code 16|Matt + Texture|1699">Code 16 — Matt + Texture — From ₹1,699</option>
-        <option value="Code 17|Gloss + Texture|999">Code 17 — Gloss + Texture — From ₹999</option>
-        <option value="Code 14|Matt + UV|1999">Code 14 — Matt + UV — From ₹1,999</option>
-        <option value="Code 21|Gloss UV Coated Small|499">Code 21 — Gloss UV Coated Small — From ₹499</option>
-        <option value="Code 22|Without Coated Small|449">Code 22 — Without Coated Small — From ₹449</option>
-        <option value="Code 7|500 GSM Velvet|2199">Code 7 — 500 GSM Velvet — From ₹2,199</option>
-        <option value="Code 8|500 GSM Matt|2699">Code 8 — 500 GSM Matt — From ₹2,699</option>
-        <option value="Code 9|500 GSM Metallic + Drip-Off|2199">Code 9 — 500 GSM Metallic + Drip-Off — From ₹2,199</option>
-        <option value="Code 3|800 GSM + Matt|3499">Code 3 — 800 GSM + Matt — From ₹3,499</option>
-        <option value="Code 5|800 GSM Craft Sheet|3899">Code 5 — 800 GSM Craft Sheet — From ₹3,899</option>
-        <option value="Code 6|800 GSM + Texture|2499">Code 6 — 800 GSM + Texture — From ₹2,499</option>
-        <option value="Code 10|800 Micron PVC|2799">Code 10 — 800 Micron PVC — From ₹2,799</option>
-        <option value="Code 4|800 GSM Black Sheet|0">Code 4 — 800 GSM Black Sheet — Enquire</option>
-      </select>
-
-      <div class="nrjFieldRow">
-        <div><label>QUANTITY</label><input id="vcQty" type="number" min="100" value="500" oninput="updateVCOrder()"></div>
-        <div><label>SIZE</label><select id="vcSize"><option>Standard 90 × 50 mm</option><option>Custom Size</option></select></div>
-      </div>
-
-      <div class="nrjFieldRow">
-        <div><label>MATERIAL</label><select id="vcMaterial"><option>Standard Card</option><option>350 GSM</option><option>500 GSM</option><option>800 GSM</option><option>PVC</option></select></div>
-        <div><label>FINISHING</label><select id="vcFinish"><option>As per selected product</option><option>Matt</option><option>Gloss</option><option>UV</option><option>Foil</option><option>Die Cut</option></select></div>
-      </div>
-
-      <div class="nrjFileBox">
-        <strong>SELECT FILE OPTION</strong>
-        <div class="nrjFileOptions">
-          <label><input type="radio" name="vcFile" value="Attach File Online" checked> Attach File Online</label>
-          <label><input type="radio" name="vcFile" value="Send via WhatsApp"> Send via WhatsApp</label>
-        </div>
-      </div>
-
-      <div class="nrjEstimate">
-        <span>Indicative Estimate</span>
-        <b id="vcEstimate">₹749</b>
-        <small>Final quote is confirmed after artwork, exact quantity, finishing and delivery requirements are checked.</small>
-      </div>
-
-      <label>BUSINESS / NAME</label>
-      <input id="vcName" type="text" placeholder="Your name">
-
-      <label>WHATSAPP / PHONE</label>
-      <input id="vcPhone" type="tel" placeholder="Your WhatsApp number">
-
-      <label>SPECIAL REQUIREMENT</label>
-      <textarea id="vcRemark" placeholder="Any special size, finish, delivery or design requirement"></textarea>
-
-      <button class="nrjOrderBtn" onclick="submitVCOrder()">Send Order Enquiry on WhatsApp →</button>
-    </div>
-
-    <div class="nrjOrderRight">
-      <div class="nrjCardPreview">
-        <div class="nrjCardMock"><span>NRJ</span><b>GRAPHICS</b><small>VISITING CARD</small></div>
-        <div class="nrjPreviewBadge" id="vcPreviewCode">CODE 18</div>
-      </div>
-
-      <div class="nrjInfoBox">
-        <h3>Product Description</h3>
-        <ul>
-          <li id="vcInfoName">Gloss Lamination</li>
-          <li>Premium business-card printing options</li>
-          <li>Multiple GSM and finishing choices</li>
-          <li>Quantity options available</li>
-          <li>Final production time confirmed with quotation</li>
-        </ul>
-      </div>
-
-      <div class="nrjInfoBox">
-        <h3>Our Specialization</h3>
-        <ul>
-          <li>Premium, mid-range and regular visiting cards</li>
-          <li>UV, foil, texture and die-cut options</li>
-          <li>Custom requirements accepted</li>
-          <li>WhatsApp-based enquiry and order confirmation</li>
-        </ul>
-      </div>
-    </div>
+    <div class="nrjFreshIcon">💳</div>
+    <div class="eyebrow">NRJ GRAPHICS • VISITING CARDS</div>
+    <h2>Visiting Cards</h2>
+    <p>Product details are being rebuilt from a fresh, verified rate list.</p>
+    <p class="muted">No old prices, codes or specifications are being used here.</p>
   </div>
 </div><section class="section"><div class="head"><div><div class="eyebrow">PRINT CATEGORIES</div><h2>Find what you need.</h2><p class="muted">Quick access to NRJ Graphics product categories.</p></div></div><div class="quickGrid"><button class="quickItem" onclick="openOrder(0)"><b>Visiting Cards</b><span>Premium • regular • PVC</span></button><button class="quickItem" onclick="openFlexCards()"><b>Flex Printing</b><span>Star • HS • BB • Backlit</span></button><button class="quickItem" onclick="openPamphletCards()"><b>Pamphlets</b><span>Flyers • leaflets • handbills</span></button><button class="quickItem" onclick="openStickerCards()"><b>Stickers</b><span>Vinyl • PVC • labels</span></button><button class="quickItem" onclick="openBulkPrintCards()"><b>Bulk Printing</b><span>Pamphlets • posters • outdoor</span></button><button class="quickItem" onclick="openOrder(1)"><b>Flyers & Pamphlets</b><span>Marketing & promotions</span></button><button class="quickItem" onclick="openOrder(2)"><b>Stickers & Labels</b><span>Vinyl • PVC • custom</span></button><button class="quickItem" onclick="openOrder(3)"><b>Brochures</b><span>Business & product</span></button><button class="quickItem" onclick="openOrder(4)"><b>Letterheads</b><span>Business stationery</span></button><button class="quickItem" onclick="openOrder(5)"><b>Posters</b><span>Indoor & promotional</span></button><button class="quickItem" onclick="openOrder(6)"><b>Packaging</b><span>Labels • boxes • pouches</span></button><button class="quickItem" onclick="openOrder(7)"><b>Custom Printing</b><span>Tell us your requirement</span></button></div></section><section class="section"><div class="head"><div><div class="eyebrow">HOW IT WORKS</div><h2>From artwork to delivery.</h2></div></div><div class="steps"><div class="step"><div class="num">1</div><h3>Choose & customize</h3><p class="muted">Select your product, quantity, material and finishing.</p></div><div class="step"><div class="num">2</div><h3>Upload artwork</h3><p class="muted">Send your print-ready file with your order details.</p></div><div class="step"><div class="num">3</div><h3>We produce & dispatch</h3><p class="muted">NRJ coordinates production and keeps your order moving.</p></div></div></section><section class="section"><div class="quote"><div><div class="eyebrow" style="color:#ffd21a">READY WHEN YOU ARE</div><h2>Need a custom quote?</h2><p>Tell us what you need and we'll prepare the order details.</p></div><button class="primary" onclick="openOrder()">Get a quote →</button></div></section><section class="section" id="about-nrj">
 <div class="nrjFounderCard">
@@ -1237,90 +1150,6 @@ body.nrjPageMode .hero.nrjActivePage{display:grid!important}
 })();
 </script>
 <style>
-#visitingCardsModal .visitingBox{width:min(1240px,96vw);max-height:94vh;overflow-y:auto;background:#f7f9fb!important;color:#101828!important;border:0!important;border-radius:20px!important;box-shadow:0 30px 90px rgba(0,0,0,.45)!important}
-#visitingCardsModal .close{position:sticky;top:12px;float:right;z-index:30;background:#fff!important;color:#111!important;border:1px solid #d9dee5!important;width:38px;height:38px;border-radius:50%;font-size:18px}
-#visitingCardsModal .vcModalHead{background:#fff!important;padding:28px 28px 12px!important;border-bottom:1px solid #e3e7eb}
-#visitingCardsModal .vcModalHead h2{color:#101828!important;font-size:clamp(32px,4vw,52px)!important;margin:8px 0!important}
-#visitingCardsModal .vcModalHead .muted{color:#667085!important}
-#visitingCardsModal #visiting-cards{display:none!important}
-.nrjVcCatalogue{padding:24px 28px 38px;background:#f7f9fb;color:#101828}
-.nrjVcIntro{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}
-.nrjVcIntro h3{font-size:28px;margin:4px 0;color:#101828}
-.nrjVcIntro p{margin:0;color:#667085}
-.nrjVcBreadcrumb{font-size:12px;color:#667085;margin-bottom:12px}.nrjVcBreadcrumb b{color:#344054}
-.nrjVcBack{border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer;margin-bottom:16px}
-.nrjVcChoiceGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.nrjVcChoice{background:#fff;border:1px solid #e4e7ec;border-radius:18px;padding:22px;min-height:165px;cursor:pointer;box-shadow:0 5px 18px rgba(16,24,40,.06);transition:.18s}
-.nrjVcChoice:hover{transform:translateY(-3px);border-color:#ffd21a;box-shadow:0 10px 28px rgba(16,24,40,.10)}
-.nrjVcChoiceIcon{width:44px;height:44px;border-radius:12px;background:#fff4bf;display:grid;place-items:center;font-size:22px;margin-bottom:15px}
-.nrjVcChoice h4{margin:0 0 6px;font-size:21px;color:#101828}.nrjVcChoice p{margin:0;color:#667085;font-size:13px;line-height:1.5}.nrjVcChoice small{display:block;margin-top:12px;color:#087443;font-weight:900}
-.nrjVcSectionTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px;padding:15px 17px;border-radius:14px;background:#17212b;color:#fff}
-.nrjVcSectionTitle h3{margin:0;font-size:22px}.nrjVcSectionTitle span{font-size:12px;color:#cbd5e1}
-.nrjVcGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.nrjVcCard{background:#fff;border:1px solid #e4e7ec;border-radius:16px;overflow:hidden;box-shadow:0 5px 18px rgba(16,24,40,.06)}
-.nrjVcCardHead{padding:16px;background:linear-gradient(135deg,#fff9df,#fff);border-bottom:1px solid #e8ebef}.nrjVcCardHead h4{margin:0 0 4px;font-size:20px;color:#101828}.nrjVcCardHead p{margin:0;color:#667085;font-size:12px}
-.nrjVcRows{padding:7px 10px 10px}.nrjVcRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:10px 6px;border-bottom:1px solid #edf0f2}.nrjVcRow:last-child{border-bottom:0}
-.nrjVcOption{font-weight:750;color:#1d2939;font-size:13px;line-height:1.35}.nrjVcDetail{font-size:11px;color:#667085;margin-top:3px}.nrjVcQty{font-size:11px;color:#667085;white-space:nowrap}.nrjVcPrice{font-weight:900;color:#087443;white-space:nowrap;font-size:14px}
-.nrjVcBtn{background:#ffd21a;color:#111;border:0;border-radius:8px;padding:8px 11px;font-weight:900;cursor:pointer;white-space:nowrap}.nrjVcBtn:hover{filter:brightness(.96)}
-.nrjVcFooter{margin-top:22px;padding:18px 20px;border-radius:16px;background:#fff;border:1px solid #e4e7ec;display:flex;align-items:center;justify-content:space-between;gap:15px}.nrjVcFooter b{color:#101828}.nrjVcFooter span{display:block;color:#667085;font-size:12px;margin-top:3px}
-@media(max-width:900px){.nrjVcChoiceGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.nrjVcGrid{grid-template-columns:1fr}}
-@media(max-width:600px){#visitingCardsModal .visitingBox{width:100vw;max-height:100vh;border-radius:0!important}.nrjVcCatalogue{padding:16px}.nrjVcIntro{display:block}.nrjVcIntro h3{font-size:24px}.nrjVcChoiceGrid{grid-template-columns:1fr}.nrjVcRow{grid-template-columns:minmax(0,1fr) auto}.nrjVcBtn{grid-column:2;grid-row:1/3}.nrjVcFooter{display:block}.nrjVcFooter .nrjVcBtn{margin-top:12px;width:100%}}
-</style>
-<script>
-(function(){
-const raw="Metal Card|METAL CARD|50|Color Count in Text Logo:Print With 1 Color|3443\nMetal Card||50|Color Count in Text Logo:Print With 2 Color|3538\nMetal Card||50|Color Count in Text Logo:Print With 3 Color|3632\nMetal Card||50|Color Count in Text Logo:Print With 4 Color|3726\nMetal Card||50|Color Count in Text Logo:Print With 5 Color|3821\nMetal Card||50|Color Count in Text Logo:Print With 6 Color|3915\n500 GSM + Velvet|500 GSM + Velvet + Die Cut|500||1591\n500 GSM + Velvet|500 GSM + Velvet + UV + Die Cut|500|30 Different Die Shape options available|1591\n500 GSM + Velvet|500 GSM + Velvet + UV + Foil + Die Cut|500|36 Different Die Shapes options available|1827\n500 GSM + Velvet|500 GSM + Velvet + Foil + Die Cut|500||1827\n500 GSM + Velvet|500 GSM + Velvet + UV + Foil + Customized Die Cut|500|Printing : Both Side; Gold Foil : Only Front Side|1921\n500 GSM + Matt|500 GSM + Matt + UV + Foil + Die Cut|500|36 Different Die Shapes options available|1709\n500 GSM + Matt|500 GSM + Matt + Foil + Die Cut|500||1709\n500 GSM + Matt|500 GSM + Matt + UV + Die Cut|500||1473\n800 Micron Fusing|800 Micron + Velvet|100|Spot UV:Not Required;Foil:Not Required|1556\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Gold - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Gold - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Silver - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Silver - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Red - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Red - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Green - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Green - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Blue - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Blue - 2 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Gold - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Silver - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Silver - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Red - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Red - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Green - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Green - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Blue - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Blue - 2 Side|2264\n800 Micron Fusing|800 Micron Silver + Gloss|100|Spot UV:Not Required;Foil:Not Required|1556\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Gold - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Gold - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Silver - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Silver - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Red - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Red - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Green - 1 Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Green - 2 Side|2028\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Blue-1Side|1910\n800 Micron Fusing||100|Spot UV:Not Required;Foil:Blue-2Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Gold - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Silver - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Silver - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Red - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Red - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Green - 1 Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Green - 2 Side|2264\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Blue-1Side|2028\n800 Micron Fusing||100|Spot UV:1 Side Only;Foil:Blue-2Side|2264\n800 Micron Fusing|800 Micron Gold + Gloss|100|Spot UV,:Not Required;Foil :Not Required|1556\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Gold - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Gold - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Silver - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Silver - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Red - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Red - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Green - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Green - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Blue - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil :Blue - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Gold - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Silver - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Silver - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Red - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Red - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Green - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Green - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Blue - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil :Blue - 2 Side|2264\n800 Micron Fusing|800 Micron + Matt|100|Spot UV,:Not Required;Foil:Not Required|1556\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Gold - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Gold - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Silver - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Silver - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Red - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Red - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Green - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Green - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Green - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Blue - 1 Side|1910\n800 Micron Fusing||100|Spot UV,:Not Required;Foil:Blue - 2 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Gold - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Silver - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Silver - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Red - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Red - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Green - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Green - 2 Side|2264\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Blue - 1 Side|2028\n800 Micron Fusing||100|Spot UV,:1 Side Only;Foil:Blue - 2 Side|2264\n180 Micron|180 Micron NT Card + Gloss UV Coating|1000|Printing:Single Side|759\n180 Micron||1000|Printing:Both Side|806\n180 Micron|180 Micron NT|1000|Printing:Single Side|735\n180 Micron||1000|Printing:Both Side|782\n180 Micron|180 Micron NT Card + Drip-Off|1000|Printing,:Single Side;Gloss Area:Not Required (All Drip-Off Area)|806\n180 Micron||1000|Printing,:Both Side;Gloss Area:Not Required (All Drip-Off Area)|853\nMATT + UV|Single Side Printing + Single Side UV|1000||1142\nMATT + UV|Both Side Printing + Single Side UV|1000||1166\nMATT + UV|Both Side Printing + Both Side UV|1000||1284\nMATT|Matt Lamination|1000|Printing:Single Side|942\nMatt + Texture|Matt + Texture|1000|Printing:Single Side|1142\nGLOSS LAMINATION|Gloss Lamination|1000|Printing:1 Side|664\nGLOSS LAMINATION||1000|Printing:1 Side with Black Back Printing|671\nGLOSS LAMINATION||1000|Printing:2 Side|759\nGLOSS UV COATED|Gloss UV Coated|1000|Printing:1 Side|653\nGLOSS UV COATED||1000|Printing:1 Side with Black Back Printing|660\nGLOSS UV COATED||1000|Printing:2 Side|747\nWITHOUT LAMINATION|Without Coated|1000|Printing:Single Side|641\nWITHOUT LAMINATION||1000|Printing:Single Side + Black Back Printing|648\nWITHOUT LAMINATION||1000|Printing:Both Side|712\nGloss + Texture|Gloss + Texture|1000|Printing:Single Side|788\nGLOSS COATED - SMALL|Gloss UV Coated - Small Cards|1000|Printing:1 Side|617\nGLOSS COATED - SMALL||1000|Printing:1 Side with Black Back Printing|624\nWITHOUT LAMINATION - SMALL|Without Lamination (SMALL)|1000|Printing:1 Side|605\nWITHOUT LAMINATION - SMALL||1000|Printing:1 Side + Black Back Printing|612";
-const rows=raw.trim().split("\n").map(function(x){var p=x.split("|");return{cat:p[0],product:p[1],qty:p[2],detail:p[3],price:Number(p[4])};});
-function esc(s){return String(s||"").replace(/[&<>"']/g,function(m){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m];});}
-function sendEnquiry(r){
- var msg="Hi NRJ Graphics, I want to enquire about Visiting Cards.\nCategory: "+r.cat+"\nOption: "+(r.product||"As selected")+"\nQuantity: "+r.qty+"\nDetails: "+(r.detail||"Standard")+"\nClient Price: ₹"+r.price.toLocaleString("en-IN")+"\nPlease confirm availability and final quote.";
- window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
-}
-function rowHtml(r){
- var detail=(r.detail||"").replace(/Spot UV[:,]?/,"Spot UV: ").replace(/;Foil[: ]*/," • Foil: ");
- return '<div class="nrjVcRow"><div><div class="nrjVcOption">'+esc(r.product||"Same category option")+'</div>'+(detail?'<div class="nrjVcDetail">'+esc(detail)+'</div>':'')+'</div><div class="nrjVcQty">'+esc(r.qty)+' qty</div><div class="nrjVcPrice">₹'+r.price.toLocaleString("en-IN")+'</div><button class="nrjVcBtn" data-i="'+rows.indexOf(r)+'">Enquire</button></div>';
-}
-function subCard(title,subtitle,items){
- return '<article class="nrjVcCard"><div class="nrjVcCardHead"><h4>'+esc(title)+'</h4><p>'+esc(subtitle)+'</p></div><div class="nrjVcRows">'+items.map(rowHtml).join("")+'</div></article>';
-}
-function categoryData(){
- return {
-  "500":{title:"500 GSM Business Cards",desc:"Premium thick cards with Velvet, Matt, UV, Foil and Die Cut options.",items:rows.filter(function(r){return r.cat==="500 GSM + Velvet"||r.cat==="500 GSM + Matt";})},
-  "800":{title:"800 Micron / Luxury Cards",desc:"Heavy premium cards with multiple Foil and Spot UV combinations.",items:rows.filter(function(r){return r.cat==="800 Micron Fusing";})},
-  "regular":{title:"Regular Business Cards",desc:"Everyday business card options including 180 Micron, Gloss, Matt and Texture finishes.",items:rows.filter(function(r){return r.cat!=="500 GSM + Velvet"&&r.cat!=="500 GSM + Matt"&&r.cat!=="800 Micron Fusing"&&r.cat!=="Metal Card";})},
-  "metal":{title:"Metal Cards",desc:"Exclusive metal business cards with colour-count options.",items:rows.filter(function(r){return r.cat==="Metal Card";})}
- };
-}
-function renderHome(){
- return '<div class="nrjVcIntro"><div><div class="eyebrow" style="color:#b07d00">VISITING CARDS</div><h3>Choose your card quality</h3><p>First choose the type of card. We will then show only the options for that category.</p></div><div style="font-size:12px;color:#667085">Client selling prices</div></div><div class="nrjVcChoiceGrid">'+
- '<div class="nrjVcChoice" data-cat="500"><div class="nrjVcChoiceIcon">✦</div><h4>500 GSM Cards</h4><p>Velvet & Matt premium cards with UV, Foil and Die Cut options.</p><small>View all 500 GSM →</small></div>'+
- '<div class="nrjVcChoice" data-cat="800"><div class="nrjVcChoiceIcon">◆</div><h4>800 Micron Cards</h4><p>Luxury heavy cards with Velvet, Gloss, Matt, Foil and Spot UV.</p><small>View all 800 Micron →</small></div>'+
- '<div class="nrjVcChoice" data-cat="regular"><div class="nrjVcChoiceIcon">▤</div><h4>Regular Cards</h4><p>180 Micron, Gloss, Matt, Texture and other everyday finishes.</p><small>View regular cards →</small></div>'+
- '<div class="nrjVcChoice" data-cat="metal"><div class="nrjVcChoiceIcon">⬢</div><h4>Metal Cards</h4><p>Exclusive metal card options with different colour counts.</p><small>View metal cards →</small></div>'+
- '</div><div class="nrjVcFooter"><div><b>Not sure which card to choose?</b><span>WhatsApp us and we will help you select the right option.</span></div><button class="nrjVcBtn" id="nrjVcCustom">Ask on WhatsApp →</button></div>';
-}
-function renderCategory(key){
- var d=categoryData()[key];
- var groups={};
- d.items.forEach(function(r){var name=r.cat; if(!groups[name])groups[name]=[];groups[name].push(r);});
- var html='<button class="nrjVcBack" id="nrjVcBack">← All Card Types</button><div class="nrjVcBreadcrumb">Visiting Cards / <b>'+esc(d.title)+'</b></div><div class="nrjVcSectionTitle"><h3>'+esc(d.title)+'</h3><span>'+d.items.length+' options</span></div><p style="color:#667085;margin:0 0 16px">'+esc(d.desc)+'</p><div class="nrjVcGrid">';
- Object.keys(groups).forEach(function(g){var title=g;var subtitle="";if(g==="500 GSM + Velvet")subtitle="Velvet • Die Cut • UV • Foil";if(g==="500 GSM + Matt")subtitle="Matt • UV • Foil • Die Cut";if(g==="800 Micron + Velvet")subtitle="Velvet finish • 100 cards";if(g==="800 Micron Silver + Gloss")subtitle="Silver base • Gloss • Foil";if(g==="800 Micron Gold + Gloss")subtitle="Gold base • Gloss • Foil";if(g==="800 Micron + Matt")subtitle="Matt finish • Foil • Spot UV";if(g==="180 Micron")subtitle="Economical everyday cards";if(g==="MATT + UV")subtitle="Matt + UV finish";if(g==="GLOSS LAMINATION")subtitle="Gloss lamination";if(g==="GLOSS UV COATED")subtitle="Gloss UV coated";html+=subCard(title,subtitle,groups[g]);});
- html+='</div>';return html;
-}
-function bind(wrap){
- wrap.querySelectorAll(".nrjVcChoice").forEach(function(b){b.addEventListener("click",function(){wrap.innerHTML=renderCategory(b.dataset.cat);bind(wrap);});});
- var back=wrap.querySelector("#nrjVcBack");if(back)back.addEventListener("click",function(){wrap.innerHTML=renderHome();bind(wrap);});
- wrap.querySelectorAll(".nrjVcBtn[data-i]").forEach(function(b){b.addEventListener("click",function(){sendEnquiry(rows[Number(b.dataset.i)]);});});
- var custom=wrap.querySelector("#nrjVcCustom");if(custom)custom.addEventListener("click",function(){window.open("https://wa.me/918690996080?text="+encodeURIComponent("Hi NRJ Graphics, I need help choosing Visiting Cards."),"_blank");});
-}
-function mount(){
- var host=document.getElementById("visitingCardsModal");if(!host)return;var box=host.querySelector(".visitingBox");if(!box)return;
- var old=box.querySelector(".nrjVcCatalogue");if(old)old.remove();var legacy=box.querySelector("#visiting-cards");if(legacy)legacy.style.display="none";
- var wrap=document.createElement("div");wrap.className="nrjVcCatalogue";wrap.innerHTML=renderHome();box.appendChild(wrap);bind(wrap);
-}
-document.addEventListener("DOMContentLoaded",mount);setTimeout(mount,600);
-})();
-</script>
-<style>
 /* Customer-first UI cleanup */
 #nrjQuickStart,
 #nrjCatalogueSearch,
@@ -1563,50 +1392,8 @@ window.closeNRJPrintRates=function(){var m=document.getElementById("nrjPrintRate
 @media(max-width:850px){.nrjServicesGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:520px){.nrjServicesGrid{grid-template-columns:1fr!important}.nrjServiceVisual{height:145px!important}}
 </style><style>
-/* Visiting Card order UI — unified NRJ order format */
-.nrjOrderShell{width:min(1180px,94vw);max-height:92vh;overflow:auto;background:#0d1012;color:#fff;border:1px solid #2b3033;border-radius:20px;box-shadow:0 30px 90px #000b;display:grid;grid-template-columns:1.12fr .88fr;position:relative}
-.nrjOrderLeft{padding:30px 30px 28px}.nrjOrderRight{padding:18px;background:#090b0c;border-left:1px solid #252a2d}
-.nrjOrderClose{position:absolute;right:16px;top:12px;background:#171b1d;color:#fff;border:1px solid #343a3d;border-radius:10px;width:38px;height:38px;font-size:20px;z-index:3}
-.nrjOrderEyebrow{font-size:11px;letter-spacing:2px;color:#ffd21a;font-weight:900}.nrjOrderShell h2{font-size:34px;margin:7px 0 5px}.nrjOrderSub{color:#9da6aa;font-size:13px;line-height:1.5;margin:0 0 22px}
-.nrjOrderShell label{display:block;font-size:12px;font-weight:900;letter-spacing:.5px;color:#e9edef;margin:14px 0 7px}
-.nrjOrderShell input,.nrjOrderShell select,.nrjOrderShell textarea{width:100%;background:#111518;border:1px solid #333a3e;color:#fff;border-radius:10px;padding:12px 13px;font:inherit;outline:none}
-.nrjOrderShell input:focus,.nrjOrderShell select:focus,.nrjOrderShell textarea:focus{border-color:#ffd21a66}
-.nrjOrderShell textarea{min-height:76px;resize:vertical}.nrjFieldRow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.nrjFileBox,.nrjEstimate{margin-top:15px;border:1px solid #30373a;border-radius:12px;padding:14px;background:#111518}.nrjFileOptions{display:flex;gap:24px;flex-wrap:wrap;margin-top:12px;color:#c9d0d3;font-size:13px}.nrjFileOptions input{width:auto;margin-right:6px;accent-color:#ffd21a}
-.nrjEstimate{border-color:#806c00;background:#24230f;display:flex;flex-direction:column;gap:4px}.nrjEstimate span{font-size:12px;color:#c7c9b6}.nrjEstimate b{font-size:25px;color:#fff}.nrjEstimate small{color:#aeb3a0;line-height:1.45}
-.nrjOrderBtn{width:100%;margin-top:18px;padding:14px;border:0;border-radius:11px;background:#ffd21a;color:#111;font-weight:900;font-size:15px;cursor:pointer}.nrjOrderBtn:hover{filter:brightness(1.06)}
-.nrjCardPreview{height:300px;border:1px solid #343a3d;border-radius:16px;background:linear-gradient(145deg,#4a2b18,#a95d28 45%,#111);position:relative;display:grid;place-items:center;overflow:hidden;box-shadow:0 20px 55px #0008}
-.nrjCardMock{width:72%;aspect-ratio:1.6/1;border-radius:12px;background:linear-gradient(135deg,#111,#252525);border:1px solid #ffd21a66;box-shadow:0 18px 35px #000b;display:flex;flex-direction:column;justify-content:center;padding:25px;transform:rotate(-5deg)}
-.nrjCardMock span{font-size:34px;font-weight:1000;color:#ffd21a;letter-spacing:2px}.nrjCardMock b{font-size:14px;letter-spacing:3px}.nrjCardMock small{margin-top:20px;color:#9ca3a6;letter-spacing:1.5px}
-.nrjPreviewBadge{position:absolute;right:16px;bottom:14px;background:#ffd21a;color:#111;font-weight:900;padding:8px 12px;border-radius:9px;font-size:12px}
-.nrjInfoBox{margin-top:16px;border:1px solid #2f3639;border-radius:15px;background:#111518;padding:18px;border-left:4px solid #ffd21a}.nrjInfoBox h3{margin:0 0 10px;font-size:19px}.nrjInfoBox ul{margin:0;padding-left:20px;color:#b9c0c3;font-size:13px;line-height:1.7}.nrjInfoBox li::marker{color:#ffd21a}
-@media(max-width:850px){.nrjOrderShell{grid-template-columns:1fr}.nrjOrderRight{border-left:0;border-top:1px solid #252a2d}.nrjCardPreview{height:240px}}
-@media(max-width:560px){.nrjOrderShell{width:96vw}.nrjOrderLeft{padding:22px 18px}.nrjFieldRow{grid-template-columns:1fr}.nrjOrderShell h2{font-size:28px}}
+.nrjVcFreshStart{width:min(560px,92vw);background:#0d1012!important;color:#fff!important;border:1px solid #2b3033!important;border-radius:20px!important;padding:48px 34px!important;text-align:center;box-shadow:0 30px 90px #000b}
+.nrjVcFreshStart .nrjOrderClose{position:absolute;right:14px;top:12px;background:#171b1d;color:#fff;border:1px solid #343a3d;border-radius:10px;width:38px;height:38px;font-size:20px}
+.nrjFreshIcon{width:68px;height:68px;margin:0 auto 18px;border-radius:18px;background:#ffd21a;color:#111;display:grid;place-items:center;font-size:34px}
+.nrjVcFreshStart h2{font-size:32px;margin:8px 0}.nrjVcFreshStart p{color:#aeb7bb;line-height:1.6;margin:8px 0}
 </style>
-<script>
-function updateVCOrder(){
-  var p=document.getElementById("vcProduct").value.split("|");
-  document.getElementById("vcEstimate").textContent=p[2]?("₹"+Number(p[2]).toLocaleString("en-IN")):"Enquire";
-  document.getElementById("vcPreviewCode").textContent=p[0];
-  document.getElementById("vcInfoName").textContent=p[1];
-}
-function submitVCOrder(){
-  var product=document.getElementById("vcProduct").value.split("|");
-  var name=document.getElementById("vcName").value.trim();
-  var phone=document.getElementById("vcPhone").value.trim();
-  var orderName=document.getElementById("vcOrderName").value.trim();
-  var qty=document.getElementById("vcQty").value;
-  var size=document.getElementById("vcSize").value;
-  var material=document.getElementById("vcMaterial").value;
-  var finish=document.getElementById("vcFinish").value;
-  var file=document.querySelector('input[name="vcFile"]:checked')?.value||"Attach File Online";
-  var remark=document.getElementById("vcRemark").value.trim();
-  if(!name){alert("Please enter your name.");document.getElementById("vcName").focus();return}
-  var msg="Hi NRJ Graphics, I want to order Visiting Cards.\n"+
-    "Order Name: "+(orderName||name)+"\nProduct: "+product[1]+"\nProduct Code: "+product[0]+
-    "\nQuantity: "+qty+"\nSize: "+size+"\nMaterial: "+material+"\nFinishing: "+finish+
-    "\nFile Option: "+file+"\nName: "+name+"\nWhatsApp/Phone: "+(phone||"Not provided")+
-    "\nSpecial Requirement: "+(remark||"None");
-  window.open("https://wa.me/918690996080?text="+encodeURIComponent(msg),"_blank");
-}
-</script>
