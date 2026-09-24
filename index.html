@@ -1456,4 +1456,20 @@ window.closeNRJPrintRates=function(){var m=document.getElementById("nrjPrintRate
 .nrjVcFreshStart .nrjOrderClose{position:absolute;right:14px;top:12px;background:#171b1d;color:#fff;border:1px solid #343a3d;border-radius:10px;width:38px;height:38px;font-size:20px}
 .nrjFreshIcon{width:68px;height:68px;margin:0 auto 18px;border-radius:18px;background:#ffd21a;color:#111;display:grid;place-items:center;font-size:34px}
 .nrjVcFreshStart h2{font-size:32px;margin:8px 0}.nrjVcFreshStart p{color:#aeb7bb;line-height:1.6;margin:8px 0}
-</style>
+</style><script>
+/* Robust Visiting Cards launcher */
+window.openVisitingCards=function(){
+  var modal=document.getElementById("visitingCardsModal");
+  var body=document.getElementById("nrjVcFlowBody");
+  if(!modal||!body){console.error("Visiting Cards modal not found");return;}
+  modal.style.display="grid";
+  document.body.style.overflow="hidden";
+  body.innerHTML='<div class="nrjVcStep">'+
+    '<h2 class="nrjVcTitle">500 GSM CARDS <span>(QTY. 500 CARDS)</span></h2>'+
+    '<p class="nrjVcSub">Choose the card type to continue.</p>'+
+    '<div class="nrjVcCards">'+
+      '<button class="nrjVcProductCard" onclick="if(window.nrjVcStep2)window.nrjVcStep2(\'velvet\')"><div class="nrjVcProductVisual"><span>500 GSM<br>+<br>VELVET</span></div><div class="nrjVcProductMeta">Product Code: <b>7</b><br><span class="nrjVcOrange">Available with Foil, Spot UV &amp; Die-Cut.</span><br>Production Time: 3 days</div></button>'+
+      '<button class="nrjVcProductCard" onclick="if(window.nrjVcStep2)window.nrjVcStep2(\'matt\')"><div class="nrjVcProductVisual"><span>500 GSM<br>+<br>MATT</span></div><div class="nrjVcProductMeta">Product Code: <b>8</b><br><span class="nrjVcOrange">Available with Foil, Spot UV &amp; Die-Cut.</span><br>Production Time: 3 days</div></button>'+
+    '</div></div>';
+};
+</script>
